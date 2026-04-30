@@ -1,0 +1,49 @@
+Call: 08 — Energy / Won / C-Suite Pitch
+Datum: 2026-04-28
+Teilnehmer: Marco (Sales DECAID), Dr. Kerstin Vahlbruch (CCO, RheinEnergie
+Solutions AG), Sebastian Pohl (Head of Digital)
+Branche: Energy · Größe: 2.100 MA · Outcome: WON
+
+────────────────────────────────────────────
+
+Vahlbruch: Marco, Sebastian hat mir ihre Demo schon gezeigt. Ich habe
+30 Minuten. Drei Fragen.
+
+Marco: Schießen Sie los.
+
+Vahlbruch: Eins — wir haben zwei AI-Initiativen in den letzten 18 Monaten
+abgebrochen, weil der ROI nicht messbar war. Wie unterscheidet sich Ihr
+Setup?
+
+Marco: Wir messen vom ersten Tag an drei KPIs: durchschnittliche Lead-
+Bearbeitungszeit, Conversion Rate von Hot Leads zu Demo, und Win Rate
+nach 90 Tagen. Vergleichswerte vor Implementierung sind euer Baseline.
+Wir liefern monatliches Reporting direkt aus dem System — kein
+Manuelles Excel.
+
+Vahlbruch: Gut. Zwei — wir sind ein regulierter Versorger. Wir können
+nicht riskieren dass eine KI einem Kunden falsche Versprechen über
+unsere Tarife macht.
+
+Marco: Unser System schreibt nichts an Kunden raus. Es liefert
+intern Briefings für eure Reps. Der Rep entscheidet was er sagt.
+
+Vahlbruch: Das ist die Antwort die ich hören wollte. Drei — Sebastian
+sagte 36k im Jahr. Ich sehe das als Pilot-Investment. Was kostet
+ein Roll-out auf 200 Reps?
+
+Marco: 145k im Jahr für 200 Seats, mit Custom Training und dediziertem
+Customer Success Manager.
+
+Vahlbruch: Wir starten mit 36k für 25 Seats. Wenn die KPIs nach 6 Monaten
+stimmen, gehen wir auf 200. Das ist mein Vorschlag.
+
+Marco: Einverstanden. Sebastian, du übernimmst das Onboarding-Projekt
+auf eurer Seite?
+
+Sebastian: Mit Freude. Ich brauche bis Freitag den Vertrag.
+
+Outcome: Won — 25-Seat-Pilot, klarer Expansion-Pfad auf 200 Seats.
+Tipping Point: KPI-Klarheit + Selbstbeschränkung der KI ("schreibt
+nichts an Kunden") schlugen die Bedenken aus zwei vorherigen
+gescheiterten KI-Projekten.

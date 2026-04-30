@@ -1,0 +1,46 @@
+Call: 04 — Retail / Lost / Integration Concerns
+Datum: 2026-04-09
+Teilnehmer: Marco (Sales DECAID), Patrick Vogel (CIO, Zentralhandel Plus AG)
+Branche: Retail · Größe: 1.200 MA · Outcome: LOST
+
+────────────────────────────────────────────
+
+Marco: Patrick, danke für den Folge-Termin. Wo stehen wir?
+
+Patrick: Marco, ich hab dein Angebot mit unserem IT-Leiter durchgegangen.
+Das Konzept ist gut. Aber wir haben drei Themen.
+
+Marco: Schieß los.
+
+Patrick: Erstens: SAP-Anbindung. Wir laufen auf SAP CRM, nicht HubSpot. Eure
+Doku hat keinen Connector dafür.
+
+Marco: Wir bauen auf Wunsch Custom Connectoren. Das wäre Teil eines
+Implementierungs-Projekts.
+
+Patrick: Zweitens: Datenschutz. Wir sind börsennotiert, alle Daten müssen
+in Deutschland bleiben. Eure Server-Map hat US-Regionen.
+
+Marco: Wir haben einen EU-only-Tier in Dublin. Den könnten wir aktivieren.
+
+Patrick: Dublin ist nicht Deutschland. Drittens: Change Management. Wir haben
+180 Reps. Selbst wenn das Tool funktioniert — wir kriegen es in der Adoption
+nicht durch. Letztes Jahr haben wir ein neues CRM eingeführt, sechs Monate
+Drama, am Ende benutzen es 40 Prozent.
+
+Marco: Also wenn ich's richtig verstehe — Connector ist lösbar, EU-Hosting
+ist eng aber lösbar, aber das Adoptions-Risiko ist der eigentliche Killer?
+
+Patrick: Genau. Ich kann meinem Vorstand kein KI-Tool vorstellen das vielleicht
+auch wieder von 60 Prozent meiner Reps ignoriert wird. Mein Risiko ist
+zu groß im Verhältnis zum Upside.
+
+Marco: Verstehe. Hätte ein 90-Tage-Pilot mit nur einem Team von 15 Reps
+das Risiko reduziert?
+
+Patrick: Hätte. Aber ehrlich gesagt — bei eurer Größe traue ich euch das
+Enterprise-Onboarding noch nicht zu. Sorry, kommt nicht persönlich.
+
+Outcome: Lost.
+Showstopper: Adoption-Risiko + perceived Maturity-Gap (Enterprise-
+Onboarding-Skills). Sekundär: SAP CRM Anbindung, Hosting-Region.

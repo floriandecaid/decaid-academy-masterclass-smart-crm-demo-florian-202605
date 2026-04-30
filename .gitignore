@@ -1,0 +1,38 @@
+# ─────────────────────────────────────────────
+# Sicherheitsnetz: niemals private Materialien committen.
+# Falls jemand das Schwester-Verzeichnis aus Versehen reinkopiert.
+# ─────────────────────────────────────────────
+private/
+*-private/
+*.private.*
+
+# ─────────────────────────────────────────────
+# Lokale Dev-Artefakte
+# ─────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# ─────────────────────────────────────────────
+# Editor-Konfiguration
+# ─────────────────────────────────────────────
+.idea/
+.vscode/
+*.iml
+
+# ─────────────────────────────────────────────
+# Colab/Jupyter Outputs (wir wollen leere Notebooks committen)
+# ─────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ─────────────────────────────────────────────
+# Secrets — falls Teilnehmer doch was lokal speichern
+# ─────────────────────────────────────────────
+.env
+.env.local
+*.secret
+secrets.json
+hubspot_pat.txt
+langdock_webhook.txt

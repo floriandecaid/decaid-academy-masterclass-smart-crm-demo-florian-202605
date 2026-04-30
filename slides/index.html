@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smarter CRM &amp; KI-Automatisierung — Slides</title>
+  <link rel="icon" type="image/png" href="../assets/logo.png" />
+
+  <!-- Reveal.js core -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+
+  <!-- DECAID Tokens (subset, inline, da reveal.js eigenes Layout hat) -->
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700,900&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" />
+
+  <style>
+    :root {
+      --decaid-primary: #FFEA00;
+      --decaid-primary-hover: #E6D200;
+      --decaid-primary-ink: #1A1A2E;
+      --decaid-primary-light: #FFFAD1;
+      --decaid-accent-magenta: #FF3DAB;
+      --decaid-accent-violet:  #8C5CFF;
+      --decaid-accent-cyan:    #5DD9FF;
+      --decaid-ink: #1A1A2E;
+      --decaid-ink-muted: rgba(26,26,46,0.72);
+      --decaid-surface: #FFFFFF;
+      --decaid-surface-alt: #FBF9F2;
+      --decaid-border: #EEEAD8;
+    }
+
+    .reveal {
+      font-family: 'Lato', system-ui, sans-serif;
+      color: #333;
+      font-size: 28px;
+    }
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+      font-family: 'Satoshi', system-ui, sans-serif;
+      color: var(--decaid-ink);
+      font-weight: 900;
+      text-transform: none;
+      letter-spacing: -0.01em;
+    }
+    .reveal h1 { font-size: 2.8rem; line-height: 1.1; }
+    .reveal h2 { font-size: 2rem; line-height: 1.15; margin-bottom: 0.4em; }
+    .reveal h3 { font-size: 1.4rem; }
+    .reveal p { line-height: 1.5; }
+
+    .reveal .slides { text-align: left; }
+
+    /* Default content slide: top-padding macht Platz für den Brand-Header,
+       bottom-padding hält Abstand zur Reveal-Progress-Bar / Slide-Number. */
+    .reveal .slides > section {
+      padding: 100px 80px 72px !important;
+      box-sizing: border-box;
+      width: 1280px;
+      height: 720px;
+    }
+    /* Cover & CTA: eigenes Padding, full-bleed Background bleibt erhalten. */
+    .reveal .slides > section.cover,
+    .reveal .slides > section.cta {
+      padding: 100px 80px 72px !important;
+    }
+
+    .reveal a { color: var(--decaid-accent-violet); }
+
+    .reveal strong { color: var(--decaid-ink); font-weight: 700; }
+
+    .reveal pre {
+      background: var(--decaid-ink);
+      color: #E5E7FF;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 12px 32px rgba(26,26,46,0.18);
+      font-size: 0.55em;
+      line-height: 1.45;
+    }
+    .reveal code {
+      font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+    }
+
+    /* ── DECAID Brand Header on every slide ──
+       Sitzt RECHTS oben, damit er nie mit linksbündigem Slide-Inhalt
+       (Eyebrow, H2, etc.) kollidiert. */
+    .decaid-brand {
+      position: absolute;
+      top: 36px;
+      right: 80px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Satoshi', system-ui, sans-serif;
+      z-index: 10;
+    }
+    .decaid-brand__icon {
+      width: 28px; height: 28px;
+      background: var(--decaid-primary);
+      border-radius: 6px;
+      color: var(--decaid-primary-ink);
+      border: 2px solid var(--decaid-ink);
+      font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem;
+    }
+    .decaid-brand__text { font-weight: 900; color: var(--decaid-ink); font-size: 0.85rem; }
+    .decaid-brand__sub { color: var(--decaid-ink-muted); font-size: 0.85rem; font-weight: 500; }
+
+    /* ── Cover slide ── */
+    .cover {
+      background: linear-gradient(135deg, #FFE15B 0%, #FF8FE0 45%, #8C5CFF 100%);
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .cover__eyebrow {
+      display: inline-block;
+      padding: 6px 16px;
+      background: var(--decaid-primary);
+      color: var(--decaid-primary-ink);
+      border: 2px solid var(--decaid-ink);
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      width: fit-content;
+      box-shadow: 4px 4px 0 var(--decaid-ink);
+    }
+    .cover__title {
+      color: var(--decaid-ink);
+      font-size: 3.4rem !important;
+      line-height: 1.05;
+      margin: 0 0 16px;
+      max-width: 900px;
+    }
+    .cover__subtitle {
+      color: var(--decaid-ink-muted);
+      font-size: 1.25rem;
+      max-width: 680px;
+      margin: 0 0 24px;
+      line-height: 1.4;
+    }
+    .cover__meta {
+      margin-top: 24px;
+      color: var(--decaid-ink);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    /* ── Stat slide ── */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 36px;
+      margin-top: 32px;
+    }
+    .stat-card {
+      background: var(--decaid-surface);
+      border-radius: 16px;
+      padding: 36px 24px 28px;
+      border: 2.5px solid var(--decaid-ink);
+      box-shadow: 6px 6px 0 var(--decaid-ink);
+    }
+    .stat-card__num {
+      font-family: 'Satoshi', sans-serif;
+      font-weight: 900;
+      font-size: 3.8rem;
+      line-height: 1;
+      margin: 8px 0 18px;
+      display: inline-block;
+      padding: 4px 14px;
+      background: var(--decaid-primary);
+      color: var(--decaid-primary-ink);
+      border: 2.5px solid var(--decaid-ink);
+      border-radius: 8px;
+      box-shadow: 4px 4px 0 var(--decaid-ink);
+      transform: rotate(-2deg);
+    }
+    .stat-row .stat-card:nth-child(2) .stat-card__num { background: var(--decaid-accent-magenta); color: #fff; transform: rotate(2deg); }
+    .stat-row .stat-card:nth-child(3) .stat-card__num { background: var(--decaid-accent-cyan); color: var(--decaid-ink); transform: rotate(-1deg); }
+    .stat-card__label { color: var(--decaid-ink); font-weight: 700; margin-bottom: 6px; font-size: 1rem; }
+    .stat-card__desc { color: var(--decaid-ink-muted); font-size: 0.8rem; line-height: 1.4; }
+
+    /* ── Architecture diagram ── */
+    .arch {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 32px;
+      align-items: center;
+    }
+    .arch__step {
+      background: var(--decaid-surface);
+      border: 2.5px solid var(--decaid-ink);
+      border-radius: 12px;
+      padding: 16px 12px;
+      text-align: center;
+      box-shadow: 4px 4px 0 var(--decaid-ink);
+    }
+    .arch__step--filled { background: var(--decaid-primary); color: var(--decaid-primary-ink); }
+    .arch__step h4 { color: inherit; font-size: 0.85rem; margin: 0 0 4px; }
+    .arch__step p { font-size: 0.6rem; color: inherit; opacity: 0.85; margin: 0; }
+    .arch__arrow {
+      font-size: 1.5rem;
+      color: var(--decaid-accent-magenta);
+      text-align: center;
+      font-weight: 900;
+    }
+
+    /* ── Two col layout ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 24px;
+    }
+    .col-card {
+      background: var(--decaid-surface-alt);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--decaid-border);
+    }
+    .col-card h3 { color: var(--decaid-accent-magenta); font-size: 1.15rem; margin-bottom: 12px; }
+    .col-card ul { padding-left: 20px; margin: 0; }
+    .col-card li { margin-bottom: 8px; font-size: 0.85rem; }
+
+    /* ── CTA slide ── */
+    .cta {
+      background: var(--decaid-ink);
+      color: #fff;
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .cta h2 { color: #fff !important; font-size: 3rem; }
+    .cta p { color: rgba(255,255,255,0.85); font-size: 1.3rem; max-width: 700px; }
+    .cta__pill {
+      display: inline-flex;
+      gap: 12px;
+      padding: 16px 28px;
+      background: var(--decaid-primary);
+      color: var(--decaid-primary-ink);
+      border: 2.5px solid var(--decaid-primary);
+      border-radius: 12px;
+      font-family: 'Satoshi', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      margin-top: 32px;
+      width: fit-content;
+      box-shadow: 6px 6px 0 var(--decaid-accent-magenta);
+    }
+    .cta .decaid-brand__text { color: #fff; }
+    .cta .decaid-brand__sub { color: rgba(255,255,255,0.7); }
+
+    /* ── Eyebrow on regular slides ── */
+    .eyebrow {
+      display: inline-block;
+      background: var(--decaid-primary);
+      color: var(--decaid-primary-ink);
+      border: 2px solid var(--decaid-ink);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0 20px;
+    }
+
+    /* footer slide-number */
+    .reveal .slide-number {
+      background: transparent !important;
+      color: var(--decaid-ink-muted) !important;
+      font-family: 'Satoshi', sans-serif;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ───────── Slide 1: Cover ───────── -->
+      <section class="cover">
+        <span class="cover__eyebrow">DECAID Academy · Masterclass</span>
+        <h1 class="cover__title">Smarter CRM &amp; KI-Automatisierung</h1>
+        <p class="cover__subtitle">Wie du den Sprung von ChatGPT-Spielereien zu skalierbaren Revenue-Workflows schaffst.</p>
+        <div class="cover__meta">26. Mai 2026 · 60 Minuten · Florian Langer</div>
+      </section>
+
+      <!-- ───────── Slide 2: Pain (3 Stats) ───────── -->
+      <section>
+        <div class="decaid-brand">
+          <div class="decaid-brand__icon">D</div>
+          <span class="decaid-brand__text">DECAID</span>
+          <span class="decaid-brand__sub">Academy</span>
+        </div>
+        <span class="eyebrow">Warum jetzt</span>
+        <h2>Das alte Sales-Led-Modell skaliert nicht mehr.</h2>
+
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-card__num">72%</div>
+            <div class="stat-card__label">Admin statt Verkauf</div>
+            <div class="stat-card__desc">Sales-Reps verbringen die Zeit mit Admin — nicht mit aktivem Selling.</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__num">67%</div>
+            <div class="stat-card__label">Käufer wollen Self-Serve</div>
+            <div class="stat-card__desc">B2B-Käufer wollen für Routine-Deals nicht mehr mit einem Rep sprechen.</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__num">86%</div>
+            <div class="stat-card__label">Deals stocken</div>
+            <div class="stat-card__desc">der Deals stocken am Point of Sale — Reps wissen nicht, wo sie ansetzen sollen.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────── Slide 3: Lösung (Digital Buying Path) ───────── -->
+      <section>
+        <div class="decaid-brand">
+          <div class="decaid-brand__icon">D</div>
+          <span class="decaid-brand__text">DECAID</span>
+          <span class="decaid-brand__sub">Academy</span>
+        </div>
+        <span class="eyebrow">Die Antwort</span>
+        <h2>Ein KI-gesteuerter Digital Buying Path.</h2>
+        <p style="font-size:1.05rem; max-width: 800px; margin-top: 12px;">
+          Routine-Transaktionen laufen automatisiert. Sales bekommt nur die echten Enterprise-Deals — mundgerecht serviert mit vollautomatischer Deep-Research.
+        </p>
+
+        <div class="two-col">
+          <div class="col-card">
+            <h3>❄️ Cold &amp; Standard-Deals</h3>
+            <ul>
+              <li>Renewal? → Self-Serve.</li>
+              <li>Add-on? → Automatischer Flow.</li>
+              <li>Low-Engagement? → Nurture-Sequenz.</li>
+              <li>Sales bleibt unangetastet.</li>
+            </ul>
+          </div>
+          <div class="col-card">
+            <h3>🔥 Hot Enterprise-Leads</h3>
+            <ul>
+              <li>KI bewertet in Echtzeit.</li>
+              <li>Deep-Research per Web-Search.</li>
+              <li>Briefing landet im Inbox.</li>
+              <li>Rep ruft mit Eisbrecher an.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────── Slide 4: Architektur ───────── -->
+      <section>
+        <div class="decaid-brand">
+          <div class="decaid-brand__icon">D</div>
+          <span class="decaid-brand__text">DECAID</span>
+          <span class="decaid-brand__sub">Academy</span>
+        </div>
+        <span class="eyebrow">Architektur</span>
+        <h2>Vier Komponenten. Plug-and-Play.</h2>
+
+        <div class="arch">
+          <div class="arch__step">
+            <h4>Frontend</h4>
+            <p>Webinar-Page (GitHub Pages)</p>
+          </div>
+          <div class="arch__arrow">→</div>
+          <div class="arch__step">
+            <h4>Daten-Sync</h4>
+            <p>Colab / JS Webhook</p>
+          </div>
+          <div class="arch__arrow">→</div>
+          <div class="arch__step arch__step--filled">
+            <h4>Langdock</h4>
+            <p>Workflow + Web Search + Email</p>
+          </div>
+        </div>
+
+        <p style="margin-top: 32px; font-size: 0.95rem; color: var(--decaid-ink-muted);">
+          Kein Backend. Keine Server. Keine Wartung. Du brauchst nur einen Langdock-Account und 60 Minuten Zeit.
+        </p>
+      </section>
+
+      <!-- ───────── Slide 5: Workflow 1 ───────── -->
+      <section>
+        <div class="decaid-brand">
+          <div class="decaid-brand__icon">D</div>
+          <span class="decaid-brand__text">DECAID</span>
+          <span class="decaid-brand__sub">Academy</span>
+        </div>
+        <span class="eyebrow">Workflow 1 · Live</span>
+        <h2>Web Research &amp; Smart Routing</h2>
+        <pre><code>Webhook  →  Web Research Agent  →  Condition (Watch ≥ 30?)
+                                            ↓ ja            ↓ nein
+                                    Sales-Briefing   Re-Engagement
+                                            ↓               ↓
+                                       Mail Sales     Mail Marketing</code></pre>
+        <p style="margin-top: 16px; font-size: 0.9rem; color: var(--decaid-ink-muted);">
+          Die KI recherchiert <strong>jeden</strong> Lead — Revenue, News, Strategie. Hot Leads bekommen ein Sales-Briefing mit Eisbrecher. No-Shows bekommen Re-Engagement-Hooks fürs Marketing. Kein Lead fällt durchs Raster.
+        </p>
+      </section>
+
+      <!-- ───────── Slide 6: Workflow 2 ───────── -->
+      <section>
+        <div class="decaid-brand">
+          <div class="decaid-brand__icon">D</div>
+          <span class="decaid-brand__text">DECAID</span>
+          <span class="decaid-brand__sub">Academy</span>
+        </div>
+        <span class="eyebrow">Workflow 2 · Bonus</span>
+        <h2>Battle Cards aus Sales-Calls.</h2>
+        <pre><code>10 Sales-Transkripte  →  Extract Objections  →  Synthesize Battle Card  →  Email
+
+Output:
+  • Top 5 Einwände der Woche
+  • ICP-Merkmale, die heiße Deals zeigen
+  • Gegen-Argumente, die im Markt funktioniert haben</code></pre>
+        <p style="margin-top: 16px; font-size: 0.9rem; color: var(--decaid-ink-muted);">
+          Dein Sales-Team bekommt jeden Montagmorgen ein frisches Playbook — synthetisiert aus den echten Gesprächen der Vorwoche.
+        </p>
+      </section>
+
+      <!-- ───────── Slide 7: CTA ───────── -->
+      <section class="cta">
+        <div class="decaid-brand">
+          <div class="decaid-brand__icon">D</div>
+          <span class="decaid-brand__text">DECAID</span>
+          <span class="decaid-brand__sub">Academy</span>
+        </div>
+        <h2>Du bekommst alles mit.</h2>
+        <p>Das komplette Repo: Landingpage, Colab-Notebook, beide Langdock-Workflows mit ausformulierten Prompts, Fake-Sales-Transkripte. Plug, Paste, läuft.</p>
+        <div class="cta__pill">→ github.com/decaid/masterclass-smart-crm</div>
+        <p style="margin-top: 32px; font-size: 1rem;">Fragen? <strong style="color:#fff;">florian@decaid.studio</strong></p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: 'c/t',
+      transition: 'fade',
+      controls: true,
+      progress: true,
+      center: false,
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2.0,
+    });
+  </script>
+</body>
+</html>

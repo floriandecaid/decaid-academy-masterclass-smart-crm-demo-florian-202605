@@ -1,0 +1,47 @@
+Call: 07 — Mediencorp / Lost / Change Management
+Datum: 2026-04-11
+Teilnehmer: Lena (Sales DECAID), Markus Heller (Sales Director,
+PrintMedia Konzern GmbH)
+Branche: Media · Größe: 880 MA · Outcome: LOST
+
+────────────────────────────────────────────
+
+Markus: Lena, ich muss ehrlich sein. Wir haben intern entschieden,
+das Projekt nicht weiterzuverfolgen.
+
+Lena: Markus, das tut mir leid zu hören. Was hat den Ausschlag gegeben?
+
+Markus: Es liegt nicht am Tool. Das Tool ist gut. Es liegt an unseren Leuten.
+
+Lena: Sag mehr.
+
+Markus: Wir haben hier 90 Sales-Reps. Davon sind 30 über 50 und seit
+20 Jahren im gleichen Job. Die haben ihre Excel-Listen, ihre eigenen
+Adress-Karteien, ihre Routinen. Wenn ich denen jetzt sage "ab Montag
+kommt eine KI dazu die euch sagt wen ihr zuerst anrufen sollt" —
+dann hab ich am Dienstag drei Kündigungen auf dem Tisch.
+
+Lena: Das verstehe ich. Wäre eine Pilotgruppe mit den jüngeren Reps eine
+Option gewesen?
+
+Markus: Hab ich überlegt. Aber dann teile ich mein Team in zwei Klassen.
+Die "modernen" Reps mit Tool, die "alten" ohne. Das ist Gift für die
+Stimmung.
+
+Lena: Hätte ein anderer Ansatz funktioniert? Zum Beispiel das Tool nur
+für die Geschäftsführung als Reporting-Layer, die Reps berührt es
+gar nicht?
+
+Markus: Das wäre eine Idee gewesen. Aber dafür ist euer Tool falsch
+geschnitten — ihr seid eine Sales-Rep-Productivity-Tool, kein
+Management-Reporting-Tool.
+
+Lena: Verstehe. Markus, danke für die Offenheit. Können wir uns in
+12 Monaten nochmal sprechen wenn die Demografie sich geändert hat?
+
+Markus: Klar.
+
+Outcome: Lost.
+Showstopper: Workforce-Demografie + Change-Management-Risiko. Tool-Fit
+war gegeben, aber Team-Reife für KI-Adoption nicht. Lost ist hier
+"vorerst nicht bereit", nicht "passt nicht".

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smarter CRM & KI-Automatisierung — Masterclass · DECAID Academy</title>
+  <meta name="description" content="Live-Masterclass: Wie KI-gestützte CRM-Automatisierung Sales-Teams nur die wirklich qualifizierten Enterprise-Deals serviert — inklusive automatischer Deep-Research." />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <div class="tenant-logo">
+        <div class="tenant-logo-icon">D</div>
+        <span class="tenant-logo-text">DECAID</span>
+        <span class="tenant-logo-accent">Academy</span>
+      </div>
+      <div class="header-meta">Live · 26. Mai 2026 · 60 Min</div>
+    </div>
+  </header>
+
+  <!-- ── Hero / Registration ── -->
+  <section class="hero">
+    <div class="container hero__inner">
+
+      <div class="hero__content">
+        <span class="hero__eyebrow">Masterclass</span>
+        <h1 class="hero__title">Smarter CRM &amp; KI-Automatisierung</h1>
+        <p class="hero__subtitle">
+          Wie du den Sprung von ChatGPT-Spielereien zu skalierbaren Revenue-Workflows schaffst — und Sales-Reps endlich Zeit für die richtigen Deals bekommen.
+        </p>
+        <ul class="hero__bullets">
+          <li>Live-Demo: Vom Webinar-Sign-Up zum vollautomatischen Sales-Briefing</li>
+          <li>Deep-Dive in zwei produktive KI-Workflows</li>
+          <li>Plug-and-Play-Materialien zum Mitnehmen</li>
+        </ul>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a href="#registration" class="btn btn--primary">Jetzt registrieren</a>
+          <a href="materials/quick-start.html" class="btn btn--ghost">Materialien ansehen</a>
+        </div>
+      </div>
+
+      <!-- ── Registration Form ── -->
+      <div class="form-card" id="registration">
+        <h2>Kostenlosen Platz sichern</h2>
+        <p class="form-card__intro">Nur 100 Plätze. Aufzeichnung wird nicht öffentlich geteilt.</p>
+
+        <form id="registrationForm" autocomplete="on" novalidate>
+          <div class="form-row">
+            <label for="firstname">Vorname</label>
+            <input type="text" id="firstname" name="firstname" required placeholder="Gabi" />
+          </div>
+          <div class="form-row">
+            <label for="email">Geschäftliche E-Mail</label>
+            <input type="email" id="email" name="email" required placeholder="gabi@techsolutions.de" />
+          </div>
+          <div class="form-row">
+            <label for="company_name">Firma</label>
+            <input type="text" id="company_name" name="company_name" required placeholder="TechSolutions GmbH" />
+          </div>
+          <div class="form-row">
+            <label for="jobtitle">Position</label>
+            <input type="text" id="jobtitle" name="jobtitle" required placeholder="VP of RevOps" />
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--block">Platz sichern</button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Stats / Pain Section ── -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section__title-block">
+        <span class="section__eyebrow">Warum jetzt</span>
+        <h2>Das alte Sales-Led-Modell skaliert nicht mehr</h2>
+        <p>Die Zahlen, die jeden RevOps-Verantwortlichen nachts wachhalten:</p>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-card__num">72%</div>
+          <div class="stat-card__label">Admin statt Verkauf</div>
+          <div class="stat-card__desc">der Zeit verbringen Sales-Reps mit Admin-Tasks statt aktiv zu verkaufen.</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__num">67%</div>
+          <div class="stat-card__label">Käufer wollen keinen Rep</div>
+          <div class="stat-card__desc">der B2B-Käufer wollen für Renewals &amp; Add-ons gar nicht mehr mit einem Sales-Rep sprechen.</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__num">86%</div>
+          <div class="stat-card__label">Deals stocken</div>
+          <div class="stat-card__desc">der Deals stocken am Point of Sale — weil Reps nicht wissen, welcher Lead jetzt wirklich heiß ist.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Demo Control Panel (für Bühne) ── -->
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="section__title-block">
+        <span class="section__eyebrow">Live-Demo</span>
+        <h2>Vom Sign-Up zum Sales-Briefing — in unter 60 Sekunden</h2>
+        <p>Wir simulieren zwei Personas. Schau zu, wie die KI-Pipeline live entscheidet, wer wirklich Sales-Aufmerksamkeit bekommt.</p>
+      </div>
+
+      <div class="demo-panel" id="demoPanel">
+        <h2>🎬 Demo Trigger</h2>
+        <p>Diese Buttons feuern Mock-Webinar-Daten direkt an unseren Langdock-Workflow.</p>
+
+        <div class="demo-panel__buttons">
+          <button class="btn btn--demo-cold" data-persona="juergen" type="button">
+            ❄️ Jürgen — No-Show (3 Min)
+          </button>
+          <button class="btn btn--demo-hot" data-persona="gabi" type="button">
+            🔥 Gabi — Full Watch (58 Min)
+          </button>
+        </div>
+
+        <div class="demo-status" id="demoStatus">› Bereit. Klicke einen Persona-Button, um den Webhook zu feuern.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div class="tenant-logo">
+        <div class="tenant-logo-icon">D</div>
+        <span class="tenant-logo-text" style="color:#fff;">DECAID</span>
+        <span class="tenant-logo-accent" style="color:rgba(255,255,255,0.6);">Academy</span>
+      </div>
+      <div>
+        <a href="https://decaid.ai" target="_blank" rel="noopener">DECAID</a> ·
+        <a href="https://decaid.ai/datenschutz" target="_blank" rel="noopener">Datenschutz</a>
+      </div>
+      <div class="site-footer__legal">© 2026 DECAID Group</div>
+    </div>
+  </footer>
+
+  <script>
+    /* ────────────────────────────────────────────────────────────
+     * Konfiguration — vor dem Webinar setzen.
+     * ──────────────────────────────────────────────────────────── */
+    const LANGDOCK_WEBHOOK_URL = "<YOUR_LANGDOCK_WEBHOOK_URL>";
+
+    /* ────────────────────────────────────────────────────────────
+     * Mock-Personas für die Live-Demo.
+     * Bewusst fiktiv. Gerolsteiner als googlebare Demo-Firma.
+     * ──────────────────────────────────────────────────────────── */
+    /* Achtung: keine Revenue im Form-Submit. Das Webinar-Tool kennt nur
+       Vorname/Email/Firma/Position + Watch-Time vom Streaming. Revenue,
+       News und strategische Themen ergänzt die Web-Search-KI im Workflow. */
+    const personas = {
+      juergen: {
+        event: "webinar_engagement_update",
+        lead: {
+          firstname: "Jürgen",
+          lastname: "Müller",
+          email: "juergen.mueller@kleinhandel-mueller.example",
+          company_name: "Kleinhandel Müller GmbH",
+          jobtitle: "Geschäftsführer",
+          webinar_watch_time_minutes: 3
+        }
+      },
+      gabi: {
+        event: "webinar_engagement_update",
+        lead: {
+          firstname: "Gabi",
+          lastname: "Schneider",
+          email: "g.schneider@gerolsteiner.example",
+          company_name: "Gerolsteiner Brunnen GmbH & Co. KG",
+          jobtitle: "VP of RevOps",
+          webinar_watch_time_minutes: 58
+        }
+      }
+    };
+
+    const statusEl = document.getElementById("demoStatus");
+
+    function setStatus(text, variant) {
+      const cls = variant ? ` class="${variant}"` : "";
+      statusEl.innerHTML = `<span${cls}>${text}</span>`;
+    }
+
+    async function firePersona(personaKey) {
+      const payload = personas[personaKey];
+      if (!payload) return;
+
+      if (LANGDOCK_WEBHOOK_URL.startsWith("<")) {
+        setStatus(
+          `⚠️  Kein Webhook konfiguriert.\n` +
+          `Würde senden:\n${JSON.stringify(payload, null, 2)}`,
+          "err"
+        );
+        return;
+      }
+
+      setStatus(`› Sende ${payload.lead.firstname} (${payload.lead.webinar_watch_time_minutes} Min) an Langdock…`, "info");
+
+      try {
+        const res = await fetch(LANGDOCK_WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        setStatus(
+          `✓ ${payload.lead.firstname} (${payload.lead.company_name}) erfolgreich gesendet.\n` +
+          `Watch Time: ${payload.lead.webinar_watch_time_minutes} Min · Revenue & News holt die KI selbst\n` +
+          `→ Langdock-Workflow läuft. E-Mail folgt in 20–60 Sek.`,
+          "ok"
+        );
+      } catch (err) {
+        setStatus(`✗ Fehler: ${err.message}`, "err");
+      }
+    }
+
+    document.querySelectorAll("[data-persona]").forEach(btn => {
+      btn.addEventListener("click", () => firePersona(btn.dataset.persona));
+    });
+
+    /* Registration form: nur Demo — kein echter Submit, sondern lokale Bestätigung. */
+    document.getElementById("registrationForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(e.target).entries());
+      alert(
+        `Danke, ${data.firstname || "Friend"}!\n\n` +
+        `Diese Seite ist die Demo-Landingpage für die DECAID Academy Masterclass.\n` +
+        `In einer echten Implementation würden deine Daten jetzt direkt an Langdock fließen.`
+      );
+    });
+  </script>
+
+</body>
+</html>

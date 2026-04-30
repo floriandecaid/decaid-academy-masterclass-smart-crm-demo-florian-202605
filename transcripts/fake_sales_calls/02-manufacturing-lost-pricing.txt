@@ -1,0 +1,39 @@
+Call: 02 — Manufacturing / Lost / Pricing Negotiation
+Datum: 2026-04-15
+Teilnehmer: Marco (Sales DECAID), Frau Brunner (CFO, Hartmetall Süd GmbH)
+Branche: Manufacturing · Größe: 320 MA · Outcome: LOST
+
+────────────────────────────────────────────
+
+Marco: Frau Brunner, wir hatten letzte Woche die Demo. Wie haben Sie's intern
+besprochen?
+
+Brunner: Marco, ich bin direkt: Der Preis ist zu hoch. Wir reden hier von
+30k im Jahr. Für ein Tool das Mails schreibt.
+
+Marco: Ich höre Sie. Lassen Sie mich kurz den ROI durchgehen — wenn ein Rep
+zwei Stunden pro Tag spart und Sie sechs Reps haben, dann sind das...
+
+Brunner: Marco, das hab ich gehört. Auf Folie 8. Aber unsere Reps sind nicht
+die Engstelle. Wir kriegen die Leads nicht. Das ist mein Problem.
+
+Marco: Verstehe. Aber unsere Triage hilft euch ja gerade die wenigen Leads
+besser zu verwerten.
+
+Brunner: Bei zehn Leads im Quartal brauche ich keine KI-Triage. Da telefoniere
+ich selber rum.
+
+Marco: Würde es einen Unterschied machen wenn wir ein kleineres Paket schnüren?
+Sagen wir 12k im Jahr für nur die Triage-Funktion?
+
+Brunner: Marco, das ist nicht die Preisfrage. Das ist die Bedarfsfrage. Wir
+brauchen Top-of-Funnel, keine Mittel-of-Funnel-Optimierung.
+
+Marco: Verstehe. Soll ich Ihnen unsere Demand-Generation-Partner empfehlen?
+
+Brunner: Wäre nett. Aber vorerst kein Deal von unserer Seite.
+
+Outcome: Lost.
+Showstopper: Falsches ICP — Lead-Volumen zu niedrig, KI-Triage löst nicht
+ihr eigentliches Problem (Top-of-Funnel statt Mid-Funnel). Pricing nur
+vorgeschoben, eigentlicher Bedarf war ein anderer.

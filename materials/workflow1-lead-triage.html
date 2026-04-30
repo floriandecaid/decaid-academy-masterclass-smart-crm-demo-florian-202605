@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workflow 1 — Web Research &amp; Smart Routing · DECAID Academy</title>
+  <link rel="icon" type="image/png" href="../assets/logo.png" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body class="material-body">
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../index.html" class="tenant-logo" style="text-decoration:none;">
+        <div class="tenant-logo-icon">D</div>
+        <span class="tenant-logo-text">DECAID</span>
+        <span class="tenant-logo-accent">Academy</span>
+      </a>
+      <div class="header-meta"><a href="quick-start.html">← Alle Materialien</a></div>
+    </div>
+  </header>
+
+  <article>
+    <h1>Workflow 1 — Web Research &amp; Smart Routing</h1>
+    <p class="doc-meta">Setup-Zeit: ~15 Minuten · Werkzeuge: Langdock (Web Search Tool aktiviert) + Mail-Account</p>
+
+    <div class="callout">
+      <strong>Was er macht:</strong> Empfängt jeden Webinar-Lead. Recherchiert dessen Firma live im Web (Revenue, News, strategische Themen). Schickt — abhängig von der Watch-Time — entweder ein <strong>Sales-Briefing</strong> an Sales (für Hot Leads) oder eine <strong>personalisierte Re-Engagement-Mail</strong> an Marketing (für No-Shows).
+    </div>
+
+    <h2>Architektur</h2>
+<pre><code>[Webhook]  →  [Web Research Agent]  →  [Condition: watch_time ≥ 30?]
+                                              ↓                  ↓
+                                          ja, hot           nein, cold
+                                              ↓                  ↓
+                                       [Sales-Briefing]  [Re-Engagement]
+                                              ↓                  ↓
+                                          [Mail Sales]    [Mail Marketing]</code></pre>
+
+    <div class="callout">
+      <strong>Der entscheidende Unterschied:</strong> Die Recherche läuft für <strong>jeden</strong> Lead — auch für No-Shows. So kann auch die Re-Engagement-Mail personalisiert sein, statt generischer Nurture-Standardware.
+    </div>
+
+    <h2>Was die Webhook-Payload <strong>nicht</strong> enthält</h2>
+    <p>Webinar-Plattformen (Demio, Livestorm, Zoom Webinars) liefern dir nur:</p>
+    <ul>
+      <li>Vorname, Nachname, E-Mail</li>
+      <li>Firma, Position</li>
+      <li>Watch-Time</li>
+    </ul>
+    <p><strong>Sie liefern dir nicht:</strong> Jahresumsatz, Branche, aktuelle News, strategische Themen. Das alles ergänzt die KI im Web-Research-Node.</p>
+
+    <h2>Node 1 — Webhook Trigger</h2>
+    <table class="spec">
+      <tr><th>Setting</th><th>Wert</th></tr>
+      <tr><td>Type</td><td>Webhook</td></tr>
+      <tr><td>Method</td><td>POST</td></tr>
+      <tr><td>Erwarteter Body</td><td>JSON (siehe unten)</td></tr>
+    </table>
+
+    <p><strong>Erwartete Payload-Struktur:</strong></p>
+<pre><code>{
+  "event": "webinar_engagement_update",
+  "lead": {
+    "firstname": "Gabi",
+    "lastname": "Schneider",
+    "email": "g.schneider@gerolsteiner.example",
+    "company_name": "Gerolsteiner Brunnen GmbH &amp; Co. KG",
+    "jobtitle": "VP of RevOps",
+    "webinar_watch_time_minutes": 58
+  }
+}</code></pre>
+
+    <div class="callout">
+      <strong>Tipp:</strong> Klick im Webhook-Node auf <strong>"Copy URL"</strong> und füg sie in <code>colab/webinar_simulator.ipynb</code> ein.
+    </div>
+
+    <h2>Node 2 — Web Research Agent</h2>
+    <p><strong>Modell:</strong> Claude Sonnet · <strong>Tool aktiviert:</strong> ✅ Web Search · <strong>Output-Format:</strong> JSON</p>
+
+    <h3>Input</h3>
+<pre><code>{{webhook.body.lead.company_name}}</code></pre>
+
+    <h3>System Prompt</h3>
+<pre><code>Du bist ein B2B-Sales-Researcher. Deine Aufgabe: Innerhalb von 90 Sekunden
+herausfinden, wer diese Firma ist und was sie strategisch beschäftigt.
+
+Vorgehen:
+
+1. Nutze das Web Search Tool, um die 3 aktuellsten relevanten Quellen zur Firma
+   zu finden: Pressemitteilungen, Quartalszahlen, Personalwechsel auf C-Level,
+   neue Produktlaunches, Akquisitionen.
+2. Schätze den Jahresumsatz auf Basis öffentlicher Daten (Bundesanzeiger,
+   Konzernberichte, Branchenpublikationen). Wenn unklar → "unbekannt".
+3. Klassifiziere die Firmengröße: small (&lt;5M €), mid (5–50M €),
+   enterprise (&gt;50M €).
+4. Ignoriere Wikipedia-Übersichten älter als 12 Monate, Klatschpresse,
+   Stellenanzeigen.
+5. Identifiziere die WICHTIGSTE strategische Initiative der Firma.
+
+Antworte AUSSCHLIESSLICH mit gültigem JSON:
+
+{
+  "company_size": "&lt;small|mid|enterprise&gt;",
+  "estimated_revenue_eur": &lt;int oder null&gt;,
+  "industry": "&lt;Branche in 2-3 Wörtern&gt;",
+  "research_summary": "&lt;3-5 Sätze über die aktuellen strategischen Themen, auf Deutsch&gt;",
+  "top_initiative": "&lt;EIN strategisches Vorhaben, in einem Satz&gt;",
+  "icebreaker": "&lt;Wortwörtlicher Satz, mit dem ein Sales-Rep den Call beginnen könnte&gt;",
+  "sources": ["&lt;URL 1&gt;", "&lt;URL 2&gt;", "&lt;URL 3&gt;"]
+}</code></pre>
+
+    <h3>User Prompt</h3>
+<pre><code>Firma: {{webhook.body.lead.company_name}}
+
+Recherchiere und antworte im JSON-Format.</code></pre>
+
+    <div class="callout">
+      <strong>Wichtig:</strong> Die Recherche läuft für <strong>alle</strong> Leads — auch für No-Shows. Das ist Absicht. Die Re-Engagement-Mail soll genauso personalisiert sein wie das Sales-Briefing.
+    </div>
+
+    <h2>Node 3 — Condition Router</h2>
+    <table class="spec">
+      <tr><th>Bedingung</th><th>Pfad</th></tr>
+      <tr><td><code>{{webhook.body.lead.webinar_watch_time_minutes}} &gt;= 30</code></td><td><strong>Pfad A (Hot)</strong> → Sales-Briefing</td></tr>
+      <tr><td>sonst</td><td><strong>Pfad B (Cold/No-Show)</strong> → Re-Engagement</td></tr>
+    </table>
+
+    <div class="callout callout--warn">
+      <strong>Anti-Stolperdraht:</strong> Falls Langdock den Watch-Time-Wert als String reinbekommt, vergleiche mit <code>"30"</code> als String oder konvertiere via <code>parseInt()</code>.
+    </div>
+
+    <div class="callout">
+      <strong>Warum nur Watch-Time entscheidet:</strong> Wir wollen die Logik bewusst einfach halten. Firmengröße/Revenue können später als sekundäre Sortierung im Sales-Inbox-Filter gemacht werden.
+    </div>
+
+    <h2>Node 4a — Sales-Briefing (Pfad A, Hot)</h2>
+    <p><strong>Integration:</strong> Gmail / Outlook · <strong>Trigger:</strong> Watch-Time ≥ 30 Min</p>
+
+    <table class="spec">
+      <tr><th>Feld</th><th>Wert</th></tr>
+      <tr><td>To</td><td><code>&lt;YOUR_SALES_INBOX&gt;</code> (z.B. <code>sales@your-company.com</code>)</td></tr>
+      <tr><td>From</td><td><code>&lt;YOUR_SENDER_ADDRESS&gt;</code> (OAuth-verbundener Absender)</td></tr>
+      <tr><td>Subject</td><td><code>🔥 HOT LEAD [{{webhook.body.lead.webinar_watch_time_minutes}} Min] — {{webhook.body.lead.company_name}}</code></td></tr>
+    </table>
+
+    <h3>Body</h3>
+<pre><code>Hey Sales-Team,
+
+{{webhook.body.lead.firstname}} {{webhook.body.lead.lastname}}
+({{webhook.body.lead.jobtitle}} bei {{webhook.body.lead.company_name}})
+hat das Webinar fast komplett geschaut: {{webhook.body.lead.webinar_watch_time_minutes}} Min.
+
+────────────────────────────────────────────
+🏢 Was wir über die Firma wissen (Live-Recherche):
+
+Größe: {{node_2.output.company_size}}
+Geschätzter Jahresumsatz: {{node_2.output.estimated_revenue_eur}} €
+Branche: {{node_2.output.industry}}
+────────────────────────────────────────────
+
+📰 Was bei {{webhook.body.lead.company_name}} gerade läuft:
+
+{{node_2.output.research_summary}}
+
+→ Wichtigste strategische Initiative:
+   {{node_2.output.top_initiative}}
+
+────────────────────────────────────────────
+💬 Empfohlener Eisbrecher für den Call:
+
+   "{{node_2.output.icebreaker}}"
+
+────────────────────────────────────────────
+🔗 Quellen:
+   {{node_2.output.sources}}
+
+— DECAID Web-Research-Agent</code></pre>
+
+    <h2>Node 4b — Re-Engagement-Mail (Pfad B, Cold/No-Show)</h2>
+    <p><strong>Integration:</strong> Gmail / Outlook · <strong>Trigger:</strong> Watch-Time &lt; 30 Min</p>
+
+    <div class="callout">
+      <strong>Pädagogisch wichtig:</strong> Diese Mail geht an dein <strong>Marketing-Team</strong>, nicht an Sales. Marketing entscheidet, ob/wie der Lead in eine Nurture-Sequenz eingebucht wird. Die Mail liefert die Hooks für eine personalisierte Wiederansprache.
+    </div>
+
+    <table class="spec">
+      <tr><th>Feld</th><th>Wert</th></tr>
+      <tr><td>To</td><td><code>&lt;YOUR_MARKETING_INBOX&gt;</code> (z.B. <code>marketing@your-company.com</code>)</td></tr>
+      <tr><td>Subject</td><td><code>❄️ NO-SHOW Follow-up — {{webhook.body.lead.company_name}} ({{webhook.body.lead.webinar_watch_time_minutes}} Min)</code></td></tr>
+    </table>
+
+    <h3>Body</h3>
+<pre><code>Hey Marketing-Team,
+
+{{webhook.body.lead.firstname}} {{webhook.body.lead.lastname}}
+({{webhook.body.lead.jobtitle}} bei {{webhook.body.lead.company_name}})
+hat sich angemeldet, aber das Webinar nur {{webhook.body.lead.webinar_watch_time_minutes}} Min geschaut.
+
+→ Standard-Nurture wäre Verschwendung. Hier sind die Hooks, mit denen wir
+  eine personalisierte Re-Engagement-Mail schreiben können.
+
+────────────────────────────────────────────
+🏢 Firma im Kontext:
+
+Größe: {{node_2.output.company_size}}
+Geschätzter Jahresumsatz: {{node_2.output.estimated_revenue_eur}} €
+Branche: {{node_2.output.industry}}
+
+📰 Was bei {{webhook.body.lead.company_name}} aktuell läuft:
+
+{{node_2.output.research_summary}}
+
+→ Strategisches Top-Thema:
+   {{node_2.output.top_initiative}}
+────────────────────────────────────────────
+
+💌 Vorschlag für die Re-Engagement-Mail:
+
+Subject: "Schade, dass es nicht geklappt hat — kurzer Gedanke zu {{node_2.output.top_initiative}}"
+
+Body (Vorschlag, anpassen):
+
+  Hi {{webhook.body.lead.firstname}},
+
+  schade, dass es zeitlich beim Webinar gestern nicht geklappt hat.
+
+  Ich habe gesehen, dass ihr bei {{webhook.body.lead.company_name}} gerade
+  bei {{node_2.output.top_initiative}} unterwegs seid — und genau dafür
+  hatten wir im Webinar einen Workflow gezeigt, der euch in der
+  Umsetzung Wochen sparen würde.
+
+  Wenn du 5 Minuten hast, schick ich dir die 3 Kern-Slides plus den
+  Workflow-Mitschnitt. Reicht zum Einordnen, ob's für euch relevant ist.
+
+  Beste Grüße,
+  [Dein Name]
+
+────────────────────────────────────────────
+🔗 Quellen für die Recherche:
+   {{node_2.output.sources}}
+
+— DECAID Web-Research-Agent</code></pre>
+
+    <div class="callout">
+      <strong>Optional erweiterbar:</strong> Statt manuell zu versenden, kannst du einen weiteren Agent-Node davor schalten, der die Re-Engagement-Mail komplett ausschreibt (statt Vorschlag). Für die Masterclass lassen wir's beim Vorschlag — Marketing hat das letzte Wort.
+    </div>
+
+    <h2>Test-Checklist</h2>
+    <ul>
+      <li>☐ Webhook-URL kopiert und in <code>colab/webinar_simulator.ipynb</code> eingetragen</li>
+      <li>☐ Web-Search-Tool im Workflow-Settings aktiviert</li>
+      <li>☐ Mail-Account verbunden (Gmail/Outlook OAuth)</li>
+      <li>☐ <strong>Test mit Jürgen</strong> (3 Min Watch) → Re-Engagement-Mail kommt</li>
+      <li>☐ <strong>Test mit Gabi</strong> (58 Min Watch) → Sales-Briefing-Mail kommt</li>
+      <li>☐ Beide Mails enthalten konkrete Recherche-Inhalte zur Firma</li>
+      <li>☐ Eisbrecher / Re-Engagement-Hook wirken <strong>konkret</strong>, nicht generisch</li>
+    </ul>
+
+    <h2>Troubleshooting</h2>
+    <table class="spec">
+      <tr><th>Problem</th><th>Ursache</th><th>Fix</th></tr>
+      <tr><td>Webhook 200, keine Mail</td><td>Mail-OAuth abgelaufen</td><td>Re-Auth Mail-Integration</td></tr>
+      <tr><td>Web Search liefert leer</td><td>Firmenname zu generisch</td><td>Vollständigen offiziellen Namen einsetzen</td></tr>
+      <tr><td>Beide Mails kommen</td><td>Condition feuert nicht</td><td>Watch-Time-String vs. Int prüfen</td></tr>
+      <tr><td>Mail im Spam</td><td>SPF/DKIM fehlt</td><td>Für Demo egal, in Prod relevant</td></tr>
+      <tr><td><code>estimated_revenue_eur</code> = null</td><td>Privatunternehmen ohne Pflicht</td><td>OK — Mail-Template muss <code>null</code> graceful handhaben</td></tr>
+    </table>
+
+    <h2>Erweiterungen für Production</h2>
+    <ul>
+      <li><strong>HubSpot-Update</strong>: parallel zur E-Mail einen HubSpot-Lifecycle-Update schreiben (Hot → Sales-Owner, Cold → Marketing-Nurture-Liste).</li>
+      <li><strong>Slack-Alert</strong>: bei Hot-Path zusätzlich in <code>#sales-hot-leads</code> posten.</li>
+      <li><strong>Cooldown</strong>: gleicher Lead nicht öfter als 1× pro 7 Tage.</li>
+      <li><strong>Auto-Send Re-Engagement</strong>: zusätzlicher Agent-Node, der die Re-Engagement-Mail vollständig schreibt und versendet.</li>
+      <li><strong>Logging</strong>: Output von Node 2 in einer Tabelle ablegen für spätere Konversionsanalyse.</li>
+    </ul>
+  </article>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div class="tenant-logo">
+        <div class="tenant-logo-icon">D</div>
+        <span class="tenant-logo-text" style="color:#fff;">DECAID</span>
+        <span class="tenant-logo-accent" style="color:rgba(255,255,255,0.6);">Academy</span>
+      </div>
+      <div class="site-footer__legal">© 2026 DECAID Group</div>
+    </div>
+  </footer>
+</body>
+</html>

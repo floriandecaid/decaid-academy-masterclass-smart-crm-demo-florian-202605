@@ -1,0 +1,39 @@
+Call: 05 — Healthcare / Open / Follow-up
+Datum: 2026-04-22
+Teilnehmer: Lena (Sales DECAID), Dr. Anja Wittig (Head of Sales Excellence,
+MediNetz Vital GmbH)
+Branche: Healthcare · Größe: 450 MA · Outcome: OPEN
+
+────────────────────────────────────────────
+
+Lena: Anja, schön dich nochmal zu sprechen. Ihr hattet ja intern besprochen
+nach unserer Demo Anfang April.
+
+Anja: Ja, das Feedback war positiv. Die Sales-Reps die in der Demo dabei
+waren waren begeistert. Aber wir hängen jetzt am Datenschutz-Thema.
+
+Lena: DSGVO oder Branchenspezifisch?
+
+Anja: Beides. Wir haben Patientendaten in unserem CRM verknüpft — nicht
+direkt, aber Verbindungspunkte. Unser DPO will einen kompletten DPIA bevor
+wir irgendetwas an einer KI vorbeischicken.
+
+Lena: Verstehe. Wir haben ein Standard-DPIA-Paket mit allen Sub-Prozessoren,
+Datenflüssen und EU-Hosting-Optionen. Soll ich das schicken?
+
+Anja: Ja bitte. Aber ich sag dir gleich: unser DPO braucht 4–6 Wochen.
+
+Lena: Das ist okay. Was würde aus deiner Sicht in der Zwischenzeit
+weiter helfen den internen Case zu festigen?
+
+Anja: Ehrlich gesagt — ein zweiter Live-Test mit unserem zweitem Team
+(MidMarket-Vertrieb) würde mir helfen. Die haben andere Personas.
+
+Lena: Mache ich. Ich blocke einen Slot Ende Mai. Bis dahin schicke ich
+das DPIA-Paket und checke wöchentlich ein.
+
+Anja: Perfekt.
+
+Outcome: Open.
+Status: Hot Lead, blockiert durch Compliance-Prozess. Adoption-Wille hoch,
+zweiter Demo-Slot soll Use-Case-Breite zeigen.

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workflow 2 — Battle Cards · DECAID Academy</title>
+  <link rel="icon" type="image/png" href="../assets/logo.png" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body class="material-body">
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../index.html" class="tenant-logo" style="text-decoration:none;">
+        <div class="tenant-logo-icon">D</div>
+        <span class="tenant-logo-text">DECAID</span>
+        <span class="tenant-logo-accent">Academy</span>
+      </a>
+      <div class="header-meta"><a href="quick-start.html">← Alle Materialien</a></div>
+    </div>
+  </header>
+
+  <article>
+    <h1>Workflow 2 — Battle Cards aus Sales-Calls</h1>
+    <p class="doc-meta">Setup-Zeit: ~10 Minuten · Werkzeuge: Langdock + Mail-Account</p>
+
+    <div class="callout">
+      <strong>Was er macht:</strong> Du wirfst 8–10 Sales-Call-Transkripte rein. Die KI extrahiert wiederkehrende Einwände + ICP-Merkmale und schickt deinem Team eine fertige Battle Card per E-Mail — wöchentlich oder on-demand.
+    </div>
+
+    <h2>Architektur</h2>
+<pre><code>[Webhook]  →  [Extract Agent]  →  [Synthesize Agent]  →  [Email]
+   ↑
+8–10 Transkripte als Array</code></pre>
+
+    <h2>Node 1 — Webhook Trigger</h2>
+    <p><strong>Erwartete Payload:</strong></p>
+<pre><code>{
+  "event": "weekly_battle_card_generation",
+  "week": "2026-W22",
+  "transcripts": [
+    {
+      "deal_stage": "discovery",
+      "outcome": "lost",
+      "industry": "Manufacturing",
+      "company_size": "200-500",
+      "transcript": "Sales: Hey Frau Becker, danke für die Zeit..."
+    },
+    {
+      "deal_stage": "demo",
+      "outcome": "won",
+      "industry": "SaaS",
+      "company_size": "50-200",
+      "transcript": "Sales: Du hast erwähnt, dass euer aktueller Stack..."
+    }
+  ]
+}</code></pre>
+
+    <div class="callout">
+      Die Transkripte liegen im Repo unter <code>transcripts/fake_sales_calls/</code> als einzelne <code>.txt</code>-Dateien.
+    </div>
+
+    <h2>Node 2 — Extract Agent (Objections + ICP)</h2>
+    <p><strong>Modell:</strong> Claude Sonnet · <strong>Output-Format:</strong> JSON</p>
+
+    <h3>System Prompt</h3>
+<pre><code>Du bist ein Sales-Enablement-Analyst. Du bekommst eine Liste von
+Sales-Call-Transkripten. Deine Aufgabe: Aus jedem einzelnen Transkript
+strukturierte Daten extrahieren.
+
+Für JEDES Transkript extrahiere:
+
+1. Top 1–3 Einwände, die der Prospect geäußert hat (wortwörtliche Zitate
+   bevorzugt, sonst paraphrasiert).
+2. Entscheidende ICP-Signale (Firmengröße, Branche, Pain Point, aktueller Stack,
+   Buying Intent).
+3. Wenn outcome=won: was hat den Deal gekippt? Welche Antwort/Demo/Aussage?
+4. Wenn outcome=lost: was war der finale Showstopper?
+
+Antworte AUSSCHLIESSLICH mit gültigem JSON:
+
+{
+  "extractions": [
+    {
+      "industry": "&lt;aus Input&gt;",
+      "outcome": "&lt;won|lost|open&gt;",
+      "objections": ["&lt;Einwand 1&gt;", "&lt;Einwand 2&gt;"],
+      "icp_signals": ["&lt;Signal 1&gt;", "&lt;Signal 2&gt;"],
+      "tipping_point": "&lt;was hat es gekippt, in einem Satz&gt;"
+    }
+  ]
+}</code></pre>
+
+    <h3>Input-Mapping</h3>
+<pre><code>{{webhook.body.transcripts}}</code></pre>
+
+    <h2>Node 3 — Synthesize Agent (Battle Card)</h2>
+    <p><strong>Modell:</strong> GPT-4 oder Claude Sonnet · <strong>Output-Format:</strong> Markdown (direkt in Mail)</p>
+
+    <h3>System Prompt</h3>
+<pre><code>Du bist ein Senior-Sales-Coach. Du bekommst eine strukturierte Auswertung von
+~10 Sales Calls der letzten Woche und schreibst daraus eine Battle Card, die
+Reps am Montagmorgen in 3 Minuten lesen können.
+
+Format (strikt, Markdown):
+
+# Battle Card — Woche {{webhook.body.week}}
+
+## 🎯 Top 3 wiederkehrende Einwände
+
+Für jeden Einwand:
+- Der Einwand: wortwörtlich oder paraphrasiert
+- Wie oft kam er? (X von Y Calls)
+- Was hat funktioniert? (Beispiel aus won-Deal)
+- Was floppt? (Beispiel aus lost-Deal)
+
+## 🟢 ICP-Signale, die heiße Deals zeigen
+
+Liste der 3–5 stärksten Signale aus won-Deals.
+
+## 🔴 Anti-Signale — wenn du das hörst, qualifiziere ab
+
+Liste der 2–3 Signale aus lost-Deals.
+
+## 📞 Empfohlener Diskussions-Eröffner für nächste Woche
+
+Ein konkreter Eröffnungssatz, basierend auf dem Muster der besten Calls.
+
+WICHTIG:
+- Schreibe auf Deutsch.
+- Sei konkret, keine Floskeln.
+- Wenn die Datenbasis dünn ist, sag es ehrlich.
+- Maximal 600 Wörter.</code></pre>
+
+    <h3>Input-Mapping</h3>
+<pre><code>{{node_2.output.extractions}}</code></pre>
+
+    <h2>Node 4 — Send Email an Sales</h2>
+    <table class="spec">
+      <tr><th>Feld</th><th>Wert</th></tr>
+      <tr><td>To</td><td><code>&lt;YOUR_SALES_INBOX&gt;</code> (z.B. <code>sales@your-company.com</code>)</td></tr>
+      <tr><td>Subject</td><td><code>📋 Battle Card — Woche {{webhook.body.week}}</code></td></tr>
+      <tr><td>Body</td><td><code>{{node_3.output}}</code> (Markdown direkt)</td></tr>
+    </table>
+
+    <h2>Test-Daten</h2>
+    <p>Im Repo liegen 8 fiktive Sales-Call-Transkripte:</p>
+<pre><code>transcripts/fake_sales_calls/
+├── 01-saas-won-discovery.txt
+├── 02-manufacturing-lost-pricing.txt
+├── 03-fintech-won-demo.txt
+├── 04-retail-lost-integration.txt
+├── 05-healthcare-open-followup.txt
+├── 06-logistics-won-procurement.txt
+├── 07-mediacorp-lost-changemgmt.txt
+└── 08-energy-won-csuite.txt</code></pre>
+
+    <h2>Erweiterungen</h2>
+    <ul>
+      <li><strong>Cron-Trigger</strong>: jeden Montag 7:00 Uhr automatisch.</li>
+      <li><strong>Slack-Post</strong>: zusätzlich zur Mail.</li>
+      <li><strong>Vergleich Woche-zu-Woche</strong>: Trends in Einwänden tracken.</li>
+      <li><strong>Persona-spezifisch</strong>: Battle Cards getrennt für SMB/MidMarket/Enterprise.</li>
+    </ul>
+  </article>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div class="tenant-logo">
+        <div class="tenant-logo-icon">D</div>
+        <span class="tenant-logo-text" style="color:#fff;">DECAID</span>
+        <span class="tenant-logo-accent" style="color:rgba(255,255,255,0.6);">Academy</span>
+      </div>
+      <div class="site-footer__legal">© 2026 DECAID Group</div>
+    </div>
+  </footer>
+</body>
+</html>

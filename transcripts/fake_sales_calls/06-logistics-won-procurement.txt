@@ -1,0 +1,46 @@
+Call: 06 — Logistics / Won / Procurement Final
+Datum: 2026-04-25
+Teilnehmer: Marco (Sales DECAID), Felix Aichinger (CRO, TransAlpenLog AG),
+Sarah Heitmeyer (Procurement)
+Branche: Logistics · Größe: 600 MA · Outcome: WON
+
+────────────────────────────────────────────
+
+Felix: Marco, wir sind durch. Sarah hat noch ein paar Procurement-Themen.
+
+Sarah: Marco, drei Punkte für die Unterschrift:
+
+Sarah: Eins — Cyber-Versicherung. Mindestens 5 Mio Deckung, Nachweis bitte
+mit Police-Auszug.
+
+Marco: Haben wir, schick ich dir heute.
+
+Sarah: Zwei — Exit-Klausel. Wenn wir nach 12 Monaten nicht zufrieden sind,
+müssen wir mit 60 Tagen Frist raus können.
+
+Marco: Standardvertrag hat 6 Monate. Aber bei einem 18-Monats-Term können
+wir auf 60 Tage gehen — als Sondervereinbarung.
+
+Sarah: Drei — Bonus-Malus. Wenn wir mehr als 10 Prozent Lead-Verlust durch
+False-Negatives haben in den ersten 90 Tagen, wollen wir eine Gutschrift
+in Höhe der ersten Quartalsrechnung.
+
+Felix: Marco, das ist mein Sicherheitsnetz. Ich brauche das gegenüber
+meinem CFO.
+
+Marco: Verständlich. Wenn ihr mir definiert was "False Negative" konkret heißt
+und wir uns auf eine messbare KPI einigen — kann ich das absegnen.
+
+Felix: Wir definieren False Negative als: Lead wird vom System als "cold"
+geflaggt, schließt aber innerhalb von 90 Tagen einen Deal über 10k ARR.
+
+Marco: Fair. Schreib ich rein.
+
+Sarah: Dann sind wir uns einig. Vertrag bis Mittwoch?
+
+Marco: Bis Dienstagabend.
+
+Outcome: Won — 18-Monats-Term, ~95k ARR.
+Tipping Point: Outcome-basierte Procurement-Klausel (Bonus-Malus) hat den
+internen Sponsor (CRO) gegenüber CFO abgesichert. Standardvertrag musste
+modifiziert werden — lohnt sich bei diesem Volumen.

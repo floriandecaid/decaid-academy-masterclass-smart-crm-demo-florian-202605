@@ -1,0 +1,50 @@
+Call: 01 — SaaS / Won / Discovery Call
+Datum: 2026-04-21
+Teilnehmer: Lena (Sales DECAID), Tobias Krause (Head of RevOps, NimbusFlow GmbH)
+Branche: SaaS · Größe: 80 MA · Outcome: WON
+
+────────────────────────────────────────────
+
+Lena: Tobias, danke dass du dir die Zeit nimmst. Ich hab gesehen ihr habt im
+März eine Series A geclosed — Glückwunsch.
+
+Tobias: Danke. Ja, jetzt geht's drum, das Geld nicht zu verbrennen.
+
+Lena: Das klingt nach einer klaren Prio. Was steht aktuell auf eurem Tisch?
+
+Tobias: Ehrlich? Wir haben drei Sales-Reps eingestellt im Februar. Die hängen
+seit sechs Wochen in HubSpot fest und kommen kaum zum Verkaufen. Mein CEO fragt
+mich jede Woche, warum die Pipeline nicht wächst.
+
+Lena: Das ist genau die 72-Prozent-Statistik, die wir bei jedem RevOps-Lead
+hören. Reps verbringen ihre Zeit mit Admin statt mit Selling. Wie viel Zeit
+schätzt du verbringen deine drei Neuen aktuell mit reiner Datenpflege?
+
+Tobias: Ich würde sagen die Hälfte des Tages. Vielleicht mehr.
+
+Lena: Okay. Wenn ich dir zeigen könnte, wie ihr Lead-Triage und Initial-Research
+komplett automatisiert — sodass deine Reps nur noch in qualifizierte Calls
+gehen — wie wertvoll wäre das?
+
+Tobias: Wenn das wirklich funktioniert, würde ich heute unterschreiben. Aber
+ich hab schon zwei AI-Tools getestet die nichts gehalten haben.
+
+Lena: Was hat bei den anderen nicht funktioniert?
+
+Tobias: Die Outputs waren generisch. Mein Rep hat angerufen mit einem
+Pitch-Skript das dem Prospect peinlich war.
+
+Lena: Dann lass mich dir was zeigen. *(Demo: Live-Trigger für eine echte
+Zielfirma. Das System recherchiert in 30 Sek aktuelle News und generiert einen
+Eisbrecher.)*
+
+Tobias: Okay das ist anders. Der Satz ist konkret. Den könnte ich morgen
+früh meinem Rep in die Hand drücken.
+
+Lena: Genau das ist der Punkt. Wir trainieren das System auf eure ICP. Was
+hindert uns, nächste Woche zu starten?
+
+Tobias: Nichts. Schick den Vertrag.
+
+Outcome: Vertrag im Discovery Call gewonnen. Ein-Page-Deal, 18-Monats-Term.
+Tipping Point: Live-Demo mit konkretem Eisbrecher-Output (nicht generisch).
