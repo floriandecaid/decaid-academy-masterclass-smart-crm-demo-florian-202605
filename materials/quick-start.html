@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quick Start — Materialien · DECAID Academy</title>
+  <title>Quick Start — Materialien</title>
   <link rel="icon" type="image/png" href="../assets/logo.png" />
   <link rel="stylesheet" href="../assets/styles.css" />
 </head>
@@ -22,76 +22,77 @@
 
   <article>
     <h1>Quick Start</h1>
-    <p class="doc-meta">Du hast eben die Masterclass gesehen. Jetzt willst du die Demo nachbauen — hier sind die nächsten 30 Minuten.</p>
+    <p class="doc-meta">Das Ziel: in 30 Minuten bekommst du zwei E-Mails — ein Sales-Briefing für einen "heißen" Lead und einen Re-Engagement-Vorschlag für einen No-Show — beide personalisiert auf Basis von Live-Web-Recherche.</p>
 
-    <h2>Was du bekommst</h2>
-    <table class="spec">
-      <tr><th>Datei</th><th>Zweck</th></tr>
-      <tr><td><a href="../index.html">index.html</a></td><td>Webinar-Landingpage im DECAID-Look</td></tr>
-      <tr><td><a href="../slides/index.html">slides/</a></td><td>Reveal.js-Slides der Masterclass</td></tr>
-      <tr><td><a href="../colab/webinar_simulator.ipynb">colab/webinar_simulator.ipynb</a></td><td>Python-Notebook, das Mock-Daten an deinen Langdock-Workflow feuert</td></tr>
-      <tr><td><a href="workflow1-lead-triage.html">workflow1-lead-triage.html</a></td><td>Lead-Triage + Deep-Research Workflow</td></tr>
-      <tr><td><a href="workflow2-battle-cards.html">workflow2-battle-cards.html</a></td><td>Battle-Card-Generator</td></tr>
-      <tr><td><a href="architecture.html">architecture.html</a></td><td>System-Übersicht</td></tr>
-      <tr><td><a href="../transcripts/">transcripts/</a></td><td>8 fiktive Sales-Call-Transkripte zum Testen</td></tr>
-    </table>
+    <h2>In 5 Schritten</h2>
 
-    <h2>5 Schritte zum eigenen Setup</h2>
-
-    <h3>1. Repo klonen oder forken</h3>
-<pre><code>git clone https://github.com/&lt;your-org&gt;/decaid-academy-masterclass-smart-crm-demo-202605.git
-cd decaid-academy-masterclass-smart-crm-demo-202605</code></pre>
-
-    <h3>2. Langdock Workflow 1 anlegen</h3>
+    <h3>1. Langdock öffnen und Workflow anlegen</h3>
     <ol>
-      <li>Login bei <a href="https://app.langdock.com" target="_blank" rel="noopener">Langdock</a> → <strong>New Workflow</strong></li>
-      <li>Nodes nach <a href="workflow1-lead-triage.html">Workflow 1</a> konfigurieren</li>
-      <li><strong>Wichtig:</strong> Web-Search-Tool im Node 4 aktivieren</li>
-      <li>Im Webhook-Node auf <strong>"Copy URL"</strong> klicken — die brauchst du gleich</li>
+      <li>Login bei <a href="https://app.langdock.com" target="_blank" rel="noopener">app.langdock.com</a> → <strong>New Workflow</strong></li>
+      <li>Stelle in den Workflow-Settings sicher: <strong>Web-Search-Tool ist aktiviert</strong>. Ohne das funktioniert der zentrale Recherche-Schritt nicht.</li>
+      <li>Verbinde deinen Mail-Account (Gmail oder Outlook) als Integration für den späteren Mail-Versand.</li>
     </ol>
 
-    <h3>3. Colab-Notebook konfigurieren</h3>
+    <h3>2. Workflow 1 nachbauen</h3>
+    <p>Öffne die <a href="workflow1-lead-triage.html">Workflow-1-Spec</a> und gehe sie von oben nach unten durch. Du brauchst genau 5 Nodes:</p>
     <ol>
-      <li><a href="../colab/webinar_simulator.ipynb">webinar_simulator.ipynb</a> in <a href="https://colab.research.google.com" target="_blank" rel="noopener">Google Colab</a> öffnen</li>
-      <li>Erste Zelle: <code>LANGDOCK_WEBHOOK_URL</code> einsetzen</li>
-      <li>Optional: <code>HUBSPOT_PAT</code> setzen (<code>pat-...</code>), wenn du in HubSpot syncen willst — für die Demo aber nicht nötig</li>
+      <li><strong>Webhook</strong> (Trigger)</li>
+      <li><strong>Web Research Agent</strong> mit aktiviertem Web-Search-Tool — das ist das Herzstück</li>
+      <li><strong>Condition Router</strong> auf Watch-Time</li>
+      <li><strong>Mail Sales-Briefing</strong> (Pfad A: Hot Lead)</li>
+      <li><strong>Mail Re-Engagement</strong> (Pfad B: No-Show / Cold)</li>
+    </ol>
+    <p>Alle Prompts, Mappings und E-Mail-Templates sind in der Spec copy-paste-ready. Setup-Zeit beim ersten Mal: <strong>~15 Minuten</strong>.</p>
+
+    <div class="callout">
+      <strong>Tipp:</strong> Trage zwei verschiedene Empfänger-Adressen ein — <code>&lt;YOUR_SALES_INBOX&gt;</code> für Hot Leads, <code>&lt;YOUR_MARKETING_INBOX&gt;</code> für No-Shows. So siehst du sofort, ob das Routing funktioniert. Für den Test reicht eine Inbox mit einem <code>+</code>-Filter, in Production trenne sauber.
+    </div>
+
+    <h3>3. Webhook-URL kopieren</h3>
+    <p>Klick im Webhook-Node auf <strong>"Copy URL"</strong>. Diese URL brauchst du gleich.</p>
+
+    <h3>4. Mit dem Colab-Notebook testen</h3>
+    <ol>
+      <li>Öffne <a href="../colab/webinar_simulator.ipynb">webinar_simulator.ipynb</a> in <a href="https://colab.research.google.com" target="_blank" rel="noopener">Google Colab</a>.</li>
+      <li>In Zelle 1: Webhook-URL einfügen.</li>
+      <li>Notebook von oben nach unten ausführen.</li>
+      <li>Du bekommst zwei E-Mails:
+        <ul>
+          <li><strong>Jürgen</strong> (3 Min Watch-Time) → Re-Engagement-Mail mit personalisiertem Vorschlag für die Wiederansprache, basierend auf aktuellen Themen seiner Firma.</li>
+          <li><strong>Gabi</strong> (58 Min Watch-Time) → Sales-Briefing mit Firmenkontext, geschätztem Revenue, Top-Initiative und Eisbrecher-Satz für den Call.</li>
+        </ul>
+      </li>
     </ol>
 
-    <h3>4. Test-Run</h3>
-    <p>Notebook von oben nach unten ausführen:</p>
-    <ul>
-      <li>Zelle 4 (Jürgen) → Du erwartest <strong>keine</strong> E-Mail (Score zu niedrig).</li>
-      <li>Zelle 5 (Gabi) → Du erwartest in 10–40 Sek eine E-Mail mit Sales-Briefing.</li>
-    </ul>
-
-    <h3>5. Workflow 2 (Battle Cards)</h3>
-    <p>Optional, aber lohnt sich:</p>
-    <ol>
-      <li>Zweiten Langdock-Workflow nach <a href="workflow2-battle-cards.html">Workflow 2</a> anlegen</li>
-      <li>Die 8 Transkripte aus <code>transcripts/fake_sales_calls/</code> als Payload reinwerfen</li>
-      <li>Battle Card landet im Postfach</li>
-    </ol>
+    <h3>5. Workflow 2 dazuholen (optional)</h3>
+    <p>Wenn du regelmäßig Sales-Calls aufzeichnest (Gong, Modjo, MeetGeek), lohnt sich der <a href="workflow2-battle-cards.html">Battle-Card-Workflow</a>. 4 Nodes, ~10 Minuten Setup, output: wöchentliche Battle Card mit Top-Einwänden, ICP-Signalen und Eröffnungs-Empfehlungen direkt in deinem Postfach.</p>
+    <p>Die <a href="../transcripts/fake_sales_calls/">8 fiktiven Transkripte</a> im Repo sind als Testdaten gedacht — wirf sie als Payload in Workflow 2 und prüfe das Ergebnis, bevor du echte Daten anschließt.</p>
 
     <h2>Häufige Stolperfallen</h2>
 
     <div class="callout callout--warn">
-      <strong>"Webhook gibt 200 zurück, aber kein Mail"</strong> — Score &lt; 50 → Lead landet im Nurture-Pfad. Bei Jürgen ist das gewollt. Bei Gabi check die Triage-Logik.
+      <strong>"Webhook gibt 200 zurück, aber keine Mail kommt"</strong> — Mail-Integration ist nicht verbunden oder OAuth ist abgelaufen. Re-Auth in den Langdock-Settings.
     </div>
 
     <div class="callout callout--warn">
-      <strong>"Web Search liefert leere Ergebnisse"</strong> — Web-Search-Tool im Node nicht aktiviert oder Firmenname zu generisch. Vollständigen offiziellen Namen einsetzen.
+      <strong>"Web Search liefert leere Ergebnisse"</strong> — Web-Search-Tool ist im Node nicht aktiviert (oft vergessen!). Oder der Firmenname ist zu generisch — verwende den vollständigen offiziellen Namen.
     </div>
 
     <div class="callout callout--warn">
-      <strong>"Mail kommt im Spam an"</strong> — Für die Demo egal. In Production: SPF/DKIM für Absenderdomain einrichten.
+      <strong>"Beide Mails kommen statt nur einer"</strong> — Der Condition-Node behandelt die Watch-Time als String statt als Zahl. Wrap im Vergleich mit <code>parseInt()</code> oder vergleiche gegen den String <code>"30"</code>.
     </div>
 
     <div class="callout callout--warn">
-      <strong>"Colab kann meinen Webhook nicht erreichen"</strong> — Manche Corporate-Netzwerke blocken Outbound zu unbekannten Hosts. Probier's privat oder nimm die JS-Variante über <a href="../index.html">index.html</a>.
+      <strong>"Mail kommt im Spam"</strong> — Für lokale Tests egal. In Production: SPF/DKIM für deine Absender-Domain einrichten.
     </div>
 
-    <h2>Brauchst du Hilfe?</h2>
-    <p>Schreib an <strong>florian@decaid.studio</strong> oder buch dir ein 15-Min-Slot über die DECAID-Website.</p>
+    <h2>Was als Nächstes?</h2>
+    <ul>
+      <li><strong>HubSpot/Salesforce-Sync</strong> ergänzen, falls du die Recherche-Daten direkt ins CRM schreiben willst.</li>
+      <li><strong>Slack-Notification</strong> zusätzlich zur Mail, wenn ein Hot Lead reinkommt.</li>
+      <li><strong>Cooldown</strong> einbauen, damit derselbe Lead nicht öfter als 1× pro 7 Tage verarbeitet wird.</li>
+    </ul>
+    <p>Konkrete Erweiterungs-Pfade findest du am Ende jeder Workflow-Spec.</p>
   </article>
 
   <footer class="site-footer">

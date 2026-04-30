@@ -1,76 +1,59 @@
-# DECAID Academy — Masterclass: Smarter CRM & KI-Automatisierung
+# Smarter CRM & KI-Automatisierung — Masterclass-Materialien
 
-> Live-Masterclass am **26. Mai 2026** · 60 Minuten · Florian Langer
-> Plug-and-Play-Materialien, mit denen Marketing- & Sales-Profis den Sprung von ChatGPT-Spielereien zu skalierbaren Revenue-Workflows schaffen.
+Du hast die Masterclass besucht. Hier ist alles, was du brauchst, um den gezeigten Workflow in deinem eigenen Setup nachzubauen.
 
----
-
-## Was ist das hier?
-
-Das öffentliche Repo zur Masterclass. Du findest hier:
-
-- 🎬 **Landingpage** ([`index.html`](index.html)) — DECAID-Look, Webinar-Registrierung, Live-Demo-Trigger.
-- 🎞 **Slides** ([`slides/`](slides/index.html)) — Reveal.js, dieselbe Optik wie die Landingpage.
-- 🐍 **Colab Notebook** ([`colab/webinar_simulator.ipynb`](colab/webinar_simulator.ipynb)) — Mock-Personas an deinen Langdock-Webhook feuern.
-- 📋 **Workflow-Specs** ([`materials/`](materials/quick-start.html)) — Prompts, Mappings, E-Mail-Templates copy-paste-ready.
-- 🗂 **Fake Sales-Transkripte** ([`transcripts/fake_sales_calls/`](transcripts/fake_sales_calls/)) — 8 fiktive Calls (4 won, 3 lost, 1 open) für Workflow 2.
+> **In 30 Minuten** hast du eine Pipeline am Laufen, die jeden Webinar-Lead live im Web recherchiert, Hot Leads als Sales-Briefing an dein Sales-Team schickt und No-Shows mit personalisierten Re-Engagement-Hooks ans Marketing weitergibt.
 
 ---
 
-## Quick Start
+## Was du hier findest
 
-```bash
-git clone https://github.com/<your-org>/decaid-academy-masterclass-smart-crm-demo-florian-202605.git
-cd decaid-academy-masterclass-smart-crm-demo-florian-202605
-open index.html   # macOS — oder im Browser deiner Wahl
-```
-
-Vollständige Anleitung: [`materials/quick-start.html`](materials/quick-start.html)
-
----
-
-## Architektur (TL;DR)
-
-```
-[Landingpage / Colab]  →  [Langdock Workflow]  →  [Sales-Inbox]
-     (POST JSON)              (Triage + Web Search)      (Briefing-Mail)
-```
-
-Vier Bausteine. Kein Backend. Kein Server. ~$30/Monat in Production.
-
-→ Details: [`materials/architecture.html`](materials/architecture.html)
-
----
-
-## Live-Demo — Was während der Masterclass passiert
-
-1. **Min 0–5** — Live-Sign-Up auf der Landingpage (Jürgen + Gabi).
-2. **Min 5–15** — Walkthrough Colab + Webhook-Setup.
-3. **Min 15–30** — Deep Dive Workflow 1 (Triage + Live-Web-Search).
-4. **Min 30–40** — Bonus-Workflow 2 (Battle Cards aus Sales-Calls).
-5. **Min 40–60** — Q&A + Materialien-Übergabe.
-
----
-
-## Stack
-
-| Layer | Tool |
+| Datei | Was du damit machst |
 |---|---|
-| Hosting | GitHub Pages |
-| Frontend | Vanilla HTML + CSS + JS (DECAID-Tokens) |
-| Slides | Reveal.js 5.x |
-| Trigger | Google Colab + Python stdlib |
-| Workflow-Engine | [Langdock](https://langdock.com) (mit Web-Search-Tool) |
-| Mail | Gmail / Outlook OAuth |
+| [`index.html`](index.html) | Webinar-Landingpage. Direkt lokal öffnen oder bei dir hosten. Enthält zwei Demo-Buttons, mit denen du beide Personas an deinen Workflow feuerst. |
+| [`slides/`](slides/index.html) | Reveal.js-Foliendeck der Masterclass — wenn du das Konzept intern weitergeben willst. |
+| [`colab/webinar_simulator.ipynb`](colab/webinar_simulator.ipynb) | Python-Notebook für Google Colab. Zwei Mock-Personas, ein Webhook-POST. Damit testest du den Workflow ohne echte Webinar-Plattform. |
+| [`materials/quick-start.html`](materials/quick-start.html) | Schritt-für-Schritt-Anleitung. Lies das zuerst. |
+| [`materials/workflow1-lead-triage.html`](materials/workflow1-lead-triage.html) | Vollständige Spec für Workflow 1 (Web Research & Smart Routing): alle Nodes, alle Prompts, alle E-Mail-Templates copy-paste-ready. |
+| [`materials/workflow2-battle-cards.html`](materials/workflow2-battle-cards.html) | Bonus-Workflow: aus Sales-Call-Transkripten automatisch wöchentliche Battle Cards generieren. |
+| [`materials/architecture.html`](materials/architecture.html) | Big-Picture-Übersicht: wie alle Komponenten zusammenspielen, Tech-Stack, Skalierungs-Pfad. |
+| [`transcripts/fake_sales_calls/`](transcripts/fake_sales_calls/) | 8 fiktive Sales-Call-Transkripte (4 won, 3 lost, 1 open) als Testdaten für Workflow 2. |
 
 ---
 
-## Lizenz & Nutzung
+## Reihenfolge
 
-Alle Materialien stehen **DECAID-Academy-Teilnehmern** zur freien Nutzung in eigenen Projekten zur Verfügung. Bitte den DECAID-Hinweis in der Footer-Section beibehalten, wenn du die Landingpage 1:1 übernimmst.
+1. **[Quick Start](materials/quick-start.html) lesen** — der schnellste Weg zur ersten funktionierenden Pipeline.
+2. **Langdock-Account holen** — falls du noch keinen hast, brauchst du einen Plan mit aktiviertem Web-Search-Tool (typisch: Pro oder höher).
+3. **Workflow 1 nachbauen** — folge der [Spec](materials/workflow1-lead-triage.html). Setup-Zeit: 15 Minuten. Output: zwei E-Mail-Pfade, die personalisiert sind.
+4. **Mit dem Colab-Notebook testen** — zwei Personas, zwei Mails, beide kommen automatisch.
+5. **Workflow 2 dazuholen, wenn du Sales-Call-Transkripte hast** — der Battle-Card-Workflow ist optional, aber wenn du Gong, Modjo oder ähnliches im Einsatz hast, lohnt sich der zweite Workflow nach 10 weiteren Minuten Setup.
 
 ---
 
-## Kontakt
+## Was du brauchst
 
-Florian Langer · [florian@decaid.studio](mailto:florian@decaid.studio) · [decaid.ai](https://decaid.ai)
+| Komponente | Wofür |
+|---|---|
+| **Langdock-Account** mit Web-Search-Tool | Workflow-Engine, recherchiert Firmen live im Netz |
+| **Mail-Account (Gmail oder Outlook)** | Versand der Sales-Briefing- und Re-Engagement-Mails |
+| **Google-Account für Colab** | Mock-Personas an den Webhook feuern (alternativ lokal mit Python) |
+| **(Optional) GitHub-Account** | Falls du die Landingpage bei dir hosten willst |
+
+---
+
+## Architektur in einer Zeile
+
+```
+[Webhook]  →  [Web Research Agent]  →  [Watch-Time ≥ 30 Min?]  →  Sales-Briefing  |  Re-Engagement
+```
+
+Die KI recherchiert **jeden** Lead — Revenue, News, strategische Themen. Erst danach entscheidet die Watch-Time, ob das Sales-Team einen Call vorbereiten soll oder Marketing eine personalisierte Wiederansprache plant. Kein Lead fällt durchs Raster.
+
+Volle Erklärung in [`materials/architecture.html`](materials/architecture.html).
+
+---
+
+## Lizenz
+
+Frei nutzbar. Du darfst die Workflows, Prompts und Templates in deinen eigenen Projekten einsetzen, anpassen und weiterverteilen — ohne Rückfrage.
