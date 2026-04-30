@@ -65,7 +65,7 @@
           <li>Plug-and-Play-Materialien zum Mitnehmen</li>
         </ul>
         <div style="display:flex; gap:12px; flex-wrap:wrap;">
-          <a href="#registration" class="btn btn--primary">Jetzt registrieren</a>
+          <button type="button" class="btn btn--primary" id="heroRegisterBtn">Jetzt registrieren</button>
           <a href="materials/quick-start.html" class="btn btn--ghost">Materialien ansehen</a>
         </div>
       </div>
@@ -172,6 +172,27 @@
     </div>
   </footer>
 
+  <!-- ── Demo-Disclaimer Modal ── -->
+  <div class="modal" id="demoModal" aria-hidden="true" role="dialog" aria-labelledby="demoModalTitle" aria-describedby="demoModalDesc">
+    <div class="modal__backdrop" data-modal-close></div>
+    <div class="modal__dialog" role="document">
+      <button type="button" class="modal__close" data-modal-close aria-label="Schließen">×</button>
+      <div class="modal__pill">Demo-Hinweis</div>
+      <h2 id="demoModalTitle">Nur für die Masterclass-Demo.</h2>
+      <p id="demoModalDesc">Diese Landingpage zeigt das <strong>Konzept</strong> einer Lead-Pipeline. Es findet kein echtes Webinar statt und es werden keine Daten gespeichert.</p>
+      <p><strong>In Production</strong> würde an dieser Stelle:</p>
+      <ul class="modal__list">
+        <li>Dein Webinar-Tool (Demio, Livestorm, Zoom) den Lead anlegen</li>
+        <li>Ein Webhook die Daten direkt an deinen Langdock-Workflow schicken</li>
+        <li>Die KI-Pipeline die Firma recherchieren und routen — siehe Demo-Buttons unten</li>
+      </ul>
+      <div class="modal__actions">
+        <a href="#demoPanel" class="btn btn--primary" data-modal-close>Live-Demo ausprobieren ↓</a>
+        <a href="materials/quick-start.html" class="btn btn--ghost">Quick Start lesen</a>
+      </div>
+    </div>
+  </div>
+
   <script>
     /* ── Mobile Nav Toggle ──────────────────────────────────── */
     (() => {
@@ -272,16 +293,37 @@
       btn.addEventListener("click", () => firePersona(btn.dataset.persona));
     });
 
-    /* Registration form: nur Demo — kein echter Submit, sondern lokale Bestätigung. */
-    document.getElementById("registrationForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(e.target).entries());
-      alert(
-        `Danke, ${data.firstname || "Friend"}!\n\n` +
-        `Diese Seite ist die Demo-Landingpage für die DECAID Academy Masterclass.\n` +
-        `In einer echten Implementation würden deine Daten jetzt direkt an Langdock fließen.`
-      );
-    });
+    /* ── Demo-Disclaimer Modal ──────────────────────────────── */
+    (() => {
+      const modal = document.getElementById('demoModal');
+      if (!modal) return;
+      const open = () => {
+        modal.setAttribute('data-open', 'true');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      };
+      const close = () => {
+        modal.setAttribute('data-open', 'false');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      };
+
+      // Trigger 1: Hero "Jetzt registrieren"
+      const heroBtn = document.getElementById('heroRegisterBtn');
+      if (heroBtn) heroBtn.addEventListener('click', open);
+
+      // Trigger 2: Form-Submit ("Platz sichern")
+      const form = document.getElementById('registrationForm');
+      if (form) form.addEventListener('submit', (e) => { e.preventDefault(); open(); });
+
+      // Close-Trigger: backdrop, X-Button, CTA-Buttons im Modal
+      modal.querySelectorAll('[data-modal-close]').forEach(el => el.addEventListener('click', close));
+
+      // ESC-Key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.getAttribute('data-open') === 'true') close();
+      });
+    })();
   </script>
 
 </body>
