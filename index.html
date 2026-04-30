@@ -13,14 +13,41 @@
   <!-- ── Header ── -->
   <header class="site-header">
     <div class="container site-header__inner">
-      <div class="tenant-logo">
+      <a href="#top" class="tenant-logo" style="text-decoration:none;">
         <div class="tenant-logo-icon">D</div>
         <span class="tenant-logo-text">DECAID</span>
         <span class="tenant-logo-accent">Academy</span>
-      </div>
-      <div class="header-meta">Live · 26. Mai 2026 · 60 Min</div>
+      </a>
+
+      <nav class="site-nav" aria-label="Materialien">
+        <ul class="site-nav__list">
+          <li><a href="materials/quick-start.html">Quick Start</a></li>
+          <li><a href="materials/workflow1-lead-triage.html">Workflow 1</a></li>
+          <li><a href="materials/workflow2-battle-cards.html">Workflow 2</a></li>
+          <li><a href="materials/architecture.html">Architektur</a></li>
+          <li><a href="slides/">Slides</a></li>
+          <li><a href="https://github.com/floriandecaid/decaid-academy-masterclass-smart-crm-demo-florian-202605" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </nav>
+
+      <button class="site-nav__toggle" id="navToggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+      <ul>
+        <li><a href="materials/quick-start.html">Quick Start</a></li>
+        <li><a href="materials/workflow1-lead-triage.html">Workflow 1 — Web Research &amp; Routing</a></li>
+        <li><a href="materials/workflow2-battle-cards.html">Workflow 2 — Battle Cards</a></li>
+        <li><a href="materials/architecture.html">Architektur</a></li>
+        <li><a href="slides/">Slides der Masterclass</a></li>
+        <li><a href="https://github.com/floriandecaid/decaid-academy-masterclass-smart-crm-demo-florian-202605" target="_blank" rel="noopener">GitHub Repo</a></li>
+      </ul>
     </div>
   </header>
+
+  <a id="top"></a>
 
   <!-- ── Hero / Registration ── -->
   <section class="hero">
@@ -146,6 +173,24 @@
   </footer>
 
   <script>
+    /* ── Mobile Nav Toggle ──────────────────────────────────── */
+    (() => {
+      const toggle = document.getElementById('navToggle');
+      const drawer = document.getElementById('mobileNav');
+      if (!toggle || !drawer) return;
+      toggle.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!open));
+        drawer.setAttribute('data-open', String(!open));
+        drawer.setAttribute('aria-hidden', String(open));
+      });
+      drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        toggle.setAttribute('aria-expanded', 'false');
+        drawer.setAttribute('data-open', 'false');
+        drawer.setAttribute('aria-hidden', 'true');
+      }));
+    })();
+
     /* ────────────────────────────────────────────────────────────
      * Konfiguration — vor dem Webinar setzen.
      * ──────────────────────────────────────────────────────────── */

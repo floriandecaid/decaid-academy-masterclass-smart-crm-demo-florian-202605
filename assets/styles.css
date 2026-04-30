@@ -30,6 +30,10 @@
 
 * { box-sizing: border-box; }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px; /* sticky header höhe + Puffer */
+}
 html, body {
   margin: 0;
   padding: 0;
@@ -122,6 +126,111 @@ pre code { background: transparent; padding: 0; color: inherit; }
 .header-meta {
   font-size: 0.875rem;
   color: var(--decaid-ink-muted);
+}
+
+/* ── Nav (Desktop) ── */
+.site-nav {
+  margin-left: auto;
+  margin-right: 8px;
+}
+.site-nav__list {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.site-nav__list a {
+  display: inline-block;
+  padding: 8px 12px;
+  font-family: 'Satoshi', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--decaid-ink);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.site-nav__list a:hover {
+  background: var(--decaid-primary);
+  color: var(--decaid-primary-ink);
+  text-decoration: none;
+}
+
+/* Hamburger Toggle (mobile only) */
+.site-nav__toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  background: var(--decaid-primary);
+  border: 2px solid var(--decaid-ink);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-left: auto;
+  box-shadow: 3px 3px 0 var(--decaid-ink);
+}
+.site-nav__toggle span {
+  display: block;
+  width: 20px;
+  height: 2.5px;
+  background: var(--decaid-primary-ink);
+  border-radius: 2px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+.site-nav__toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+.site-nav__toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+.site-nav__toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+/* Mobile Nav Drawer */
+.mobile-nav {
+  display: none;
+  background: var(--decaid-surface);
+  border-top: 2px solid var(--decaid-ink);
+  border-bottom: 2px solid var(--decaid-ink);
+  padding: 12px 0;
+}
+.mobile-nav[data-open="true"] { display: block; }
+.mobile-nav ul {
+  list-style: none;
+  padding: 0 24px;
+  margin: 0;
+  display: grid;
+  gap: 4px;
+}
+.mobile-nav a {
+  display: block;
+  padding: 14px 16px;
+  font-family: 'Satoshi', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--decaid-ink);
+  text-decoration: none;
+  border-radius: 8px;
+  border: 2px solid transparent;
+}
+.mobile-nav a:hover {
+  background: var(--decaid-primary);
+  color: var(--decaid-primary-ink);
+  border-color: var(--decaid-ink);
+  text-decoration: none;
+}
+
+/* Responsive: hide desktop nav, show hamburger on small screens */
+@media (max-width: 880px) {
+  .site-nav { display: none; }
+  .site-nav__toggle { display: flex; }
+  .header-meta { display: none; }
 }
 
 /* ── Hero ── */

@@ -16,7 +16,33 @@
         <span class="tenant-logo-text">DECAID</span>
         <span class="tenant-logo-accent">Academy</span>
       </a>
-      <div class="header-meta"><a href="quick-start.html">← Alle Materialien</a></div>
+
+      <nav class="site-nav" aria-label="Materialien">
+        <ul class="site-nav__list">
+          <li><a href="quick-start.html">Quick Start</a></li>
+          <li><a href="workflow1-lead-triage.html">Workflow 1</a></li>
+          <li><a href="workflow2-battle-cards.html">Workflow 2</a></li>
+          <li><a href="architecture.html">Architektur</a></li>
+          <li><a href="../slides/">Slides</a></li>
+          <li><a href="https://github.com/floriandecaid/decaid-academy-masterclass-smart-crm-demo-florian-202605" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </nav>
+
+      <button class="site-nav__toggle" id="navToggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+      <ul>
+        <li><a href="quick-start.html">Quick Start</a></li>
+        <li><a href="workflow1-lead-triage.html">Workflow 1 — Web Research &amp; Routing</a></li>
+        <li><a href="workflow2-battle-cards.html">Workflow 2 — Battle Cards</a></li>
+        <li><a href="architecture.html">Architektur</a></li>
+        <li><a href="../slides/">Slides der Masterclass</a></li>
+        <li><a href="../index.html">← Landingpage</a></li>
+        <li><a href="https://github.com/floriandecaid/decaid-academy-masterclass-smart-crm-demo-florian-202605" target="_blank" rel="noopener">GitHub Repo</a></li>
+      </ul>
     </div>
   </header>
 
@@ -287,5 +313,18 @@ Body (Vorschlag, anpassen):
       <div class="site-footer__legal">© 2026 DECAID Group</div>
     </div>
   </footer>
+
+  <script>
+    (() => {
+      const t = document.getElementById('navToggle'), d = document.getElementById('mobileNav');
+      if (!t || !d) return;
+      t.addEventListener('click', () => {
+        const open = t.getAttribute('aria-expanded') === 'true';
+        t.setAttribute('aria-expanded', String(!open));
+        d.setAttribute('data-open', String(!open));
+        d.setAttribute('aria-hidden', String(open));
+      });
+    })();
+  </script>
 </body>
 </html>
