@@ -4,30 +4,32 @@ Du hast die Masterclass besucht. Hier ist alles, was du brauchst, um den gezeigt
 
 > **In 30 Minuten** hast du eine Pipeline am Laufen, die jeden Webinar-Lead live im Web recherchiert, Hot Leads als Sales-Briefing an dein Sales-Team schickt und No-Shows mit personalisierten Re-Engagement-Hooks ans Marketing weitergibt.
 
+**👉 Direkt loslegen:** [Quick-Start-Anleitung öffnen](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/materials/quick-start.html)
+
 ---
 
 ## Was du hier findest
 
-| Datei | Was du damit machst |
+| Material | Was du damit machst |
 |---|---|
-| [`index.html`](index.html) | Webinar-Landingpage. Direkt lokal öffnen oder bei dir hosten. Enthält zwei Demo-Buttons, mit denen du beide Personas an deinen Workflow feuerst. |
-| [`slides/`](slides/index.html) | Reveal.js-Foliendeck der Masterclass — wenn du das Konzept intern weitergeben willst. |
+| [Landingpage](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/) | Webinar-Landingpage mit zwei Demo-Buttons, mit denen du beide Personas an deinen Workflow feuerst. |
+| [Slides der Masterclass](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/slides/) | Foliendeck — wenn du das Konzept intern weitergeben willst. |
+| [Quick-Start-Anleitung](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/materials/quick-start.html) | Schritt-für-Schritt-Anleitung. Lies das zuerst. |
+| [Workflow 1 — Web Research & Smart Routing](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/materials/workflow1-lead-triage.html) | Alle Nodes, alle Prompts, alle E-Mail-Templates copy-paste-ready. |
+| [Workflow 2 — Battle Cards](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/materials/workflow2-battle-cards.html) | Bonus-Workflow: aus Sales-Call-Transkripten automatisch wöchentliche Battle Cards generieren. |
+| [Architektur-Übersicht](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/materials/architecture.html) | Big-Picture: wie alle Komponenten zusammenspielen, Tech-Stack, Skalierungs-Pfad. |
 | [`colab/webinar_simulator.ipynb`](colab/webinar_simulator.ipynb) | Python-Notebook für Google Colab. Zwei Mock-Personas, ein Webhook-POST. Damit testest du den Workflow ohne echte Webinar-Plattform. |
-| [`materials/quick-start.html`](materials/quick-start.html) | Schritt-für-Schritt-Anleitung. Lies das zuerst. |
-| [`materials/workflow1-lead-triage.html`](materials/workflow1-lead-triage.html) | Vollständige Spec für Workflow 1 (Web Research & Smart Routing): alle Nodes, alle Prompts, alle E-Mail-Templates copy-paste-ready. |
-| [`materials/workflow2-battle-cards.html`](materials/workflow2-battle-cards.html) | Bonus-Workflow: aus Sales-Call-Transkripten automatisch wöchentliche Battle Cards generieren. |
-| [`materials/architecture.html`](materials/architecture.html) | Big-Picture-Übersicht: wie alle Komponenten zusammenspielen, Tech-Stack, Skalierungs-Pfad. |
 | [`transcripts/fake_sales_calls/`](transcripts/fake_sales_calls/) | 8 fiktive Sales-Call-Transkripte (4 won, 3 lost, 1 open) als Testdaten für Workflow 2. |
 
 ---
 
 ## Reihenfolge
 
-1. **[Quick Start](materials/quick-start.html) lesen** — der schnellste Weg zur ersten funktionierenden Pipeline.
+1. **[Quick Start lesen](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/materials/quick-start.html)** — der schnellste Weg zur ersten funktionierenden Pipeline.
 2. **Langdock-Account holen** — falls du noch keinen hast, brauchst du einen Plan mit aktiviertem Web-Search-Tool (typisch: Pro oder höher).
-3. **Workflow 1 nachbauen** — folge der [Spec](materials/workflow1-lead-triage.html). Setup-Zeit: 15 Minuten. Output: zwei E-Mail-Pfade, die personalisiert sind.
+3. **[Workflow 1 nachbauen](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/materials/workflow1-lead-triage.html)** — Setup-Zeit: 15 Minuten. Output: zwei E-Mail-Pfade, die personalisiert sind.
 4. **Mit dem Colab-Notebook testen** — zwei Personas, zwei Mails, beide kommen automatisch.
-5. **Workflow 2 dazuholen, wenn du Sales-Call-Transkripte hast** — der Battle-Card-Workflow ist optional, aber wenn du Gong, Modjo oder ähnliches im Einsatz hast, lohnt sich der zweite Workflow nach 10 weiteren Minuten Setup.
+5. **[Workflow 2 dazuholen](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/materials/workflow2-battle-cards.html)**, wenn du Sales-Call-Transkripte hast — optional, aber wenn du Gong, Modjo oder ähnliches im Einsatz hast, lohnen sich weitere 10 Minuten Setup.
 
 ---
 
@@ -50,7 +52,7 @@ Du hast die Masterclass besucht. Hier ist alles, was du brauchst, um den gezeigt
 
 Die KI recherchiert **jeden** Lead — Revenue, News, strategische Themen. Erst danach entscheidet die Watch-Time, ob das Sales-Team einen Call vorbereiten soll oder Marketing eine personalisierte Wiederansprache plant. Kein Lead fällt durchs Raster.
 
-Volle Erklärung in [`materials/architecture.html`](materials/architecture.html).
+Volle Erklärung in der [Architektur-Übersicht](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/materials/architecture.html).
 
 ---
 
