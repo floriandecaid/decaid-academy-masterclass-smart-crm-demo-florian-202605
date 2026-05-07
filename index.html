@@ -251,21 +251,26 @@
 
       setStatus(`› Sende ${payload.lead.firstname} (${payload.lead.webinar_watch_time_minutes} Min) an Langdock…`, "info");
 
+      /* Hinweis: Langdocks Webhook unterstützt keinen CORS für Browser-Fetches.
+         Wir nutzen `mode: "no-cors"` — der Request geht raus und triggert den
+         Workflow, aber wir können die Response nicht lesen.
+         Erfolgs-Bestätigung gibt's also nicht via HTTP-Status, sondern indirekt:
+         schau in den Drive-Ordner, dort erscheint das Briefing-Doc. */
       try {
-        const res = await fetch(LANGDOCK_WEBHOOK_URL, {
+        await fetch(LANGDOCK_WEBHOOK_URL, {
           method: "POST",
+          mode: "no-cors",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         setStatus(
-          `✓ ${payload.lead.firstname} (${payload.lead.company_name}) erfolgreich gesendet.\n` +
-          `Watch Time: ${payload.lead.webinar_watch_time_minutes} Min · Revenue & News holt die KI selbst\n` +
-          `→ Langdock-Workflow läuft. E-Mail folgt in 20–60 Sek.`,
+          `✓ ${payload.lead.firstname} (${payload.lead.company_name}) gesendet.\n` +
+          `Watch Time: ${payload.lead.webinar_watch_time_minutes} Min · Revenue & News holt die KI selbst.\n` +
+          `→ Schau in deinen Drive-Ordner — Briefing-Doc folgt in 20–60 Sek.`,
           "ok"
         );
       } catch (err) {
-        setStatus(`✗ Fehler: ${err.message}`, "err");
+        setStatus(`✗ Fehler beim Senden: ${err.message}`, "err");
       }
     }
 
