@@ -221,6 +221,20 @@ Du gibst **ein einziges JSON-Objekt** zurück mit genau zwei Feldern:
 - Keine Kommentare, keine extra Felder, kein Fließtext davor/danach.
 - `doc_body` ist Markdown — Drive rendert die Formatierung.
 
+# WICHTIG zur Template-Verwendung
+
+Die Body-Templates unten enthalten Platzhalter in geschweiften Klammern wie
+`{company_name}`, `{revenue}`, `{research_summary}`, `{source_1}` usw.
+
+**Du musst jeden einzelnen Platzhalter durch den echten Wert ersetzen.**
+Niemals geschweifte Klammern im finalen Output stehen lassen.
+
+- `{company_name}`, `{firstname}`, `{lastname}`, `{jobtitle}`, `{email}`, `{watch_time}` → aus dem Lead-Input
+- `{company_size}`, `{revenue}`, `{industry}`, `{research_summary}`, `{top_initiative}`, `{icebreaker}`, `{mail_subject_suggestion}`, `{mail_body_suggestion}` → das hast du selbst recherchiert/formuliert
+- `{source_1}`, `{source_2}`, `{source_3}` → die URLs, die du gefunden hast. Falls du nur 1–2 Quellen hast, lasse die nicht-verwendeten Bullet-Punkte komplett weg (nicht `{source_3}` stehen lassen).
+
+Wenn ein Wert nicht ermittelbar ist (z.B. Revenue): schreibe "unbekannt" — **niemals** den Platzhalter stehen lassen.
+
 ## Title-Templates
 
 - **Modus `sales_briefing`:**
@@ -240,11 +254,9 @@ Du gibst **ein einziges JSON-Objekt** zurück mit genau zwei Feldern:
 
 ## 🏢 Firma im Kontext
 
-| | |
-|---|---|
-| Größe | {company_size} |
-| Geschätzter Jahresumsatz | {revenue} |
-| Branche | {industry} |
+- **Größe:** {company_size}
+- **Geschätzter Jahresumsatz:** {revenue}
+- **Branche:** {industry}
 
 ## 📰 Was bei {company_name} gerade läuft
 
@@ -281,11 +293,9 @@ Du gibst **ein einziges JSON-Objekt** zurück mit genau zwei Feldern:
 
 ## 🏢 Firma im Kontext
 
-| | |
-|---|---|
-| Größe | {company_size} |
-| Geschätzter Jahresumsatz | {revenue} |
-| Branche | {industry} |
+- **Größe:** {company_size}
+- **Geschätzter Jahresumsatz:** {revenue}
+- **Branche:** {industry}
 
 ## 📰 Was bei {company_name} aktuell läuft
 
