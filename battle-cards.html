@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Battle Cards — Live-Demo · DECAID Academy</title>
+  <meta name="description" content="Live-Demo: 8 Sales-Call-Transkripte werden von einem Langdock-Workflow zu einer Battle Card destilliert — ein Doc, das dein Team Montagmorgen in 3 Minuten lesen kann." />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="index.html" class="tenant-logo" style="text-decoration:none;">
+        <div class="tenant-logo-icon">D</div>
+        <span class="tenant-logo-text">DECAID</span>
+        <span class="tenant-logo-accent">Academy</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Materialien">
+        <ul class="site-nav__list">
+          <li><a href="index.html">Landingpage</a></li>
+          <li><a href="materials/quick-start.html">Quick Start</a></li>
+          <li><a href="materials/workflow1-lead-triage.html">Workflow 1</a></li>
+          <li><a href="materials/workflow2-battle-cards.html">Workflow 2</a></li>
+          <li><a href="battle-cards.html">Battle-Card-Demo</a></li>
+          <li><a href="materials/architecture.html">Architektur</a></li>
+          <li><a href="slides/">Slides</a></li>
+          <li><a href="https://github.com/floriandecaid/decaid-academy-masterclass-smart-crm-demo-florian-202605" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </nav>
+
+      <button class="site-nav__toggle" id="navToggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+      <ul>
+        <li><a href="index.html">← Landingpage</a></li>
+        <li><a href="materials/quick-start.html">Quick Start</a></li>
+        <li><a href="materials/workflow1-lead-triage.html">Workflow 1 — Web Research &amp; Routing</a></li>
+        <li><a href="materials/workflow2-battle-cards.html">Workflow 2 — Battle Cards</a></li>
+        <li><a href="battle-cards.html">Battle-Card-Demo</a></li>
+        <li><a href="materials/architecture.html">Architektur</a></li>
+        <li><a href="slides/">Slides der Masterclass</a></li>
+        <li><a href="https://github.com/floriandecaid/decaid-academy-masterclass-smart-crm-demo-florian-202605" target="_blank" rel="noopener">GitHub Repo</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="container hero__inner">
+
+      <div class="hero__content">
+        <span class="hero__eyebrow">Workflow 2 · Live-Demo</span>
+        <h1 class="hero__title">Aus 8 Sales-Calls wird eine Battle Card.</h1>
+        <p class="hero__subtitle">
+          Wir lesen 8 fiktive Sales-Call-Transkripte aus dem GitHub-Repo, schicken sie an einen Langdock-Workflow — und in unter 90 Sekunden landet eine fertige Battle Card als Google Doc in deinem Drive.
+        </p>
+        <ul class="hero__bullets">
+          <li>4 won, 3 lost, 1 open — gemischte Realität</li>
+          <li>Top-Einwände, ICP-Signale, Anti-Signale, Eröffner</li>
+          <li>Plug-and-Play: cron'en und jeden Montagmorgen automatisch</li>
+        </ul>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a href="materials/workflow2-battle-cards.html" class="btn btn--ghost">Workflow-Spec ansehen</a>
+          <a href="#demoPanel" class="btn btn--primary">Direkt zur Demo ↓</a>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h2>Worüber wir reden</h2>
+        <p class="form-card__intro">Battle Cards sind 3-Min-Lese-Dokumente für dein Sales-Team. Was wurde letzte Woche eingewendet? Welche Argumente haben gewonnen? Welche Signale zeigen früh, dass ein Deal heiß wird?</p>
+        <p class="form-card__intro" style="margin-top:0;"><strong>Das wertvollste Wissen deines Vertriebs sitzt in den Köpfen der Reps.</strong> Nach dem Call ist es weg. Dieser Workflow destilliert es automatisch aus den Transkripten.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Demo Control Panel ── -->
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="section__title-block">
+        <span class="section__eyebrow">Live-Demo</span>
+        <h2>Zwei Klicks zur Battle Card.</h2>
+        <p>Erst die 8 Transkripte aus dem GitHub-Repo laden — dann an deinen Langdock-Workflow schicken. Ergebnis erscheint als Google Doc.</p>
+      </div>
+
+      <div class="demo-panel" id="demoPanel">
+        <h2>📋 Battle-Card-Trigger</h2>
+        <p>Die 8 Transkripte liegen im Repo unter <code style="color:var(--decaid-primary); background:rgba(0,0,0,0.3);">transcripts/fake_sales_calls/</code> — Klick "Laden" liest sie aus, "Senden" feuert sie an den Workflow.</p>
+
+        <div class="demo-panel__buttons">
+          <button class="btn btn--demo-cold" id="loadBtn" type="button">
+            1️⃣ Transkripte laden (8)
+          </button>
+          <button class="btn btn--demo-hot" id="sendBtn" type="button" disabled>
+            2️⃣ An Langdock senden
+          </button>
+        </div>
+
+        <div class="demo-status" id="demoStatus">› Bereit. Klicke "Transkripte laden", um zu starten.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Was passiert dahinter ── -->
+  <section class="section section--alt">
+    <div class="container container--narrow">
+      <div class="section__title-block">
+        <span class="section__eyebrow">Was passiert</span>
+        <h2>4 Nodes. 90 Sekunden.</h2>
+      </div>
+
+      <div style="display:grid; gap:16px;">
+        <div class="callout">
+          <strong>1. Webhook empfängt die Payload.</strong> 8 Transkripte als Array, mit Metadaten (Industry, Outcome, Deal-Stage).
+        </div>
+        <div class="callout">
+          <strong>2. Extract Agent</strong> liest jedes Transkript einzeln und extrahiert strukturierte Daten: Top-Einwände, ICP-Signale, Tipping Points (was hat gewonnen / gekippt).
+        </div>
+        <div class="callout">
+          <strong>3. Synthesize Agent</strong> erkennt Muster über alle 8 Calls hinweg und schreibt die fertige Battle Card als Markdown — Top-3-Einwände, ICP-Signale, Anti-Signale, Eröffner für nächste Woche.
+        </div>
+        <div class="callout">
+          <strong>4. Create Document</strong> legt die Battle Card als Google Doc im Drive-Ordner an. Titel: <code>📋 Battle Card — Woche YYYY-WXX</code>.
+        </div>
+      </div>
+
+      <p style="margin-top: 32px; text-align: center;">
+        <a href="materials/workflow2-battle-cards.html" class="btn btn--ghost">Volle Workflow-Spec mit Prompts</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div class="tenant-logo">
+        <div class="tenant-logo-icon">D</div>
+        <span class="tenant-logo-text" style="color:#fff;">DECAID</span>
+        <span class="tenant-logo-accent" style="color:rgba(255,255,255,0.6);">Academy</span>
+      </div>
+      <div>
+        <a href="https://decaid.ai" target="_blank" rel="noopener">DECAID</a> ·
+        <a href="https://decaid.ai/datenschutz" target="_blank" rel="noopener">Datenschutz</a>
+      </div>
+      <div class="site-footer__legal">© 2026 DECAID Group</div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Mobile Nav Toggle ──────────────────────────────────── */
+    (() => {
+      const t = document.getElementById('navToggle'), d = document.getElementById('mobileNav');
+      if (!t || !d) return;
+      t.addEventListener('click', () => {
+        const open = t.getAttribute('aria-expanded') === 'true';
+        t.setAttribute('aria-expanded', String(!open));
+        d.setAttribute('data-open', String(!open));
+        d.setAttribute('aria-hidden', String(open));
+      });
+    })();
+
+    /* ────────────────────────────────────────────────────────────
+     * Konfiguration — Webhook für Workflow 2 (Battle Cards).
+     * ──────────────────────────────────────────────────────────── */
+    const LANGDOCK_W2_WEBHOOK_URL = "https://app.langdock.com/api/hooks/workflows/38b86052-d3a1-4195-89e7-b7f9f4746b09";
+
+    /* Die 8 Transkripte aus dem Repo. Filenamen kodieren Metadaten:
+       NN-<industry>-<outcome>-<dealstage>.txt */
+    const TRANSCRIPT_FILES = [
+      "01-saas-won-discovery.txt",
+      "02-manufacturing-lost-pricing.txt",
+      "03-fintech-won-demo.txt",
+      "04-retail-lost-integration.txt",
+      "05-healthcare-open-followup.txt",
+      "06-logistics-won-procurement.txt",
+      "07-mediacorp-lost-changemgmt.txt",
+      "08-energy-won-csuite.txt"
+    ];
+
+    /* Industry-Mapping für lesbare Werte im Payload (statt slugs). */
+    const INDUSTRY_LABELS = {
+      "saas": "SaaS",
+      "manufacturing": "Manufacturing",
+      "fintech": "Fintech",
+      "retail": "Retail",
+      "healthcare": "Healthcare",
+      "logistics": "Logistics",
+      "mediacorp": "Media",
+      "energy": "Energy"
+    };
+
+    let loadedTranscripts = null;
+    const statusEl = document.getElementById("demoStatus");
+    const loadBtn = document.getElementById("loadBtn");
+    const sendBtn = document.getElementById("sendBtn");
+
+    function setStatus(text, variant) {
+      const cls = variant ? ` class="${variant}"` : "";
+      statusEl.innerHTML = `<span${cls}>${text}</span>`;
+    }
+
+    function parseFilename(filename) {
+      // "01-saas-won-discovery.txt" → { industry: "SaaS", outcome: "won", deal_stage: "discovery" }
+      const base = filename.replace(/^\d+-/, "").replace(/\.txt$/, "");
+      const parts = base.split("-");
+      const industry = INDUSTRY_LABELS[parts[0]] || parts[0];
+      const outcome = parts[1];
+      const deal_stage = parts.slice(2).join(" ");
+      return { industry, outcome, deal_stage };
+    }
+
+    function isoWeek(date = new Date()) {
+      // ISO-Wochenformat YYYY-WXX
+      const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+      const dayNum = d.getUTCDay() || 7;
+      d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+      const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+      const weekNum = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+      return `${d.getUTCFullYear()}-W${String(weekNum).padStart(2, "0")}`;
+    }
+
+    /* ────────────────────────────────────────────────────────────
+     * Schritt 1 — Transkripte laden
+     * ──────────────────────────────────────────────────────────── */
+    async function loadTranscripts() {
+      loadBtn.disabled = true;
+      setStatus(`› Lade ${TRANSCRIPT_FILES.length} Transkripte aus dem Repo…`, "info");
+
+      try {
+        const responses = await Promise.all(
+          TRANSCRIPT_FILES.map(f =>
+            fetch(`transcripts/fake_sales_calls/${f}`).then(r => {
+              if (!r.ok) throw new Error(`${f}: HTTP ${r.status}`);
+              return r.text().then(text => ({ filename: f, text }));
+            })
+          )
+        );
+
+        loadedTranscripts = responses.map(({ filename, text }) => {
+          const meta = parseFilename(filename);
+          return {
+            ...meta,
+            transcript: text
+          };
+        });
+
+        const summary = loadedTranscripts.reduce((acc, t) => {
+          acc[t.outcome] = (acc[t.outcome] || 0) + 1;
+          return acc;
+        }, {});
+
+        setStatus(
+          `✓ ${loadedTranscripts.length} Transkripte geladen.\n` +
+          `${summary.won || 0} won · ${summary.lost || 0} lost · ${summary.open || 0} open\n` +
+          `→ Klicke "An Langdock senden", um den Workflow zu starten.`,
+          "ok"
+        );
+
+        sendBtn.disabled = false;
+      } catch (err) {
+        setStatus(`✗ Fehler beim Laden: ${err.message}`, "err");
+        loadBtn.disabled = false;
+      }
+    }
+
+    /* ────────────────────────────────────────────────────────────
+     * Schritt 2 — An Langdock senden
+     * ──────────────────────────────────────────────────────────── */
+    async function sendTranscripts() {
+      if (!loadedTranscripts) return;
+
+      sendBtn.disabled = true;
+      const week = isoWeek();
+      const payload = {
+        event: "weekly_battle_card_generation",
+        week,
+        transcripts: loadedTranscripts
+      };
+
+      setStatus(`› Sende ${loadedTranscripts.length} Transkripte (Woche ${week}) an Langdock…`, "info");
+
+      /* Langdock-Webhook unterstützt kein CORS — no-cors fetch.
+         Response können wir nicht lesen, Erfolg sieht man im Drive. */
+      try {
+        await fetch(LANGDOCK_W2_WEBHOOK_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        setStatus(
+          `✓ Payload gesendet (Woche ${week}, ${loadedTranscripts.length} Transkripte).\n` +
+          `→ Battle-Card-Doc erscheint in 60–90 Sek im Drive-Ordner.\n` +
+          `→ Synthesize-Agent ist langsamer als Larry — gib der KI einen Moment.`,
+          "ok"
+        );
+      } catch (err) {
+        setStatus(`✗ Fehler beim Senden: ${err.message}`, "err");
+        sendBtn.disabled = false;
+      }
+    }
+
+    loadBtn.addEventListener("click", loadTranscripts);
+    sendBtn.addEventListener("click", sendTranscripts);
+  </script>
+
+</body>
+</html>
