@@ -50,12 +50,16 @@
     .reveal .slides { text-align: left; }
 
     /* Default content slide: top-padding macht Platz für den Brand-Header,
-       bottom-padding hält Abstand zur Reveal-Progress-Bar / Slide-Number. */
+       bottom-padding hält Abstand zur Reveal-Progress-Bar / Slide-Number.
+       Inhalt vertikal zentriert, damit kurze Slides nicht oben kleben. */
     .reveal .slides > section {
       padding: 100px 80px 72px !important;
       box-sizing: border-box;
       width: 1280px;
       height: 720px;
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
     }
     /* Cover & CTA: eigenes Padding, full-bleed Background bleibt erhalten. */
     .reveal .slides > section.cover,
