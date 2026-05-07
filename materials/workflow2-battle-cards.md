@@ -1,15 +1,15 @@
 # Workflow 2 — Battle Cards aus Sales-Calls
 
-> **Was er macht:** Du wirfst 8–10 Sales-Call-Transkripte rein. Die KI extrahiert wiederkehrende Einwände + ICP-Merkmale und schickt deinem Team eine fertige Battle Card per E-Mail — wöchentlich oder on-demand.
+> **Was er macht:** Du wirfst 8–10 Sales-Call-Transkripte rein. Die KI extrahiert wiederkehrende Einwände + ICP-Merkmale und legt eine fertige Battle Card als Google Doc in einem geteilten Ordner ab — wöchentlich oder on-demand.
 
-**Setup-Zeit:** ~10 Minuten · **Werkzeuge:** Langdock + Mail-Account
+**Setup-Zeit:** ~10 Minuten · **Werkzeuge:** Langdock + Google Drive
 
 ---
 
 ## Architektur
 
 ```
-[Webhook]  →  [Extract Agent]  →  [Synthesize Agent]  →  [Email]
+[Webhook]  →  [Extract Agent]  →  [Synthesize Agent]  →  [Doc → Sales-Ordner]
    ↑
 8–10 Transkripte als Array
 ```
@@ -93,7 +93,7 @@ Antworte AUSSCHLIESSLICH mit gültigem JSON:
 
 ## Node 3 — Synthesize Agent (Battle Card)
 
-**Modell:** GPT-4 oder Claude Sonnet · **Output-Format:** Markdown (kein JSON, da direkt in Mail)
+**Modell:** GPT-4 oder Claude Sonnet · **Output-Format:** Markdown (wird direkt ins Doc geschrieben)
 
 ### System Prompt
 
@@ -141,15 +141,17 @@ WICHTIG:
 
 ---
 
-## Node 4 — Send Email an Sales
+## Node 4 — Battle-Card-Doc anlegen
+
+**Integration:** Google Drive (Create Document)
 
 | Feld | Wert |
 |---|---|
-| **To** | `<YOUR_SALES_INBOX>` (z.B. `sales@your-company.com`) |
-| **Subject** | `📋 Battle Card — Woche {{webhook.body.week}}` |
-| **Body** | `{{node_3.output}}` (Markdown direkt) |
+| **Drive-Ordner** | `<YOUR_SALES_FOLDER_ID>` (gleicher Sales-Ordner wie Workflow 1, oder ein eigener `Battle Cards`-Unterordner) |
+| **Doc-Name** | `📋 Battle Card — Woche {{webhook.body.week}}` |
+| **Body** | `{{node_3.output}}` (Markdown direkt — Drive rendert) |
 
-> **Tipp:** Wenn dein Mail-Provider Markdown nicht rendert, hänge `marked.js` o.ä. davor, oder lass Node 3 direkt HTML ausgeben.
+> **Tipp:** Battle Cards funktionieren super als fortlaufende Sammlung. Lege einen Ordner `Battle Cards` an, sortiere nach "Zuletzt geändert" — neue Cards sind oben, alte historisierst du.
 
 ---
 
@@ -176,6 +178,7 @@ Jede Datei enthält ein vollständiges, fiktives Transkript mit klar markierten 
 ## Erweiterungen
 
 - **Cron-Trigger** statt Webhook: jeden Montag 7:00 Uhr automatisch.
-- **Slack-Post** zusätzlich zur Mail.
+- **Slack-Post** mit Drive-Link zum frischen Battle-Card-Doc.
+- **E-Mail-Versand parallel**: wenn dein Team eher in der Inbox lebt, hänge zusätzlich einen Send-Email-Node an — Mail mit Drive-Link drauf.
 - **Vergleich Woche-zu-Woche**: Trends in Einwänden tracken.
 - **Persona-spezifisch**: Battle Cards getrennt für SMB/MidMarket/Enterprise.

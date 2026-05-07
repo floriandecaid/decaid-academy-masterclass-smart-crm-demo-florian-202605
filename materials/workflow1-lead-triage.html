@@ -49,10 +49,10 @@
 
   <article>
     <h1>Workflow 1 — Web Research &amp; Smart Routing</h1>
-    <p class="doc-meta">Setup-Zeit: ~15 Minuten · Werkzeuge: Langdock (Web Search Tool aktiviert) + Mail-Account</p>
+    <p class="doc-meta">Setup-Zeit: ~15 Minuten · Werkzeuge: Langdock (Web Search Tool aktiviert) + Google Drive</p>
 
     <div class="callout">
-      <strong>Was er macht:</strong> Empfängt jeden Webinar-Lead. Recherchiert dessen Firma live im Web (Revenue, News, strategische Themen). Schickt — abhängig von der Watch-Time — entweder ein <strong>Sales-Briefing</strong> an Sales (für Hot Leads) oder eine <strong>personalisierte Re-Engagement-Mail</strong> an Marketing (für No-Shows).
+      <strong>Was er macht:</strong> Empfängt jeden Webinar-Lead. Recherchiert dessen Firma live im Web (Revenue, News, strategische Themen). Erstellt — abhängig von der Watch-Time — entweder ein <strong>Sales-Briefing-Doc</strong> im Sales-Ordner (für Hot Leads) oder ein <strong>Re-Engagement-Briefing-Doc</strong> im Marketing-Ordner (für No-Shows).
     </div>
 
     <h2>Architektur</h2>
@@ -62,10 +62,15 @@
                                               ↓                  ↓
                                        [Sales-Briefing]  [Re-Engagement]
                                               ↓                  ↓
-                                          [Mail Sales]    [Mail Marketing]</code></pre>
+                                       [Doc → Sales-     [Doc → Marketing-
+                                        Ordner]          Ordner]</code></pre>
 
     <div class="callout">
-      <strong>Der entscheidende Unterschied:</strong> Die Recherche läuft für <strong>jeden</strong> Lead — auch für No-Shows. So kann auch die Re-Engagement-Mail personalisiert sein, statt generischer Nurture-Standardware.
+      <strong>Der entscheidende Unterschied:</strong> Die Recherche läuft für <strong>jeden</strong> Lead — auch für No-Shows. So kann auch das Re-Engagement-Briefing personalisiert sein, statt generischer Nurture-Standardware.
+    </div>
+
+    <div class="callout">
+      <strong>Warum Google Docs statt E-Mail?</strong> Docs landen sofort visuell auffindbar in einem geteilten Ordner, lassen sich formatieren (Tabellen, klickbare Quellen, Bilder), kommen nie in den Spam und sind Team-kollaborativ. Wenn du lieber Mail willst: tausch den letzten Node aus, der Rest bleibt identisch.
     </div>
 
     <h2>Was die Webhook-Payload <strong>nicht</strong> enthält</h2>
@@ -161,113 +166,118 @@ Recherchiere und antworte im JSON-Format.</code></pre>
       <strong>Warum nur Watch-Time entscheidet:</strong> Wir wollen die Logik bewusst einfach halten. Firmengröße/Revenue können später als sekundäre Sortierung im Sales-Inbox-Filter gemacht werden.
     </div>
 
-    <h2>Node 4a — Sales-Briefing (Pfad A, Hot)</h2>
-    <p><strong>Integration:</strong> Gmail / Outlook · <strong>Trigger:</strong> Watch-Time ≥ 30 Min</p>
+    <h2>Node 4a — Sales-Briefing-Doc (Pfad A, Hot)</h2>
+    <p><strong>Integration:</strong> Google Drive (Create Document) · <strong>Trigger:</strong> Watch-Time ≥ 30 Min</p>
 
     <table class="spec">
       <tr><th>Feld</th><th>Wert</th></tr>
-      <tr><td>To</td><td><code>&lt;YOUR_SALES_INBOX&gt;</code> (z.B. <code>sales@your-company.com</code>)</td></tr>
-      <tr><td>From</td><td><code>&lt;YOUR_SENDER_ADDRESS&gt;</code> (OAuth-verbundener Absender)</td></tr>
-      <tr><td>Subject</td><td><code>🔥 HOT LEAD [{{webhook.body.lead.webinar_watch_time_minutes}} Min] — {{webhook.body.lead.company_name}}</code></td></tr>
+      <tr><td>Drive-Ordner</td><td><code>&lt;YOUR_SALES_FOLDER_ID&gt;</code> (Ordner-ID aus Drive-URL: <code>drive.google.com/drive/folders/&lt;ID&gt;</code>)</td></tr>
+      <tr><td>Doc-Name</td><td><code>🔥 HOT — {{webhook.body.lead.company_name}} ({{webhook.body.lead.webinar_watch_time_minutes}} Min) — {{webhook.body.lead.firstname}} {{webhook.body.lead.lastname}}</code></td></tr>
+      <tr><td>Format</td><td>Markdown oder Plain Text (Drive konvertiert beim Anlegen)</td></tr>
     </table>
 
     <h3>Body</h3>
-<pre><code>Hey Sales-Team,
+<pre><code># 🔥 Sales-Briefing: {{webhook.body.lead.company_name}}
 
-{{webhook.body.lead.firstname}} {{webhook.body.lead.lastname}}
-({{webhook.body.lead.jobtitle}} bei {{webhook.body.lead.company_name}})
-hat das Webinar fast komplett geschaut: {{webhook.body.lead.webinar_watch_time_minutes}} Min.
+**Lead:** {{webhook.body.lead.firstname}} {{webhook.body.lead.lastname}} — {{webhook.body.lead.jobtitle}}
+**E-Mail:** {{webhook.body.lead.email}}
+**Watch Time:** {{webhook.body.lead.webinar_watch_time_minutes}} Min (von 60)
+**Erstellt:** {{webhook.received_at}}
 
-────────────────────────────────────────────
-🏢 Was wir über die Firma wissen (Live-Recherche):
+---
 
-Größe: {{node_2.output.company_size}}
-Geschätzter Jahresumsatz: {{node_2.output.estimated_revenue_eur}} €
-Branche: {{node_2.output.industry}}
-────────────────────────────────────────────
+## 🏢 Firma im Kontext (Live-Recherche)
 
-📰 Was bei {{webhook.body.lead.company_name}} gerade läuft:
+| | |
+|---|---|
+| Größe | {{node_2.output.company_size}} |
+| Geschätzter Jahresumsatz | {{node_2.output.estimated_revenue_eur}} € |
+| Branche | {{node_2.output.industry}} |
+
+## 📰 Was bei {{webhook.body.lead.company_name}} gerade läuft
 
 {{node_2.output.research_summary}}
 
-→ Wichtigste strategische Initiative:
-   {{node_2.output.top_initiative}}
+**Wichtigste strategische Initiative:**
+{{node_2.output.top_initiative}}
 
-────────────────────────────────────────────
-💬 Empfohlener Eisbrecher für den Call:
+## 💬 Empfohlener Eisbrecher für den Call
 
-   "{{node_2.output.icebreaker}}"
+&gt; "{{node_2.output.icebreaker}}"
 
-────────────────────────────────────────────
-🔗 Quellen:
-   {{node_2.output.sources}}
+## 🔗 Quellen
 
-— DECAID Web-Research-Agent</code></pre>
+{{node_2.output.sources}}
 
-    <h2>Node 4b — Re-Engagement-Mail (Pfad B, Cold/No-Show)</h2>
-    <p><strong>Integration:</strong> Gmail / Outlook · <strong>Trigger:</strong> Watch-Time &lt; 30 Min</p>
+---
+
+*Generiert vom DECAID Web-Research-Agent.*</code></pre>
+
+    <h2>Node 4b — Re-Engagement-Doc (Pfad B, Cold/No-Show)</h2>
+    <p><strong>Integration:</strong> Google Drive (Create Document) · <strong>Trigger:</strong> Watch-Time &lt; 30 Min</p>
 
     <div class="callout">
-      <strong>Pädagogisch wichtig:</strong> Diese Mail geht an dein <strong>Marketing-Team</strong>, nicht an Sales. Marketing entscheidet, ob/wie der Lead in eine Nurture-Sequenz eingebucht wird. Die Mail liefert die Hooks für eine personalisierte Wiederansprache.
+      <strong>Pädagogisch wichtig:</strong> Dieses Doc landet im <strong>Marketing-Ordner</strong>, nicht im Sales-Ordner. Marketing entscheidet, ob/wie der Lead in eine Nurture-Sequenz eingebucht wird. Das Doc liefert die Hooks für eine personalisierte Wiederansprache.
     </div>
 
     <table class="spec">
       <tr><th>Feld</th><th>Wert</th></tr>
-      <tr><td>To</td><td><code>&lt;YOUR_MARKETING_INBOX&gt;</code> (z.B. <code>marketing@your-company.com</code>)</td></tr>
-      <tr><td>Subject</td><td><code>❄️ NO-SHOW Follow-up — {{webhook.body.lead.company_name}} ({{webhook.body.lead.webinar_watch_time_minutes}} Min)</code></td></tr>
+      <tr><td>Drive-Ordner</td><td><code>&lt;YOUR_MARKETING_FOLDER_ID&gt;</code> (Ordner-ID aus Drive-URL)</td></tr>
+      <tr><td>Doc-Name</td><td><code>❄️ NO-SHOW — {{webhook.body.lead.company_name}} ({{webhook.body.lead.webinar_watch_time_minutes}} Min) — {{webhook.body.lead.firstname}} {{webhook.body.lead.lastname}}</code></td></tr>
+      <tr><td>Format</td><td>Markdown oder Plain Text</td></tr>
     </table>
 
     <h3>Body</h3>
-<pre><code>Hey Marketing-Team,
+<pre><code># ❄️ Re-Engagement-Briefing: {{webhook.body.lead.company_name}}
 
-{{webhook.body.lead.firstname}} {{webhook.body.lead.lastname}}
-({{webhook.body.lead.jobtitle}} bei {{webhook.body.lead.company_name}})
-hat sich angemeldet, aber das Webinar nur {{webhook.body.lead.webinar_watch_time_minutes}} Min geschaut.
+**Lead:** {{webhook.body.lead.firstname}} {{webhook.body.lead.lastname}} — {{webhook.body.lead.jobtitle}}
+**E-Mail:** {{webhook.body.lead.email}}
+**Watch Time:** {{webhook.body.lead.webinar_watch_time_minutes}} Min (No-Show / abgebrochen)
+**Erstellt:** {{webhook.received_at}}
 
-→ Standard-Nurture wäre Verschwendung. Hier sind die Hooks, mit denen wir
-  eine personalisierte Re-Engagement-Mail schreiben können.
+&gt; Standard-Nurture wäre Verschwendung. Hier sind die Hooks, mit denen wir eine personalisierte Re-Engagement-Mail schreiben können.
 
-────────────────────────────────────────────
-🏢 Firma im Kontext:
+---
 
-Größe: {{node_2.output.company_size}}
-Geschätzter Jahresumsatz: {{node_2.output.estimated_revenue_eur}} €
-Branche: {{node_2.output.industry}}
+## 🏢 Firma im Kontext
 
-📰 Was bei {{webhook.body.lead.company_name}} aktuell läuft:
+| | |
+|---|---|
+| Größe | {{node_2.output.company_size}} |
+| Geschätzter Jahresumsatz | {{node_2.output.estimated_revenue_eur}} € |
+| Branche | {{node_2.output.industry}} |
+
+## 📰 Was bei {{webhook.body.lead.company_name}} aktuell läuft
 
 {{node_2.output.research_summary}}
 
-→ Strategisches Top-Thema:
-   {{node_2.output.top_initiative}}
-────────────────────────────────────────────
+**Strategisches Top-Thema:**
+{{node_2.output.top_initiative}}
 
-💌 Vorschlag für die Re-Engagement-Mail:
+## 💌 Vorschlag für die Re-Engagement-Mail
 
-Subject: "Schade, dass es nicht geklappt hat — kurzer Gedanke zu {{node_2.output.top_initiative}}"
+**Subject:** Schade, dass es nicht geklappt hat — kurzer Gedanke zu {{node_2.output.top_initiative}}
 
-Body (Vorschlag, anpassen):
+**Body (Vorschlag, anpassen):**
 
-  Hi {{webhook.body.lead.firstname}},
+&gt; Hi {{webhook.body.lead.firstname}},
+&gt;
+&gt; schade, dass es zeitlich beim Webinar gestern nicht geklappt hat.
+&gt;
+&gt; Ich habe gesehen, dass ihr bei {{webhook.body.lead.company_name}} gerade bei **{{node_2.output.top_initiative}}** unterwegs seid — und genau dafür hatten wir im Webinar einen Workflow gezeigt, der euch in der Umsetzung Wochen sparen würde.
+&gt;
+&gt; Wenn du 5 Minuten hast, schick ich dir die 3 Kern-Slides plus den Workflow-Mitschnitt. Reicht zum Einordnen, ob's für euch relevant ist.
+&gt;
+&gt; Beste Grüße,
+&gt; [Dein Name]
 
-  schade, dass es zeitlich beim Webinar gestern nicht geklappt hat.
+## 🔗 Quellen für die Recherche
 
-  Ich habe gesehen, dass ihr bei {{webhook.body.lead.company_name}} gerade
-  bei {{node_2.output.top_initiative}} unterwegs seid — und genau dafür
-  hatten wir im Webinar einen Workflow gezeigt, der euch in der
-  Umsetzung Wochen sparen würde.
+{{node_2.output.sources}}
 
-  Wenn du 5 Minuten hast, schick ich dir die 3 Kern-Slides plus den
-  Workflow-Mitschnitt. Reicht zum Einordnen, ob's für euch relevant ist.
+---
 
-  Beste Grüße,
-  [Dein Name]
-
-────────────────────────────────────────────
-🔗 Quellen für die Recherche:
-   {{node_2.output.sources}}
-
-— DECAID Web-Research-Agent</code></pre>
+*Generiert vom DECAID Web-Research-Agent.*</code></pre>
 
     <div class="callout">
       <strong>Optional erweiterbar:</strong> Statt manuell zu versenden, kannst du einen weiteren Agent-Node davor schalten, der die Re-Engagement-Mail komplett ausschreibt (statt Vorschlag). Für die Masterclass lassen wir's beim Vorschlag — Marketing hat das letzte Wort.
@@ -275,32 +285,35 @@ Body (Vorschlag, anpassen):
 
     <h2>Test-Checklist</h2>
     <ul>
-      <li>☐ Webhook-URL kopiert und in <code>colab/webinar_simulator.ipynb</code> eingetragen</li>
+      <li>☐ Webhook-URL kopiert (für Frontend-Trigger oder externes Test-Tool)</li>
       <li>☐ Web-Search-Tool im Workflow-Settings aktiviert</li>
-      <li>☐ Mail-Account verbunden (Gmail/Outlook OAuth)</li>
-      <li>☐ <strong>Test mit Jürgen</strong> (3 Min Watch) → Re-Engagement-Mail kommt</li>
-      <li>☐ <strong>Test mit Gabi</strong> (58 Min Watch) → Sales-Briefing-Mail kommt</li>
-      <li>☐ Beide Mails enthalten konkrete Recherche-Inhalte zur Firma</li>
+      <li>☐ Google-Drive-Integration verbunden (OAuth)</li>
+      <li>☐ Sales-Ordner und Marketing-Ordner in Drive angelegt, IDs in beiden Doc-Nodes eingetragen</li>
+      <li>☐ <strong>Test mit Jürgen</strong> (3 Min Watch) → Re-Engagement-Doc landet im Marketing-Ordner</li>
+      <li>☐ <strong>Test mit Gabi</strong> (58 Min Watch) → Sales-Briefing-Doc landet im Sales-Ordner</li>
+      <li>☐ Beide Docs enthalten konkrete Recherche-Inhalte zur Firma</li>
       <li>☐ Eisbrecher / Re-Engagement-Hook wirken <strong>konkret</strong>, nicht generisch</li>
     </ul>
 
     <h2>Troubleshooting</h2>
     <table class="spec">
       <tr><th>Problem</th><th>Ursache</th><th>Fix</th></tr>
-      <tr><td>Webhook 200, keine Mail</td><td>Mail-OAuth abgelaufen</td><td>Re-Auth Mail-Integration</td></tr>
+      <tr><td>Webhook 200, kein Doc erscheint</td><td>Drive-OAuth abgelaufen</td><td>Re-Auth Drive-Integration</td></tr>
+      <tr><td>Doc landet im falschen Ordner</td><td>Ordner-ID vertauscht</td><td>IDs aus Drive-URL nochmal kopieren</td></tr>
       <tr><td>Web Search liefert leer</td><td>Firmenname zu generisch</td><td>Vollständigen offiziellen Namen einsetzen</td></tr>
-      <tr><td>Beide Mails kommen</td><td>Condition feuert nicht</td><td>Watch-Time-String vs. Int prüfen</td></tr>
-      <tr><td>Mail im Spam</td><td>SPF/DKIM fehlt</td><td>Für Demo egal, in Prod relevant</td></tr>
-      <tr><td><code>estimated_revenue_eur</code> = null</td><td>Privatunternehmen ohne Pflicht</td><td>OK — Mail-Template muss <code>null</code> graceful handhaben</td></tr>
+      <tr><td>Beide Docs werden erstellt</td><td>Condition feuert nicht</td><td>Watch-Time-String vs. Int prüfen</td></tr>
+      <tr><td><code>estimated_revenue_eur</code> = null</td><td>Privatunternehmen ohne Pflicht</td><td>OK — Template muss <code>null</code> graceful handhaben</td></tr>
+      <tr><td>Doc-Inhalt ist Plain-Text statt formatiert</td><td>Drive-Node speichert raw</td><td>Doc-Format auf "Markdown" stellen oder Node nutzen, der Markdown rendert</td></tr>
     </table>
 
     <h2>Erweiterungen für Production</h2>
     <ul>
-      <li><strong>HubSpot-Update</strong>: parallel zur E-Mail einen HubSpot-Lifecycle-Update schreiben (Hot → Sales-Owner, Cold → Marketing-Nurture-Liste).</li>
-      <li><strong>Slack-Alert</strong>: bei Hot-Path zusätzlich in <code>#sales-hot-leads</code> posten.</li>
+      <li><strong>E-Mail-Versand parallel</strong>: Wenn dein Team eher in der Inbox lebt, hänge zusätzlich einen Send-Email-Node an die jeweiligen Pfade — Doc plus Mail mit Link drauf.</li>
+      <li><strong>HubSpot-Update</strong>: parallel zur Doc-Erstellung einen HubSpot-Lifecycle-Update schreiben (Hot → Sales-Owner, Cold → Marketing-Nurture-Liste).</li>
+      <li><strong>Slack-Alert</strong>: bei Hot-Path zusätzlich in <code>#sales-hot-leads</code> posten — mit Drive-Link zum Briefing-Doc.</li>
       <li><strong>Cooldown</strong>: gleicher Lead nicht öfter als 1× pro 7 Tage.</li>
-      <li><strong>Auto-Send Re-Engagement</strong>: zusätzlicher Agent-Node, der die Re-Engagement-Mail vollständig schreibt und versendet.</li>
-      <li><strong>Logging</strong>: Output von Node 2 in einer Tabelle ablegen für spätere Konversionsanalyse.</li>
+      <li><strong>Auto-Send Re-Engagement</strong>: zusätzlicher Agent-Node, der die Re-Engagement-Mail vollständig schreibt und versendet (statt nur Vorschlag im Doc).</li>
+      <li><strong>Logging</strong>: Output von Node 2 zusätzlich in einem Sheet ablegen für spätere Konversionsanalyse.</li>
     </ul>
   </article>
 

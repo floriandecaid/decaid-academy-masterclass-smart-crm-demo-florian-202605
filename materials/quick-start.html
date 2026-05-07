@@ -49,7 +49,7 @@
 
   <article>
     <h1>Quick Start</h1>
-    <p class="doc-meta">Das Ziel: in 30 Minuten bekommst du zwei E-Mails — ein Sales-Briefing für einen "heißen" Lead und einen Re-Engagement-Vorschlag für einen No-Show — beide personalisiert auf Basis von Live-Web-Recherche.</p>
+    <p class="doc-meta">Das Ziel: in 30 Minuten bekommst du zwei Google Docs — ein Sales-Briefing für einen "heißen" Lead und einen Re-Engagement-Vorschlag für einen No-Show — beide personalisiert auf Basis von Live-Web-Recherche.</p>
 
     <h2>In 5 Schritten</h2>
 
@@ -57,48 +57,55 @@
     <ol>
       <li>Login bei <a href="https://app.langdock.com" target="_blank" rel="noopener">app.langdock.com</a> → <strong>New Workflow</strong></li>
       <li>Stelle in den Workflow-Settings sicher: <strong>Web-Search-Tool ist aktiviert</strong>. Ohne das funktioniert der zentrale Recherche-Schritt nicht.</li>
-      <li>Verbinde deinen Mail-Account (Gmail oder Outlook) als Integration für den späteren Mail-Versand.</li>
+      <li>Verbinde <strong>Google Drive</strong> als Integration (OAuth-Flow durchgehen).</li>
     </ol>
 
-    <h3>2. Workflow 1 nachbauen</h3>
+    <h3>2. Drive-Ordner anlegen</h3>
+    <p>In deinem Google Drive zwei Ordner erstellen (oder einen, wenn du es einfacher willst):</p>
+    <ul>
+      <li><code>Sales – Hot Leads</code> → für Briefings nach Workflow-1-Pfad-A</li>
+      <li><code>Marketing – Re-Engagement</code> → für Vorschläge nach Workflow-1-Pfad-B</li>
+    </ul>
+    <p>Ordner-IDs aus den URLs kopieren (<code>drive.google.com/drive/folders/&lt;DAS_HIER&gt;</code>). Brauchst du gleich.</p>
+
+    <h3>3. Workflow 1 nachbauen</h3>
     <p>Öffne die <a href="workflow1-lead-triage.html">Workflow-1-Spec</a> und gehe sie von oben nach unten durch. Du brauchst genau 5 Nodes:</p>
     <ol>
       <li><strong>Webhook</strong> (Trigger)</li>
       <li><strong>Web Research Agent</strong> mit aktiviertem Web-Search-Tool — das ist das Herzstück</li>
       <li><strong>Condition Router</strong> auf Watch-Time</li>
-      <li><strong>Mail Sales-Briefing</strong> (Pfad A: Hot Lead)</li>
-      <li><strong>Mail Re-Engagement</strong> (Pfad B: No-Show / Cold)</li>
+      <li><strong>Create Google Doc</strong> im Sales-Ordner (Pfad A: Hot Lead)</li>
+      <li><strong>Create Google Doc</strong> im Marketing-Ordner (Pfad B: No-Show / Cold)</li>
     </ol>
-    <p>Alle Prompts, Mappings und E-Mail-Templates sind in der Spec copy-paste-ready. Setup-Zeit beim ersten Mal: <strong>~15 Minuten</strong>.</p>
+    <p>Alle Prompts, Mappings und Doc-Templates sind in der Spec copy-paste-ready. Setup-Zeit beim ersten Mal: <strong>~15 Minuten</strong>.</p>
+
+    <h3>4. Webhook-URL kopieren</h3>
+    <p>Klick im Webhook-Node auf <strong>"Copy URL"</strong>. Diese URL trägst du in die Landingpage (<code>index.html</code>, Variable <code>LANGDOCK_WEBHOOK_URL</code>) oder in dein eigenes Trigger-Setup ein.</p>
+
+    <h3>5. Testen</h3>
+    <p>Öffne die <a href="../index.html">Landingpage</a> in deinem Browser, klick auf einen der zwei Demo-Buttons:</p>
+    <ul>
+      <li><strong>Jürgen</strong> (3 Min Watch-Time) → Re-Engagement-Doc landet im Marketing-Ordner.</li>
+      <li><strong>Gabi</strong> (58 Min Watch-Time) → Sales-Briefing-Doc landet im Sales-Ordner.</li>
+    </ul>
+    <p>Drive-Ordner offen halten, "Sortieren nach: Zuletzt geändert" — die neuen Docs poppen oben rein.</p>
 
     <div class="callout">
-      <strong>Tipp:</strong> Trage zwei verschiedene Empfänger-Adressen ein — <code>&lt;YOUR_SALES_INBOX&gt;</code> für Hot Leads, <code>&lt;YOUR_MARKETING_INBOX&gt;</code> für No-Shows. So siehst du sofort, ob das Routing funktioniert. Für den Test reicht eine Inbox mit einem <code>+</code>-Filter, in Production trenne sauber.
+      <strong>Alternative zum Browser-Trigger:</strong> Im Repo liegt ein <a href="../colab/webinar_simulator.ipynb">Colab-Notebook</a>, falls du die Pipeline aus Python anstoßen willst (z.B. um sie in dein Backend zu integrieren). Für die normale Nutzung reicht aber die Landingpage.
     </div>
 
-    <h3>3. Webhook-URL kopieren</h3>
-    <p>Klick im Webhook-Node auf <strong>"Copy URL"</strong>. Diese URL brauchst du gleich.</p>
-
-    <h3>4. Mit dem Colab-Notebook testen</h3>
-    <ol>
-      <li>Öffne <a href="../colab/webinar_simulator.ipynb">webinar_simulator.ipynb</a> in <a href="https://colab.research.google.com" target="_blank" rel="noopener">Google Colab</a>.</li>
-      <li>In Zelle 1: Webhook-URL einfügen.</li>
-      <li>Notebook von oben nach unten ausführen.</li>
-      <li>Du bekommst zwei E-Mails:
-        <ul>
-          <li><strong>Jürgen</strong> (3 Min Watch-Time) → Re-Engagement-Mail mit personalisiertem Vorschlag für die Wiederansprache, basierend auf aktuellen Themen seiner Firma.</li>
-          <li><strong>Gabi</strong> (58 Min Watch-Time) → Sales-Briefing mit Firmenkontext, geschätztem Revenue, Top-Initiative und Eisbrecher-Satz für den Call.</li>
-        </ul>
-      </li>
-    </ol>
-
-    <h3>5. Workflow 2 dazuholen (optional)</h3>
-    <p>Wenn du regelmäßig Sales-Calls aufzeichnest (Gong, Modjo, MeetGeek), lohnt sich der <a href="workflow2-battle-cards.html">Battle-Card-Workflow</a>. 4 Nodes, ~10 Minuten Setup, output: wöchentliche Battle Card mit Top-Einwänden, ICP-Signalen und Eröffnungs-Empfehlungen direkt in deinem Postfach.</p>
+    <h3>6. Workflow 2 dazuholen (optional)</h3>
+    <p>Wenn du regelmäßig Sales-Calls aufzeichnest (Gong, Modjo, MeetGeek), lohnt sich der <a href="workflow2-battle-cards.html">Battle-Card-Workflow</a>. 4 Nodes, ~10 Minuten Setup, Output: wöchentliche Battle Card als Doc im Sales-Ordner.</p>
     <p>Die <a href="../transcripts/fake_sales_calls/">8 fiktiven Transkripte</a> im Repo sind als Testdaten gedacht — wirf sie als Payload in Workflow 2 und prüfe das Ergebnis, bevor du echte Daten anschließt.</p>
 
     <h2>Häufige Stolperfallen</h2>
 
     <div class="callout callout--warn">
-      <strong>"Webhook gibt 200 zurück, aber keine Mail kommt"</strong> — Mail-Integration ist nicht verbunden oder OAuth ist abgelaufen. Re-Auth in den Langdock-Settings.
+      <strong>"Webhook gibt 200 zurück, aber kein Doc erscheint"</strong> — Drive-Integration ist nicht verbunden oder OAuth ist abgelaufen. Re-Auth in den Langdock-Settings.
+    </div>
+
+    <div class="callout callout--warn">
+      <strong>"Doc landet im falschen Ordner"</strong> — Ordner-IDs vertauscht zwischen Pfad A und Pfad B. IDs aus Drive-URL nochmal kopieren.
     </div>
 
     <div class="callout callout--warn">
@@ -106,17 +113,17 @@
     </div>
 
     <div class="callout callout--warn">
-      <strong>"Beide Mails kommen statt nur einer"</strong> — Der Condition-Node behandelt die Watch-Time als String statt als Zahl. Wrap im Vergleich mit <code>parseInt()</code> oder vergleiche gegen den String <code>"30"</code>.
+      <strong>"Beide Docs werden erstellt statt nur eines"</strong> — Der Condition-Node behandelt die Watch-Time als String statt als Zahl. Wrap im Vergleich mit <code>parseInt()</code> oder vergleiche gegen den String <code>"30"</code>.
     </div>
 
     <div class="callout callout--warn">
-      <strong>"Mail kommt im Spam"</strong> — Für lokale Tests egal. In Production: SPF/DKIM für deine Absender-Domain einrichten.
+      <strong>"Doc-Inhalt ist Plain-Text statt formatiert"</strong> — Drive-Node speichert raw. Doc-Format auf "Markdown" stellen oder einen Node nutzen, der Markdown rendert.
     </div>
 
     <h2>Was als Nächstes?</h2>
     <ul>
-      <li><strong>HubSpot/Salesforce-Sync</strong> ergänzen, falls du die Recherche-Daten direkt ins CRM schreiben willst.</li>
-      <li><strong>Slack-Notification</strong> zusätzlich zur Mail, wenn ein Hot Lead reinkommt.</li>
+      <li><strong>Slack-Notification</strong> zusätzlich zum Doc, wenn ein Hot Lead reinkommt — mit Drive-Link.</li>
+      <li><strong>HubSpot/Salesforce-Sync</strong>, falls du die Recherche-Daten direkt ins CRM schreiben willst.</li>
       <li><strong>Cooldown</strong> einbauen, damit derselbe Lead nicht öfter als 1× pro 7 Tage verarbeitet wird.</li>
     </ul>
     <p>Konkrete Erweiterungs-Pfade findest du am Ende jeder Workflow-Spec.</p>

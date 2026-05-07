@@ -49,14 +49,14 @@
 
   <article>
     <h1>Workflow 2 — Battle Cards aus Sales-Calls</h1>
-    <p class="doc-meta">Setup-Zeit: ~10 Minuten · Werkzeuge: Langdock + Mail-Account</p>
+    <p class="doc-meta">Setup-Zeit: ~10 Minuten · Werkzeuge: Langdock + Google Drive</p>
 
     <div class="callout">
-      <strong>Was er macht:</strong> Du wirfst 8–10 Sales-Call-Transkripte rein. Die KI extrahiert wiederkehrende Einwände + ICP-Merkmale und schickt deinem Team eine fertige Battle Card per E-Mail — wöchentlich oder on-demand.
+      <strong>Was er macht:</strong> Du wirfst 8–10 Sales-Call-Transkripte rein. Die KI extrahiert wiederkehrende Einwände + ICP-Merkmale und legt eine fertige Battle Card als Google Doc in einem geteilten Ordner ab — wöchentlich oder on-demand.
     </div>
 
     <h2>Architektur</h2>
-<pre><code>[Webhook]  →  [Extract Agent]  →  [Synthesize Agent]  →  [Email]
+<pre><code>[Webhook]  →  [Extract Agent]  →  [Synthesize Agent]  →  [Doc → Sales-Ordner]
    ↑
 8–10 Transkripte als Array</code></pre>
 
@@ -122,7 +122,7 @@ Antworte AUSSCHLIESSLICH mit gültigem JSON:
 <pre><code>{{webhook.body.transcripts}}</code></pre>
 
     <h2>Node 3 — Synthesize Agent (Battle Card)</h2>
-    <p><strong>Modell:</strong> GPT-4 oder Claude Sonnet · <strong>Output-Format:</strong> Markdown (direkt in Mail)</p>
+    <p><strong>Modell:</strong> GPT-4 oder Claude Sonnet · <strong>Output-Format:</strong> Markdown (wird direkt ins Doc geschrieben)</p>
 
     <h3>System Prompt</h3>
 <pre><code>Du bist ein Senior-Sales-Coach. Du bekommst eine strukturierte Auswertung von
@@ -162,13 +162,18 @@ WICHTIG:
     <h3>Input-Mapping</h3>
 <pre><code>{{node_2.output.extractions}}</code></pre>
 
-    <h2>Node 4 — Send Email an Sales</h2>
+    <h2>Node 4 — Battle-Card-Doc anlegen</h2>
+    <p><strong>Integration:</strong> Google Drive (Create Document)</p>
     <table class="spec">
       <tr><th>Feld</th><th>Wert</th></tr>
-      <tr><td>To</td><td><code>&lt;YOUR_SALES_INBOX&gt;</code> (z.B. <code>sales@your-company.com</code>)</td></tr>
-      <tr><td>Subject</td><td><code>📋 Battle Card — Woche {{webhook.body.week}}</code></td></tr>
-      <tr><td>Body</td><td><code>{{node_3.output}}</code> (Markdown direkt)</td></tr>
+      <tr><td>Drive-Ordner</td><td><code>&lt;YOUR_SALES_FOLDER_ID&gt;</code> (gleicher Sales-Ordner wie Workflow 1, oder ein eigener <code>Battle Cards</code>-Unterordner)</td></tr>
+      <tr><td>Doc-Name</td><td><code>📋 Battle Card — Woche {{webhook.body.week}}</code></td></tr>
+      <tr><td>Body</td><td><code>{{node_3.output}}</code> (Markdown — Drive rendert)</td></tr>
     </table>
+
+    <div class="callout">
+      <strong>Tipp:</strong> Battle Cards funktionieren super als fortlaufende Sammlung. Lege einen Ordner <code>Battle Cards</code> an, sortiere nach "Zuletzt geändert" — neue Cards sind oben, alte historisierst du.
+    </div>
 
     <h2>Test-Daten</h2>
     <p>Im Repo liegen 8 fiktive Sales-Call-Transkripte:</p>
@@ -185,7 +190,8 @@ WICHTIG:
     <h2>Erweiterungen</h2>
     <ul>
       <li><strong>Cron-Trigger</strong>: jeden Montag 7:00 Uhr automatisch.</li>
-      <li><strong>Slack-Post</strong>: zusätzlich zur Mail.</li>
+      <li><strong>Slack-Post</strong>: mit Drive-Link zum frischen Battle-Card-Doc.</li>
+      <li><strong>E-Mail-Versand parallel</strong>: wenn dein Team eher in der Inbox lebt, hänge zusätzlich einen Send-Email-Node an — Mail mit Drive-Link drauf.</li>
       <li><strong>Vergleich Woche-zu-Woche</strong>: Trends in Einwänden tracken.</li>
       <li><strong>Persona-spezifisch</strong>: Battle Cards getrennt für SMB/MidMarket/Enterprise.</li>
     </ul>

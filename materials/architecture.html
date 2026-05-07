@@ -49,16 +49,20 @@
 
   <article>
     <h1>Architektur — System-Übersicht</h1>
-    <p class="doc-meta">Vier Bausteine. Kein Backend. Keine Server. Nur Langdock + 60 Min Zeit.</p>
+    <p class="doc-meta">Drei Bausteine. Kein Backend. Keine Server. Nur Langdock + Google Drive + ~30 Min Zeit.</p>
 
     <h2>Big Picture</h2>
-<pre><code>┌──────────────────┐    ┌──────────────────┐    ┌────────────────────────────┐    ┌──────────────┐
-│  Webinar-Page    │    │  Daten-Sync      │    │   Langdock Workflow        │    │  Sales-Inbox │
-│  (GitHub Pages)  │───▶│  Colab oder JS   │───▶│   Triage → Search → Mail   │───▶│  florian+... │
-│                  │    │  Webhook-POST    │    │                            │    │              │
-└──────────────────┘    └──────────────────┘    └────────────────────────────┘    └──────────────┘</code></pre>
+<pre><code>┌──────────────────┐    ┌────────────────────────────┐    ┌──────────────────┐
+│  Webinar-Page    │    │   Langdock Workflow        │    │  Google Drive    │
+│  (GitHub Pages)  │───▶│   Web Research → Routing   │───▶│  Briefing-Doc    │
+│  Webhook-POST    │    │   → Doc-Generation         │    │  im Ordner       │
+└──────────────────┘    └────────────────────────────┘    └──────────────────┘</code></pre>
 
-    <p>Du kannst entweder die Landingpage <strong>direkt</strong> als Frontend benutzen (<code>index.html</code> mit JS-Webhook), oder das Colab-Notebook nehmen, um Daten gezielt für die Live-Demo zu triggern. Beide Wege landen am selben Webhook.</p>
+    <p>Die Landingpage triggert den Webhook direkt aus dem Browser. Langdock recherchiert die Firma live im Web und legt — abhängig von der Watch-Time — ein passendes Briefing-Doc in einem geteilten Drive-Ordner an.</p>
+
+    <div class="callout">
+      <strong>Optional:</strong> Statt Browser-Trigger kannst du jeden anderen HTTP-Client nutzen — Postman, curl, dein CRM-Webflow. Im Repo liegt zusätzlich ein <a href="../colab/webinar_simulator.ipynb">Colab-Notebook</a>, falls du die Pipeline aus einem Python-Kontext anstoßen willst.
+    </div>
 
     <h2>Komponenten im Detail</h2>
 
@@ -67,59 +71,53 @@
       <tr><th>Aspekt</th><th>Detail</th></tr>
       <tr><td>Hosting</td><td>GitHub Pages (kostenlos, HTTPS, statisch)</td></tr>
       <tr><td>Stack</td><td>Plain HTML + Vanilla JS, keine Build-Pipeline</td></tr>
-      <tr><td>Look</td><td>DECAID-Branding (Primary #4A3AFF, Satoshi/Lato)</td></tr>
       <tr><td>Funktion</td><td>Registrierungsformular + zwei Demo-Trigger-Buttons</td></tr>
       <tr><td>Datenfluss</td><td><code>fetch(LANGDOCK_WEBHOOK_URL, {method: 'POST', body: persona})</code></td></tr>
     </table>
 
     <div class="callout">
-      <strong>Warum kein Framework?</strong> Weil's keinen Bedarf gibt. Eine Landingpage in Vanilla JS lädt in 100ms, hat keine Build-Schritte, und Teilnehmer können sie in jedem Editor ihrer Wahl anpassen.
+      <strong>Warum kein Framework?</strong> Weil's keinen Bedarf gibt. Eine Landingpage in Vanilla JS lädt in 100ms, hat keine Build-Schritte, und du kannst sie in jedem Editor anpassen.
     </div>
 
-    <h3>2. Daten-Sync — <code>colab/webinar_simulator.ipynb</code></h3>
-    <table class="spec">
-      <tr><th>Aspekt</th><th>Detail</th></tr>
-      <tr><td>Plattform</td><td>Google Colab (kostenlos, läuft im Browser)</td></tr>
-      <tr><td>Sprache</td><td>Python 3 (nur stdlib, keine pip installs)</td></tr>
-      <tr><td>Funktion</td><td>Konfiguration + Mock-Personas + Webhook-POST</td></tr>
-    </table>
-
-    <p><strong>Warum Colab statt Standalone-Script?</strong></p>
-    <ul>
-      <li>Teilnehmer müssen nichts installieren.</li>
-      <li>Code ist mit Markdown-Erklärungen verzahnt (selbsterklärend).</li>
-      <li>Live-Demo-fähig: jede Zelle einzeln ausführbar.</li>
-    </ul>
-
-    <h3>3. Langdock Workflow</h3>
+    <h3>2. Langdock Workflow</h3>
     <p>Das ist der "intelligente" Teil. Zwei separate Workflows:</p>
 
     <h4>Workflow 1 — Web Research &amp; Smart Routing (live während der Masterclass)</h4>
-<pre><code>[Webhook] → [Web Research] → [Condition] → [Sales-Briefing-Mail]
+<pre><code>[Webhook] → [Web Research] → [Condition] → [Sales-Briefing-Doc]
                                 ↓
-                          [Re-Engagement-Mail]</code></pre>
-    <p><strong>Recherchiert jeden Lead</strong> (Revenue, News, strategische Themen). Routet basierend auf Watch-Time: Hot → Sales-Briefing für Sales. Cold/No-Show → Re-Engagement-Hooks für Marketing. Kein Lead fällt durchs Raster.</p>
+                          [Re-Engagement-Doc]</code></pre>
+    <p><strong>Recherchiert jeden Lead</strong> (Revenue, News, strategische Themen). Routet basierend auf Watch-Time: Hot → Sales-Briefing-Doc im Sales-Ordner. Cold/No-Show → Re-Engagement-Doc im Marketing-Ordner. Kein Lead fällt durchs Raster.</p>
     <p>→ Details: <a href="workflow1-lead-triage.html">workflow1-lead-triage.html</a></p>
 
     <h4>Workflow 2 — Battle Cards (Bonus-Demo)</h4>
-<pre><code>[Webhook] → [Extract Objections] → [Synthesize] → [Mail]</code></pre>
-    <p>Wertet 8–10 Sales-Call-Transkripte aus und generiert eine wöchentliche Battle Card.</p>
+<pre><code>[Webhook] → [Extract Objections] → [Synthesize] → [Doc → Sales-Ordner]</code></pre>
+    <p>Wertet 8–10 Sales-Call-Transkripte aus und legt eine wöchentliche Battle Card als Doc ab.</p>
     <p>→ Details: <a href="workflow2-battle-cards.html">workflow2-battle-cards.html</a></p>
 
-    <h3>4. Sales-Inbox</h3>
+    <h3>3. Google Drive — Output-Layer</h3>
     <table class="spec">
       <tr><th>Aspekt</th><th>Detail</th></tr>
-      <tr><td>Adresse-Setup</td><td>Zwei Inboxen: <code>&lt;YOUR_SALES_INBOX&gt;</code> für Hot-Path, <code>&lt;YOUR_MARKETING_INBOX&gt;</code> für Cold-Path</td></tr>
-      <tr><td>Warum Plus-Adresse?</td><td>Filtern — alle Demo-Mails landen automatisch in einem Label</td></tr>
-      <tr><td>Content</td><td>Markdown oder HTML, generiert von Langdock</td></tr>
+      <tr><td>Setup</td><td>Zwei Ordner empfohlen: <code>Sales – Hot Leads</code> und <code>Marketing – Re-Engagement</code> (plus optional <code>Battle Cards</code>)</td></tr>
+      <tr><td>Warum getrennt?</td><td>Sales soll nur Hot-Briefings sehen, Marketing entscheidet über Re-Engagement separat</td></tr>
+      <tr><td>Format</td><td>Google Docs mit Markdown-Rendering — Tabellen, Quellen-Links, formatierte Briefings</td></tr>
+      <tr><td>Auffindbarkeit</td><td>"Sortieren nach: Zuletzt geändert" → neue Briefings poppen oben rein</td></tr>
     </table>
+
+    <p><strong>Warum Drive statt Mail?</strong></p>
+    <ul>
+      <li>Kein Spam-Risiko</li>
+      <li>Sofort visuell auffindbar im Ordner statt einzelne Mails</li>
+      <li>Format-reich (Tabellen, Quellen-Links, Bilder)</li>
+      <li>Team-kollaborativ (Kommentare, Tasks zuweisen)</li>
+      <li>Kein OAuth-Drama mit Refresh-Tokens</li>
+    </ul>
 
     <h2>Was bewusst <strong>nicht</strong> Teil der Demo ist</h2>
     <table class="spec">
       <tr><th>Komponente</th><th>Warum nicht</th></tr>
       <tr><td>HubSpot-Sync</td><td>Keine Mock-Personas in einem produktiven CRM. In Prod relevant, in Demo nicht.</td></tr>
       <tr><td>Slack-Notifications</td><td>Reduktion auf das Wesentliche. Jeder kann's später ergänzen.</td></tr>
-      <tr><td>Persistente Datenbank</td><td>Für die Demo unnötig.</td></tr>
+      <tr><td>Persistente Datenbank</td><td>Für die Demo unnötig. In Prod könntest du Webhooks zusätzlich in BigQuery loggen.</td></tr>
       <tr><td>Auth/User-Management</td><td>Statische Page, kein Login.</td></tr>
     </table>
 
@@ -127,21 +125,20 @@
     <table class="spec">
       <tr><th>Layer</th><th>Tool</th><th>Kostenpunkt</th></tr>
       <tr><td>Frontend</td><td>GitHub Pages + Vanilla HTML/CSS/JS</td><td>$0</td></tr>
-      <tr><td>Trigger</td><td>Google Colab + Python stdlib</td><td>$0</td></tr>
       <tr><td>Workflow-Engine</td><td>Langdock</td><td>ab ~$30/Monat</td></tr>
       <tr><td>Web Search</td><td>Langdock-integriert</td><td>inkludiert</td></tr>
-      <tr><td>Mail</td><td>Gmail/Outlook OAuth</td><td>$0</td></tr>
+      <tr><td>Output</td><td>Google Drive (Workspace oder Free)</td><td>$0</td></tr>
       <tr><td><strong>Gesamt</strong></td><td>—</td><td><strong>~$30/Monat</strong></td></tr>
     </table>
 
     <h2>Skalierungs-Pfad</h2>
     <p>So sieht's aus, wenn du das Setup in Production schiebst:</p>
     <ol>
-      <li><strong>Frontend</strong>: GitHub Pages → Vercel/Netlify mit eigener Domain.</li>
-      <li><strong>Trigger</strong>: Statt Colab direkter Sync aus deinem CRM (HubSpot Workflow → Webhook).</li>
+      <li><strong>Frontend</strong>: GitHub Pages → Vercel/Netlify mit eigener Domain (oder direkter Webhook-Trigger aus deinem echten Webinar-Tool).</li>
+      <li><strong>Trigger</strong>: Direkter Sync aus deinem CRM/Webinar-Tool (HubSpot Workflow → Webhook, Demio Webhook, Zoom Webhook).</li>
       <li><strong>Langdock</strong>: Bleibt. Skaliert von 100 zu 100k Leads/Monat ohne Code-Änderung.</li>
-      <li><strong>Mail</strong>: Statt Gmail-OAuth → Postmark/Sendgrid mit eigener Domain.</li>
-      <li><strong>Logging</strong>: Jede Triage in BigQuery/Snowflake mitschreiben.</li>
+      <li><strong>Output</strong>: Drive bleibt fürs Team-Briefing — zusätzlich Slack-Notifications oder direkter HubSpot-Lifecycle-Update.</li>
+      <li><strong>Logging</strong>: Jeden Workflow-Run in BigQuery/Snowflake mitschreiben für Konversionsanalyse.</li>
     </ol>
 
     <p style="margin-top: 24px;">Die Architektur ändert sich nicht. Nur die Komponenten werden professionalisiert.</p>
