@@ -2,7 +2,7 @@
 
 Du hast die Masterclass besucht. Hier ist alles, was du brauchst, um den gezeigten Workflow in deinem eigenen Setup nachzubauen.
 
-> **In 30 Minuten** hast du eine Pipeline am Laufen, die jeden Webinar-Lead live im Web recherchiert, Hot Leads als Sales-Briefing-Doc im Sales-Ordner ablegt und No-Shows mit personalisierten Re-Engagement-Hooks im Marketing-Ordner.
+> **In 30 Minuten** hast du eine Pipeline am Laufen, die jeden Webinar-Lead live im Web recherchiert und ein Briefing-Doc in deinem Drive ablegt — Hot Leads bekommen ein Sales-Briefing mit Eisbrecher (🔥-Präfix), No-Shows einen personalisierten Re-Engagement-Vorschlag fürs Marketing (❄️-Präfix).
 
 **👉 Direkt loslegen:** [Quick-Start-Anleitung öffnen](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/materials/quick-start.html)
 

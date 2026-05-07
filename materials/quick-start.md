@@ -37,8 +37,8 @@ Klick im Webhook-Node auf **"Copy URL"**. Diese URL trägst du in die Landingpag
 
 Öffne die Landingpage in deinem Browser, klick auf einen der zwei Demo-Buttons:
 
-- **Jürgen** (3 Min Watch-Time) → Re-Engagement-Doc landet im Marketing-Ordner.
-- **Gabi** (58 Min Watch-Time) → Sales-Briefing-Doc landet im Sales-Ordner.
+- **Jürgen** (3 Min Watch-Time) → Re-Engagement-Doc mit ❄️-Präfix landet in deinem Drive-Ordner.
+- **Gabi** (58 Min Watch-Time) → Sales-Briefing-Doc mit 🔥-Präfix landet im selben Ordner.
 
 Drive-Ordner offen halten, "Sortieren nach: Zuletzt geändert" — die neuen Docs poppen oben rein.
 
@@ -58,7 +58,7 @@ Die [8 fiktiven Transkripte](../transcripts/fake_sales_calls/) im Repo sind als 
 → Drive-Integration ist nicht verbunden oder OAuth ist abgelaufen. Re-Auth in den Langdock-Settings.
 
 **"Doc-Titel ist leer oder Doc-Body fehlt"**
-→ Larry hat kein gültiges JSON zurückgegeben. Schau in die Run-Logs, ob der Output im Format `{ "doc_title": ..., "doc_body": ... }` kommt. Falls nicht: JSON-Output-Mode in Langdock erzwingen.
+→ Larry hat kein gültiges JSON zurückgegeben. Schau in die Run-Logs, ob der Output im Format `{ "mode": "...", "doc_title": "...", "doc_body": "..." }` kommt. Falls nicht: JSON-Output-Mode in Langdock erzwingen.
 
 **"Doc-Modus stimmt nicht (z.B. Hot statt Cold)"**
 → Larry hat die Watch-Time falsch interpretiert. Prompt anpassen, ggf. die 30-Min-Schwelle expliziter machen oder mit Beispielen verstärken.

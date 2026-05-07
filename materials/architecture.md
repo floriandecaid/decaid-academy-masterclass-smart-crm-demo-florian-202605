@@ -67,8 +67,8 @@ Wertet 8–10 Sales-Call-Transkripte aus und legt eine wöchentliche Battle Card
 
 | Aspekt | Detail |
 |---|---|
-| **Setup** | Zwei Ordner empfohlen: `Sales – Hot Leads` und `Marketing – Re-Engagement` (plus optional `Battle Cards`) |
-| **Warum getrennt?** | Sales soll nur Hot-Briefings sehen, Marketing entscheidet über Re-Engagement separat |
+| **Setup für die Demo** | Ein gemeinsamer Ordner reicht — Larry präfixt die Doc-Titel mit 🔥 (Hot) bzw. ❄️ (No-Show), sortiert nach "Zuletzt geändert" siehst du alles auf einen Blick |
+| **Setup für Production** | Zwei Ordner empfohlen: `Sales – Hot Leads` und `Marketing – Re-Engagement` — Sales sieht nur Hot-Briefings, Marketing entscheidet über Re-Engagement separat. Routing über einen zusätzlichen Folder-Switch nach Larrys `mode`-Output |
 | **Format** | Google Docs mit Markdown-Rendering — Tabellen, Quellen-Links, formatierte Briefings |
 | **Auffindbarkeit** | "Sortieren nach: Zuletzt geändert" → neue Briefings poppen oben rein |
 
