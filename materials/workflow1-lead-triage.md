@@ -67,9 +67,9 @@ Webinar-Plattformen (Demio, Livestorm, Zoom Webinars) liefern dir nur:
 
 ## Node 2 — Larry the Lead Researcher (Agent)
 
-**Modell:** Claude Sonnet (gut bei längerem Markdown-Output) · **Tool aktiviert:** ✅ Web Search · **Output-Format:** strukturiertes JSON mit `doc_title` + `doc_body` (Markdown)
+**Modell:** Claude Sonnet (gut bei längerem Markdown-Output) · **Tool aktiviert:** ✅ Web Search · **Output-Format:** strukturiertes JSON mit `mode` + `doc_title` + `doc_body` (Markdown)
 
-Larry ist das Hirn des Workflows. Er bekommt den Webhook-Payload, recherchiert die Firma live im Web, **entscheidet selbst auf Basis der Watch-Time**, ob er ein Sales-Briefing oder ein Re-Engagement-Briefing schreibt, und gibt zwei Felder zurück: einen Doc-Titel und einen Markdown-Doc-Body. Beides wird von den nachfolgenden Drive-Nodes 1:1 verwendet.
+Larry ist das Hirn des Workflows. Er bekommt den Webhook-Payload, recherchiert die Firma live im Web, **entscheidet selbst auf Basis der Watch-Time**, ob er ein Sales-Briefing oder ein Re-Engagement-Briefing schreibt, und gibt drei Felder zurück: `mode` (sichtbar im Run-Log), `doc_title` (mit 🔥/❄️-Präfix) und `doc_body` (Markdown). Titel und Body werden von den nachfolgenden Drive-Nodes 1:1 verwendet.
 
 ### Input
 
@@ -173,16 +173,23 @@ Doc-Titel und im finalen Abschnitt des Doc-Bodys.
 
 # Output-Contract
 
-Du gibst **ein einziges JSON-Objekt** zurück mit genau zwei Feldern:
+Du gibst **ein einziges JSON-Objekt** zurück mit genau drei Feldern:
 
 {
+  "mode":      "sales_briefing" | "re_engagement",
   "doc_title": "<String, siehe Title-Templates unten>",
   "doc_body":  "<String, vollständiger Markdown-Doc-Body, siehe Body-Templates unten>"
 }
 
+- Das `mode`-Feld kommt **zuerst** — es ist die Begründung für die anderen
+  beiden Felder. Sales-Team und Marketing-Team sehen so auf einen Blick im
+  Langdock-Run-Log, welcher Modus gewählt wurde.
 - Keine Markdown-Code-Fences um das JSON.
 - Keine Kommentare, keine extra Felder, kein Fließtext davor/danach.
 - `doc_body` ist Markdown — Drive rendert die Formatierung.
+- Konsistenz-Regel: Wenn `mode = "sales_briefing"`, MUSS `doc_title` mit
+  `🔥 HOT` beginnen. Wenn `mode = "re_engagement"`, MUSS `doc_title` mit
+  `❄️ NO-SHOW` beginnen. Niemals mischen.
 
 # WICHTIG zur Template-Verwendung
 
@@ -293,7 +300,7 @@ Hier sind die Lead-Daten:
 
 {{webhook.body.lead}}
 
-Recherchiere die Firma, wähle den richtigen Modus auf Basis der Watch-Time und gib das fertige Doc als JSON zurück.
+Recherchiere die Firma, wähle den richtigen Modus auf Basis der Watch-Time und gib JSON mit drei Feldern zurück: mode, doc_title, doc_body.
 ```
 
 ---
@@ -336,8 +343,8 @@ Bevor du live gehst:
 - [ ] Web-Search-Tool im Larry-Node aktiviert ✅
 - [ ] Google-Drive-Integration verbunden (OAuth)
 - [ ] Drive-Ordner-ID im Create-Document-Node eingetragen
-- [ ] **Test mit Jürgen** (3 Min Watch) → Doc-Titel beginnt mit `❄️ NO-SHOW`, Body enthält Re-Engagement-Vorschlag
-- [ ] **Test mit Gabi** (58 Min Watch) → Doc-Titel beginnt mit `🔥 HOT`, Body enthält Eisbrecher-Satz
+- [ ] **Test mit Jürgen** (3 Min Watch, fritz-kola) → Larrys `mode` = `re_engagement`, Doc-Titel beginnt mit `❄️ NO-SHOW`, Body enthält Re-Engagement-Vorschlag
+- [ ] **Test mit Gabi** (58 Min Watch, Gerolsteiner) → Larrys `mode` = `sales_briefing`, Doc-Titel beginnt mit `🔥 HOT`, Body enthält Eisbrecher-Satz
 - [ ] Beide Docs enthalten konkrete Recherche-Inhalte zur Firma
 - [ ] Eisbrecher / Re-Engagement-Hook wirken **konkret**, nicht generisch
 

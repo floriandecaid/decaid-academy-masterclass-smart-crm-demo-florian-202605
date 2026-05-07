@@ -110,9 +110,9 @@
     </div>
 
     <h2>Node 2 — Larry the Lead Researcher (Agent)</h2>
-    <p><strong>Modell:</strong> Claude Sonnet · <strong>Tool aktiviert:</strong> ✅ Web Search · <strong>Output-Format:</strong> JSON mit <code>doc_title</code> + <code>doc_body</code> (Markdown)</p>
+    <p><strong>Modell:</strong> Claude Sonnet · <strong>Tool aktiviert:</strong> ✅ Web Search · <strong>Output-Format:</strong> JSON mit <code>mode</code> + <code>doc_title</code> + <code>doc_body</code> (Markdown)</p>
 
-    <p>Larry ist das Hirn des Workflows. Er bekommt den Webhook-Payload, recherchiert die Firma live im Web, <strong>entscheidet selbst auf Basis der Watch-Time</strong>, ob er ein Sales-Briefing oder ein Re-Engagement-Briefing schreibt, und gibt zwei Felder zurück: einen Doc-Titel und einen Markdown-Doc-Body. Beides wird von den nachfolgenden Drive-Nodes 1:1 verwendet.</p>
+    <p>Larry ist das Hirn des Workflows. Er bekommt den Webhook-Payload, recherchiert die Firma live im Web, <strong>entscheidet selbst auf Basis der Watch-Time</strong>, ob er ein Sales-Briefing oder ein Re-Engagement-Briefing schreibt, und gibt drei Felder zurück: <code>mode</code> (sichtbar im Run-Log), <code>doc_title</code> (mit 🔥/❄️-Präfix) und <code>doc_body</code> (Markdown). Titel und Body werden von den nachfolgenden Drive-Nodes 1:1 verwendet.</p>
 
     <h3>Input</h3>
     <p>Larry braucht den <strong>kompletten Lead-Payload</strong> — nicht nur den Firmennamen — weil er die Watch-Time fürs Routing und alle Lead-Daten fürs Briefing-Doc verwendet:</p>
@@ -210,16 +210,23 @@ Doc-Titel und im finalen Abschnitt des Doc-Bodys.
 
 # Output-Contract
 
-Du gibst **ein einziges JSON-Objekt** zurück mit genau zwei Feldern:
+Du gibst **ein einziges JSON-Objekt** zurück mit genau drei Feldern:
 
 {
+  "mode":      "sales_briefing" | "re_engagement",
   "doc_title": "&lt;String, siehe Title-Templates unten&gt;",
   "doc_body":  "&lt;String, vollständiger Markdown-Doc-Body, siehe Body-Templates unten&gt;"
 }
 
+- Das `mode`-Feld kommt **zuerst** — es ist die Begründung für die anderen
+  beiden Felder. Sales-Team und Marketing-Team sehen so auf einen Blick im
+  Langdock-Run-Log, welcher Modus gewählt wurde.
 - Keine Markdown-Code-Fences um das JSON.
 - Keine Kommentare, keine extra Felder, kein Fließtext davor/danach.
 - `doc_body` ist Markdown — Drive rendert die Formatierung.
+- Konsistenz-Regel: Wenn `mode = "sales_briefing"`, MUSS `doc_title` mit
+  `🔥 HOT` beginnen. Wenn `mode = "re_engagement"`, MUSS `doc_title` mit
+  `❄️ NO-SHOW` beginnen. Niemals mischen.
 
 # WICHTIG zur Template-Verwendung
 
@@ -327,7 +334,7 @@ Wenn ein Wert nicht ermittelbar ist (z.B. Revenue): schreibe "unbekannt" — **n
 
 {{webhook.body.lead}}
 
-Recherchiere die Firma, wähle den richtigen Modus auf Basis der Watch-Time und gib das fertige Doc als JSON zurück.</code></pre>
+Recherchiere die Firma, wähle den richtigen Modus auf Basis der Watch-Time und gib JSON mit drei Feldern zurück: mode, doc_title, doc_body.</code></pre>
 
     <h2>Node 3 — Create Document</h2>
     <p><strong>Integration:</strong> Google Drive (Create Document)</p>
@@ -361,8 +368,8 @@ Recherchiere die Firma, wähle den richtigen Modus auf Basis der Watch-Time und 
       <li>☐ Web-Search-Tool im Larry-Node aktiviert ✅</li>
       <li>☐ Google-Drive-Integration verbunden (OAuth)</li>
       <li>☐ Drive-Ordner-ID im Create-Document-Node eingetragen</li>
-      <li>☐ <strong>Test mit Jürgen</strong> (3 Min Watch) → Doc-Titel beginnt mit <code>❄️ NO-SHOW</code>, Body enthält Re-Engagement-Vorschlag</li>
-      <li>☐ <strong>Test mit Gabi</strong> (58 Min Watch) → Doc-Titel beginnt mit <code>🔥 HOT</code>, Body enthält Eisbrecher-Satz</li>
+      <li>☐ <strong>Test mit Jürgen</strong> (3 Min Watch, fritz-kola) → Larrys <code>mode</code> = <code>re_engagement</code>, Doc-Titel beginnt mit <code>❄️ NO-SHOW</code>, Body enthält Re-Engagement-Vorschlag</li>
+      <li>☐ <strong>Test mit Gabi</strong> (58 Min Watch, Gerolsteiner) → Larrys <code>mode</code> = <code>sales_briefing</code>, Doc-Titel beginnt mit <code>🔥 HOT</code>, Body enthält Eisbrecher-Satz</li>
       <li>☐ Beide Docs enthalten konkrete Recherche-Inhalte zur Firma</li>
       <li>☐ Eisbrecher / Re-Engagement-Hook wirken <strong>konkret</strong>, nicht generisch</li>
     </ul>
