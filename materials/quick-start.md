@@ -14,24 +14,20 @@ Das Ziel: in 30 Minuten bekommst du zwei Google Docs — ein Sales-Briefing für
 
 ### 2. Drive-Ordner anlegen
 
-In deinem Google Drive zwei Ordner erstellen (oder einen, wenn du es einfacher willst):
+In deinem Google Drive einen Ordner erstellen (z.B. `DECAID Lead Briefings`). Larry präfixt die Doc-Titel mit 🔥 (Hot) oder ❄️ (No-Show), sodass du visuell sofort siehst was was ist. Hot/Cold-Ordner-Trennung kannst du später einbauen.
 
-- `Sales – Hot Leads` → für Briefings nach Workflow-1-Pfad-A
-- `Marketing – Re-Engagement` → für Vorschläge nach Workflow-1-Pfad-B
-
-Ordner-IDs aus den URLs kopieren (`drive.google.com/drive/folders/<DAS_HIER>`). Brauchst du gleich.
+Ordner-ID aus der URL kopieren (`drive.google.com/drive/folders/<DAS_HIER>`). Brauchst du gleich.
 
 ### 3. Workflow 1 nachbauen
 
-Öffne die [Workflow-1-Spec](workflow1-lead-triage.html) und gehe sie von oben nach unten durch. Du brauchst genau 5 Nodes:
+Öffne die [Workflow-1-Spec](workflow1-lead-triage.html) und gehe sie von oben nach unten durch. Du brauchst genau 4 Nodes:
 
 1. **Webhook** (Trigger)
-2. **Web Research Agent** mit aktiviertem Web-Search-Tool — das ist das Herzstück
-3. **Condition Router** auf Watch-Time
-4. **Create Google Doc** im Sales-Ordner (Pfad A: Hot Lead)
-5. **Create Google Doc** im Marketing-Ordner (Pfad B: No-Show / Cold)
+2. **Larry the Lead Researcher** — Agent mit aktiviertem Web-Search-Tool. Routet im Prompt selbst zwischen Hot- (Sales-Briefing) und Cold-Briefing (Re-Engagement).
+3. **Create Document** im Drive-Ordner — legt das leere Doc mit Larrys Titel an
+4. **Update Document** — schreibt Larrys Markdown-Body ins Doc
 
-Alle Prompts, Mappings und Doc-Templates sind in der Spec copy-paste-ready. Setup-Zeit beim ersten Mal: ~15 Minuten.
+Alle Prompts, Mappings und Doc-Templates sind in der Spec copy-paste-ready. Setup-Zeit beim ersten Mal: ~10 Minuten.
 
 ### 4. Webhook-URL kopieren
 
@@ -61,17 +57,17 @@ Die [8 fiktiven Transkripte](../transcripts/fake_sales_calls/) im Repo sind als 
 **"Webhook gibt 200 zurück, aber kein Doc erscheint"**
 → Drive-Integration ist nicht verbunden oder OAuth ist abgelaufen. Re-Auth in den Langdock-Settings.
 
-**"Doc landet im falschen Ordner"**
-→ Ordner-IDs vertauscht zwischen Pfad A und Pfad B. IDs aus Drive-URL nochmal kopieren.
+**"Doc-Titel ist leer oder Doc-Body fehlt"**
+→ Larry hat kein gültiges JSON zurückgegeben. Schau in die Run-Logs, ob der Output im Format `{ "doc_title": ..., "doc_body": ... }` kommt. Falls nicht: JSON-Output-Mode in Langdock erzwingen.
+
+**"Doc-Modus stimmt nicht (z.B. Hot statt Cold)"**
+→ Larry hat die Watch-Time falsch interpretiert. Prompt anpassen, ggf. die 30-Min-Schwelle expliziter machen oder mit Beispielen verstärken.
 
 **"Web Search liefert leere Ergebnisse"**
-→ Web-Search-Tool ist im Node nicht aktiviert (oft vergessen!). Oder der Firmenname ist zu generisch — verwende den vollständigen offiziellen Namen.
-
-**"Beide Docs werden erstellt statt nur eines"**
-→ Der Condition-Node behandelt die Watch-Time als String statt als Zahl. Wrap im Vergleich mit `parseInt()` oder vergleiche gegen den String `"30"`.
+→ Web-Search-Tool ist im Larry-Node nicht aktiviert (oft vergessen!). Oder der Firmenname ist zu generisch — verwende den vollständigen offiziellen Namen.
 
 **"Doc-Inhalt ist Plain-Text statt formatiert"**
-→ Drive-Node speichert raw. Doc-Format auf "Markdown" stellen oder einen Node nutzen, der Markdown rendert.
+→ Update-Document-Node speichert raw. Format-Setting auf "Markdown" stellen.
 
 ---
 

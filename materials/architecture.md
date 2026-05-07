@@ -42,12 +42,12 @@ Das ist der "intelligente" Teil. Zwei separate Workflows:
 #### Workflow 1 — Web Research & Smart Routing (live während der Masterclass)
 
 ```
-[Webhook] → [Web Research] → [Condition] → [Sales-Briefing-Doc]
-                                ↓
-                          [Re-Engagement-Doc]
+[Webhook] → [Larry the Lead Researcher] → [Create Doc] → [Update Doc]
+              Web-Search aktiviert,
+              routet selbst (Hot/Cold)
 ```
 
-**Recherchiert jeden Lead** (Revenue, News, strategische Themen). Routet basierend auf Watch-Time: Hot → Sales-Briefing-Doc im Sales-Ordner. Cold/No-Show → Re-Engagement-Doc im Marketing-Ordner. Kein Lead fällt durchs Raster.
+**Recherchiert jeden Lead** (Revenue, News, strategische Themen). Larry — der Agent mit Web-Search-Zugriff — entscheidet im Prompt selbst, ob er ein Sales-Briefing oder ein Re-Engagement-Briefing schreibt, abhängig von der Watch-Time. Output landet als Google Doc im geteilten Ordner. Kein Lead fällt durchs Raster.
 
 → Details: [`workflow1-lead-triage.html`](workflow1-lead-triage.html)
 

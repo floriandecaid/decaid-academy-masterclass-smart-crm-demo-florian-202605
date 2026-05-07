@@ -27,8 +27,8 @@ Du hast die Masterclass besucht. Hier ist alles, was du brauchst, um den gezeigt
 
 1. **[Quick Start lesen](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/materials/quick-start.html)** — der schnellste Weg zur ersten funktionierenden Pipeline.
 2. **Langdock-Account + Google-Drive-Integration** — falls du noch keinen Langdock-Account hast, brauchst du einen Plan mit aktiviertem Web-Search-Tool (typisch: Pro oder höher). Drive verbindest du in Langdock per OAuth.
-3. **Drive-Ordner anlegen** — `Sales – Hot Leads` und `Marketing – Re-Engagement`.
-4. **[Workflow 1 nachbauen](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/materials/workflow1-lead-triage.html)** — Setup-Zeit: 15 Minuten. Output: zwei Doc-Pfade, die personalisiert in den passenden Ordnern landen.
+3. **Drive-Ordner anlegen** — ein gemeinsamer für die Demo (z.B. `DECAID Lead Briefings`); Hot/Cold-Trennung kannst du später einbauen.
+4. **[Workflow 1 nachbauen](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/materials/workflow1-lead-triage.html)** — Setup-Zeit: 10 Minuten. Vier Nodes: Webhook → Larry → Create Doc → Update Doc. Larry routet im Prompt selbst zwischen Hot- und Cold-Briefing.
 5. **Über die Landingpage testen** — Demo-Buttons feuern beide Personas an den Workflow. Beide Docs landen in deinem Drive.
 6. **[Workflow 2 dazuholen](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/materials/workflow2-battle-cards.html)**, wenn du Sales-Call-Transkripte hast — optional, aber wenn du Gong, Modjo oder ähnliches im Einsatz hast, lohnen sich weitere 10 Minuten Setup.
 
@@ -47,10 +47,12 @@ Du hast die Masterclass besucht. Hier ist alles, was du brauchst, um den gezeigt
 ## Architektur in einer Zeile
 
 ```
-[Webhook]  →  [Web Research Agent]  →  [Watch-Time ≥ 30 Min?]  →  Doc → Sales-Ordner  |  Doc → Marketing-Ordner
+[Webhook]  →  [Larry the Lead Researcher]  →  [Create Doc]  →  [Update Doc]
+                  Web-Search aktiviert,
+                  routet selbst (Hot/Cold)
 ```
 
-Die KI recherchiert **jeden** Lead — Revenue, News, strategische Themen. Erst danach entscheidet die Watch-Time, in welchem Drive-Ordner das Briefing-Doc landet. Kein Lead fällt durchs Raster.
+Larry ist ein einziger Agent mit Web-Search-Zugriff, der **jeden** Lead recherchiert (Revenue, News, strategische Themen) und auf Basis der Watch-Time selbst entscheidet, ob er ein Sales-Briefing oder ein Re-Engagement-Briefing schreibt. Das Ergebnis landet als Google Doc im geteilten Ordner. Kein Lead fällt durchs Raster.
 
 Volle Erklärung in der [Architektur-Übersicht](https://floriandecaid.github.io/decaid-academy-masterclass-smart-crm-demo-florian-202605/materials/architecture.html).
 

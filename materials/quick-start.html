@@ -61,23 +61,18 @@
     </ol>
 
     <h3>2. Drive-Ordner anlegen</h3>
-    <p>In deinem Google Drive zwei Ordner erstellen (oder einen, wenn du es einfacher willst):</p>
-    <ul>
-      <li><code>Sales – Hot Leads</code> → für Briefings nach Workflow-1-Pfad-A</li>
-      <li><code>Marketing – Re-Engagement</code> → für Vorschläge nach Workflow-1-Pfad-B</li>
-    </ul>
-    <p>Ordner-IDs aus den URLs kopieren (<code>drive.google.com/drive/folders/&lt;DAS_HIER&gt;</code>). Brauchst du gleich.</p>
+    <p>In deinem Google Drive einen Ordner erstellen (z.B. <code>DECAID Lead Briefings</code>). Larry präfixt die Doc-Titel mit 🔥 (Hot) oder ❄️ (No-Show), sodass du visuell sofort siehst was was ist. Hot/Cold-Ordner-Trennung kannst du später einbauen.</p>
+    <p>Ordner-ID aus der URL kopieren (<code>drive.google.com/drive/folders/&lt;DAS_HIER&gt;</code>). Brauchst du gleich.</p>
 
     <h3>3. Workflow 1 nachbauen</h3>
-    <p>Öffne die <a href="workflow1-lead-triage.html">Workflow-1-Spec</a> und gehe sie von oben nach unten durch. Du brauchst genau 5 Nodes:</p>
+    <p>Öffne die <a href="workflow1-lead-triage.html">Workflow-1-Spec</a> und gehe sie von oben nach unten durch. Du brauchst genau 4 Nodes:</p>
     <ol>
       <li><strong>Webhook</strong> (Trigger)</li>
-      <li><strong>Web Research Agent</strong> mit aktiviertem Web-Search-Tool — das ist das Herzstück</li>
-      <li><strong>Condition Router</strong> auf Watch-Time</li>
-      <li><strong>Create Google Doc</strong> im Sales-Ordner (Pfad A: Hot Lead)</li>
-      <li><strong>Create Google Doc</strong> im Marketing-Ordner (Pfad B: No-Show / Cold)</li>
+      <li><strong>Larry the Lead Researcher</strong> — Agent mit aktiviertem Web-Search-Tool. Routet im Prompt selbst zwischen Hot- (Sales-Briefing) und Cold-Briefing (Re-Engagement).</li>
+      <li><strong>Create Document</strong> im Drive-Ordner — legt das leere Doc mit Larrys Titel an</li>
+      <li><strong>Update Document</strong> — schreibt Larrys Markdown-Body ins Doc</li>
     </ol>
-    <p>Alle Prompts, Mappings und Doc-Templates sind in der Spec copy-paste-ready. Setup-Zeit beim ersten Mal: <strong>~15 Minuten</strong>.</p>
+    <p>Alle Prompts, Mappings und Doc-Templates sind in der Spec copy-paste-ready. Setup-Zeit beim ersten Mal: <strong>~10 Minuten</strong>.</p>
 
     <h3>4. Webhook-URL kopieren</h3>
     <p>Klick im Webhook-Node auf <strong>"Copy URL"</strong>. Diese URL trägst du in die Landingpage (<code>index.html</code>, Variable <code>LANGDOCK_WEBHOOK_URL</code>) oder in dein eigenes Trigger-Setup ein.</p>
@@ -105,19 +100,19 @@
     </div>
 
     <div class="callout callout--warn">
-      <strong>"Doc landet im falschen Ordner"</strong> — Ordner-IDs vertauscht zwischen Pfad A und Pfad B. IDs aus Drive-URL nochmal kopieren.
+      <strong>"Doc-Titel ist leer oder Doc-Body fehlt"</strong> — Larry hat kein gültiges JSON zurückgegeben. Schau in die Run-Logs, ob der Output im Format <code>{ "doc_title": ..., "doc_body": ... }</code> kommt. Falls nicht: JSON-Output-Mode in Langdock erzwingen.
     </div>
 
     <div class="callout callout--warn">
-      <strong>"Web Search liefert leere Ergebnisse"</strong> — Web-Search-Tool ist im Node nicht aktiviert (oft vergessen!). Oder der Firmenname ist zu generisch — verwende den vollständigen offiziellen Namen.
+      <strong>"Doc-Modus stimmt nicht (z.B. Hot statt Cold)"</strong> — Larry hat die Watch-Time falsch interpretiert. Prompt anpassen, ggf. die 30-Min-Schwelle expliziter machen oder mit Beispielen verstärken.
     </div>
 
     <div class="callout callout--warn">
-      <strong>"Beide Docs werden erstellt statt nur eines"</strong> — Der Condition-Node behandelt die Watch-Time als String statt als Zahl. Wrap im Vergleich mit <code>parseInt()</code> oder vergleiche gegen den String <code>"30"</code>.
+      <strong>"Web Search liefert leere Ergebnisse"</strong> — Web-Search-Tool ist im Larry-Node nicht aktiviert (oft vergessen!). Oder der Firmenname ist zu generisch — verwende den vollständigen offiziellen Namen.
     </div>
 
     <div class="callout callout--warn">
-      <strong>"Doc-Inhalt ist Plain-Text statt formatiert"</strong> — Drive-Node speichert raw. Doc-Format auf "Markdown" stellen oder einen Node nutzen, der Markdown rendert.
+      <strong>"Doc-Inhalt ist Plain-Text statt formatiert"</strong> — Update-Document-Node speichert raw. Format-Setting auf "Markdown" stellen.
     </div>
 
     <h2>Was als Nächstes?</h2>
