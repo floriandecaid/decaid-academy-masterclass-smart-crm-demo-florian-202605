@@ -94,13 +94,12 @@ Wertet 8–10 Sales-Call-Transkripte aus und legt eine wöchentliche Battle Card
 
 ## Tech-Stack-Zusammenfassung
 
-| Layer | Tool | Kostenpunkt |
-|---|---|---|
-| Frontend | GitHub Pages + Vanilla HTML/CSS/JS | $0 |
-| Workflow-Engine | Langdock | ab ~$30/Monat |
-| Web Search | Langdock-integriert (Bing/Google API) | inkludiert |
-| Output | Google Drive (Workspace oder Free) | $0 (existing account) |
-| **Gesamt** | — | **~$30/Monat** |
+| Layer | Tool |
+|---|---|
+| Frontend | GitHub Pages + Vanilla HTML/CSS/JS |
+| Workflow-Engine | Langdock (mit aktiviertem Web-Search-Tool) |
+| Web Search | Langdock-integriert (Bing/Google API) |
+| Output | Google Drive (Workspace oder Free) |
 
 ---
 

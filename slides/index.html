@@ -280,6 +280,79 @@
       font-family: 'Satoshi', sans-serif;
       font-weight: 700;
     }
+
+    /* ── Intro slide (Florian) ── */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 48px;
+      align-items: center;
+      margin-top: 24px;
+    }
+    .intro-portrait {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      max-width: 360px;
+      border: 3px solid var(--decaid-ink);
+      border-radius: 24px;
+      box-shadow: 8px 8px 0 var(--decaid-ink);
+      transform: rotate(-2deg);
+      object-fit: cover;
+      display: block;
+    }
+    .intro-content h2 { margin-bottom: 8px; }
+    .intro-content .role {
+      font-size: 1rem;
+      color: var(--decaid-ink-muted);
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+    .intro-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .intro-stat {
+      background: var(--decaid-surface);
+      border: 2px solid var(--decaid-ink);
+      border-radius: 12px;
+      padding: 12px 16px;
+      box-shadow: 3px 3px 0 var(--decaid-ink);
+    }
+    .intro-stat__num {
+      font-family: 'Satoshi', sans-serif;
+      font-weight: 900;
+      font-size: 1.6rem;
+      color: var(--decaid-accent-magenta);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .intro-stat__label {
+      font-size: 0.75rem;
+      color: var(--decaid-ink-muted);
+      line-height: 1.3;
+    }
+    .intro-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .intro-bullets li {
+      padding-left: 28px;
+      position: relative;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .intro-bullets li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--decaid-accent-magenta);
+      font-weight: 900;
+    }
   </style>
 </head>
 <body>
@@ -295,7 +368,43 @@
         <div class="cover__meta">Mai 2026 · 60 Minuten · Florian Langer</div>
       </section>
 
-      <!-- ───────── Slide 2: Pain (3 Stats) ───────── -->
+      <!-- ───────── Slide 2: Florian-Intro ───────── -->
+      <section>
+        <div class="decaid-brand">
+          <div class="decaid-brand__icon">D</div>
+          <span class="decaid-brand__text">DECAID</span>
+          <span class="decaid-brand__sub">Academy</span>
+        </div>
+        <span class="eyebrow">Wer redet hier</span>
+
+        <div class="intro-grid">
+          <img src="../assets/florian-portrait.jpg" alt="Florian Langer" class="intro-portrait" />
+
+          <div class="intro-content">
+            <h2>Florian Langer</h2>
+            <div class="role">Founder · DECAID Studio &amp; DECAID Academy</div>
+
+            <div class="intro-stats">
+              <div class="intro-stat">
+                <div class="intro-stat__num">10+ Jahre</div>
+                <div class="intro-stat__label">B2B Marketing &amp; RevOps</div>
+              </div>
+              <div class="intro-stat">
+                <div class="intro-stat__num">DACH</div>
+                <div class="intro-stat__label">Mid-Market &amp; Enterprise</div>
+              </div>
+            </div>
+
+            <ul class="intro-bullets">
+              <li>Baue KI-gestützte Revenue-Workflows für GTM-Teams</li>
+              <li>Heute: produktive Pipelines statt ChatGPT-Tabs</li>
+              <li>Hier zeige ich euch, was im Alltag wirklich funktioniert</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────── Slide 3: Pain (3 Stats) ───────── -->
       <section>
         <div class="decaid-brand">
           <div class="decaid-brand__icon">D</div>
