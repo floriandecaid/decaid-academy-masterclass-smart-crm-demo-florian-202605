@@ -147,7 +147,17 @@
 
       <div class="demo-panel" id="demoPanel">
         <h2>🎬 Demo Trigger</h2>
-        <p>Diese Buttons feuern Mock-Webinar-Daten direkt an unseren Langdock-Workflow.</p>
+        <p>Diese Buttons feuern Mock-Webinar-Daten an deinen Langdock-Workflow.</p>
+
+        <details style="margin-bottom: 8px; background: rgba(255,234,0,0.08); border: 1px solid rgba(255,234,0,0.3); border-radius: 8px; padding: 12px 16px;">
+          <summary style="cursor: pointer; font-weight: 700; color: var(--decaid-primary); font-size: 0.85rem;">⚙️ Setup: Wie kriegst du deinen Webhook?</summary>
+          <ol style="margin: 12px 0 0; padding-left: 22px; font-size: 0.82rem; line-height: 1.55; color: rgba(255,255,255,0.85);">
+            <li>Login bei <a href="https://app.langdock.com" target="_blank" rel="noopener" style="color: var(--decaid-primary);">app.langdock.com</a></li>
+            <li>Workflow 1 öffnen → <strong>Webhook-Node</strong> (ganz links) anklicken</li>
+            <li>Button <code style="background:rgba(0,0,0,0.4); padding:1px 6px; border-radius:4px;">Copy URL</code> klicken</li>
+            <li>In <code style="background:rgba(0,0,0,0.4); padding:1px 6px; border-radius:4px;">index.html</code> die Variable <code style="background:rgba(0,0,0,0.4); padding:1px 6px; border-radius:4px;">LANGDOCK_WEBHOOK_URL</code> ersetzen</li>
+          </ol>
+        </details>
 
         <div class="demo-panel__buttons">
           <button class="btn btn--demo-cold" data-persona="juergen" type="button">
@@ -202,10 +212,20 @@
     })();
 
     /* ────────────────────────────────────────────────────────────
-     * Konfiguration — Webhook für die Live-Demo der Masterclass.
-     * Wenn du das Repo forkst: Webhook hier durch deinen ersetzen.
+     * Konfiguration — Webhook für deinen Workflow 1.
+     *
+     * Wo bekommst du die URL?
+     *   1. Login bei app.langdock.com
+     *   2. Workflow 1 (Web Research & Smart Routing) öffnen
+     *   3. Webhook-Node (ganz links) anklicken
+     *   4. Button "Copy URL" klicken
+     *   5. Hier unten einsetzen — die URL beginnt mit
+     *      https://app.langdock.com/api/hooks/workflows/<workflow-id>
+     *
+     * Solange der Platzhalter steht, zeigt die Demo nur die JSON-Payload
+     * an, die gesendet werden würde — kein echter Trigger.
      * ──────────────────────────────────────────────────────────── */
-    const LANGDOCK_WEBHOOK_URL = "https://app.langdock.com/api/hooks/workflows/c2ac7fd1-380e-4a86-94d4-c3d517958095";
+    const LANGDOCK_WEBHOOK_URL = "<YOUR_WORKFLOW_1_WEBHOOK_URL>";
 
     /* ────────────────────────────────────────────────────────────
      * Mock-Personas für die Live-Demo.
@@ -252,7 +272,11 @@
 
       if (LANGDOCK_WEBHOOK_URL.startsWith("<")) {
         setStatus(
-          `⚠️  Kein Webhook konfiguriert.\n` +
+          `⚠️  Kein Webhook konfiguriert.\n\n` +
+          `So bekommst du die URL:\n` +
+          `1. app.langdock.com → dein Workflow öffnen\n` +
+          `2. Webhook-Node (links) anklicken\n` +
+          `3. "Copy URL" → in index.html als LANGDOCK_WEBHOOK_URL einsetzen\n\n` +
           `Würde senden:\n${JSON.stringify(payload, null, 2)}`,
           "err"
         );

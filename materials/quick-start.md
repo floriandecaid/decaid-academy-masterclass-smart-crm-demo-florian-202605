@@ -31,7 +31,15 @@ Alle Prompts, Mappings und Doc-Templates sind in der Spec copy-paste-ready. Setu
 
 ### 4. Webhook-URL kopieren
 
-Klick im Webhook-Node auf **"Copy URL"**. Diese URL trägst du in die Landingpage (`index.html`, Variable `LANGDOCK_WEBHOOK_URL`) oder in dein eigenes Trigger-Setup ein.
+In Langdock auf den **Webhook-Node** klicken (ganz links im Workflow). Im Detail-Panel rechts erscheint ein Button **"Copy URL"** — Klick.
+
+Du bekommst eine URL der Form `https://app.langdock.com/api/hooks/workflows/<workflow-id>`.
+
+**Diese URL trägst du an zwei Stellen ein, je nachdem wie du triggern willst:**
+
+- **Browser-Trigger via Landingpage** → in [`index.html`](../index.html), Variable `LANGDOCK_WEBHOOK_URL` (im `<script>`-Block am Ende). Demo-Buttons funktionieren dann.
+- **Battle-Cards-Demo** → in [`battle-cards.html`](../battle-cards.html), Variable `LANGDOCK_W2_WEBHOOK_URL` (zweiter Workflow, anderer Webhook).
+- **Eigener Trigger** (curl, Python, dein CRM-Webhook) → POST-Endpoint mit JSON-Body wie in der [Workflow-Spec](workflow1-lead-triage.html) beschrieben.
 
 ### 5. Testen
 

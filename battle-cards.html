@@ -99,6 +99,16 @@
         <h2>📋 Battle-Card-Trigger</h2>
         <p>Die 8 Transkripte liegen im Repo unter <code style="color:var(--decaid-primary); background:rgba(0,0,0,0.3);">transcripts/fake_sales_calls/</code> — Klick "Laden" liest sie aus, "Senden" feuert sie an den Workflow.</p>
 
+        <details style="margin-bottom: 8px; background: rgba(255,234,0,0.08); border: 1px solid rgba(255,234,0,0.3); border-radius: 8px; padding: 12px 16px;">
+          <summary style="cursor: pointer; font-weight: 700; color: var(--decaid-primary); font-size: 0.85rem;">⚙️ Setup: Wie kriegst du deinen Webhook?</summary>
+          <ol style="margin: 12px 0 0; padding-left: 22px; font-size: 0.82rem; line-height: 1.55; color: rgba(255,255,255,0.85);">
+            <li>Login bei <a href="https://app.langdock.com" target="_blank" rel="noopener" style="color: var(--decaid-primary);">app.langdock.com</a></li>
+            <li>Workflow 2 (Battle Cards) öffnen → <strong>Webhook-Node</strong> (ganz links) anklicken</li>
+            <li>Button <code style="background:rgba(0,0,0,0.4); padding:1px 6px; border-radius:4px;">Copy URL</code> klicken</li>
+            <li>In <code style="background:rgba(0,0,0,0.4); padding:1px 6px; border-radius:4px;">battle-cards.html</code> die Variable <code style="background:rgba(0,0,0,0.4); padding:1px 6px; border-radius:4px;">LANGDOCK_W2_WEBHOOK_URL</code> ersetzen</li>
+          </ol>
+        </details>
+
         <div class="demo-panel__buttons">
           <button class="btn btn--demo-cold" id="loadBtn" type="button">
             1️⃣ Transkripte laden (8)
@@ -178,9 +188,20 @@
     })();
 
     /* ────────────────────────────────────────────────────────────
-     * Konfiguration — Webhook für Workflow 2 (Battle Cards).
+     * Konfiguration — Webhook für deinen Workflow 2 (Battle Cards).
+     *
+     * Wo bekommst du die URL?
+     *   1. Login bei app.langdock.com
+     *   2. Workflow 2 (Battle Cards) öffnen
+     *   3. Webhook-Node (ganz links) anklicken
+     *   4. Button "Copy URL" klicken
+     *   5. Hier unten einsetzen — die URL beginnt mit
+     *      https://app.langdock.com/api/hooks/workflows/<workflow-id>
+     *
+     * Solange der Platzhalter steht, zeigt die Demo nur die JSON-Payload
+     * an, die gesendet werden würde — kein echter Trigger.
      * ──────────────────────────────────────────────────────────── */
-    const LANGDOCK_W2_WEBHOOK_URL = "https://app.langdock.com/api/hooks/workflows/38b86052-d3a1-4195-89e7-b7f9f4746b09";
+    const LANGDOCK_W2_WEBHOOK_URL = "<YOUR_WORKFLOW_2_WEBHOOK_URL>";
 
     /* Die 8 Transkripte aus dem Repo. Filenamen kodieren Metadaten:
        NN-<industry>-<outcome>-<dealstage>.txt */
@@ -287,7 +308,6 @@
     async function sendTranscripts() {
       if (!loadedTranscripts) return;
 
-      sendBtn.disabled = true;
       const week = isoWeek();
       const payload = {
         event: "weekly_battle_card_generation",
@@ -295,6 +315,20 @@
         transcripts: loadedTranscripts
       };
 
+      if (LANGDOCK_W2_WEBHOOK_URL.startsWith("<")) {
+        setStatus(
+          `⚠️  Kein Webhook konfiguriert.\n\n` +
+          `So bekommst du die URL:\n` +
+          `1. app.langdock.com → Workflow 2 (Battle Cards) öffnen\n` +
+          `2. Webhook-Node (links) anklicken\n` +
+          `3. "Copy URL" → in battle-cards.html als LANGDOCK_W2_WEBHOOK_URL einsetzen\n\n` +
+          `Würde senden: ${loadedTranscripts.length} Transkripte (Woche ${week})`,
+          "err"
+        );
+        return;
+      }
+
+      sendBtn.disabled = true;
       setStatus(`› Sende ${loadedTranscripts.length} Transkripte (Woche ${week}) an Langdock…`, "info");
 
       /* Langdock-Webhook unterstützt kein CORS — no-cors fetch.
