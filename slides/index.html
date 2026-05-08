@@ -281,6 +281,35 @@
       font-weight: 700;
     }
 
+    /* Slide-Exit-Link (oben links, alle Slides) */
+    .slides-exit {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 200;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: var(--decaid-surface);
+      border: 2px solid var(--decaid-ink);
+      border-radius: 999px;
+      font-family: 'Satoshi', system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      color: var(--decaid-ink);
+      text-decoration: none;
+      box-shadow: 3px 3px 0 var(--decaid-ink);
+      transition: background 0.15s, transform 0.1s;
+    }
+    .slides-exit:hover {
+      background: var(--decaid-primary);
+      color: var(--decaid-primary-ink);
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0 var(--decaid-ink);
+      text-decoration: none;
+    }
+
     /* ── Intro slide (Florian) ── */
     .intro-grid {
       display: grid;
@@ -356,6 +385,8 @@
   </style>
 </head>
 <body>
+
+  <a href="../index.html" class="slides-exit" aria-label="Zurück zur Landingpage">← Zurück</a>
 
   <div class="reveal">
     <div class="slides">
