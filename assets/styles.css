@@ -551,6 +551,32 @@ section.section--alt {
   font-size: 0.85rem;
   color: rgba(255,255,255,0.6);
 }
+.site-footer__connect {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 999px;
+  color: #fff !important;
+  font-family: 'Satoshi', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+.site-footer__connect:hover {
+  background: var(--decaid-primary);
+  border-color: var(--decaid-primary);
+  color: var(--decaid-primary-ink) !important;
+  text-decoration: none;
+}
+.site-footer__connect svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
 
 /* ── Material pages (workflow docs) ── */
 .material-body {
