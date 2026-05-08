@@ -9,10 +9,13 @@
 ## Architektur
 
 ```
-[Webhook]  →  [Extract Agent]  →  [Synthesize Agent]  →  [Doc → Sales-Ordner]
-   ↑
-8–10 Transkripte als Array
+[Webhook]  →  [Extract Agent]  →  [Synthesize Agent]  →  [Create Document]  →  [Update Document]
+   ↑                                                          legt leeres Doc       schreibt Markdown
+8–10 Transkripte                                              im Drive-Ordner an    ins Doc rein
+als Array
 ```
+
+**5 Nodes** — gleiche Drive-Pattern wie Workflow 1 (Create gibt `documentId` zurück, Update schreibt Body rein). Synthesize gibt zwei Felder zurück: `doc_title` und `doc_body`.
 
 ---
 
@@ -93,7 +96,9 @@ Antworte AUSSCHLIESSLICH mit gültigem JSON:
 
 ## Node 3 — Synthesize Agent (Battle Card)
 
-**Modell:** GPT-4 oder Claude Sonnet · **Output-Format:** Markdown (wird direkt ins Doc geschrieben)
+**Modell:** GPT-4 oder Claude Sonnet · **Output-Format:** JSON mit `doc_title` + `doc_body` (Markdown im Body)
+
+Wie bei Larry: zwei Felder zurück, getrennt verwendbar von Create und Update Document.
 
 ### System Prompt
 
@@ -102,17 +107,36 @@ Du bist ein Senior-Sales-Coach. Du bekommst eine strukturierte Auswertung von
 ~10 Sales Calls der letzten Woche und schreibst daraus eine Battle Card, die
 Reps am Montagmorgen in 3 Minuten lesen können.
 
-Format (strikt, Markdown):
+# Output-Contract
 
-# Battle Card — Woche {{webhook.body.week}}
+Du gibst ein einziges JSON-Objekt zurück mit genau zwei Feldern:
+
+{
+  "doc_title": "<String, siehe Title-Template unten>",
+  "doc_body":  "<String, vollständiger Markdown-Body, siehe Body-Template unten>"
+}
+
+- Keine Markdown-Code-Fences um das JSON.
+- Keine extra Felder, kein Fließtext davor/danach.
+- doc_body ist Markdown — Drive rendert die Formatierung.
+
+# Title-Template
+
+`📋 Battle Card — Woche {week}` (z.B. `📋 Battle Card — Woche 2026-W22`)
+
+# Body-Template (Markdown im doc_body)
+
+# 📋 Battle Card — Woche {week}
+
+Basierend auf {N} Sales-Calls der Vorwoche.
 
 ## 🎯 Top 3 wiederkehrende Einwände
 
 Für jeden Einwand:
 - **Der Einwand:** wortwörtlich oder paraphrasiert
-- **Wie oft kam er?** (X von Y Calls)
-- **Was hat funktioniert?** (Beispiel aus einem won-Deal)
-- **Was floppt?** (Beispiel aus einem lost-Deal)
+- **Wie oft kam er?** ({X} von {N} Calls)
+- **Was hat funktioniert?** Beispiel aus einem won-Deal
+- **Was floppt?** Beispiel aus einem lost-Deal
 
 ## 🟢 ICP-Signale, die heiße Deals zeigen
 
@@ -126,11 +150,16 @@ Liste der 2–3 Signale, die zuverlässig in lost-Deals vorkamen.
 
 Ein konkreter Eröffnungssatz, basierend auf dem Muster der besten Calls.
 
-WICHTIG:
+---
+
+# Wichtige Hinweise
+
 - Schreibe auf Deutsch.
 - Sei konkret, keine Floskeln.
-- Wenn die Datenbasis dünn ist, sag es ehrlich.
-- Maximal 600 Wörter.
+- Wenn die Datenbasis dünn ist, sag es ehrlich im Body.
+- Body maximal 600 Wörter.
+- Niemals geschweifte Klammern im Output stehen lassen — alle {Platzhalter}
+  durch echte Werte ersetzen ({week}, {N}, {X}).
 ```
 
 ### Input-Mapping
@@ -141,15 +170,31 @@ WICHTIG:
 
 ---
 
-## Node 4 — Battle-Card-Doc anlegen
+## Node 4 — Create Document
 
 **Integration:** Google Drive (Create Document)
 
+Legt ein leeres Doc im Drive-Ordner an. Titel kommt vom Synthesize Agent.
+
 | Feld | Wert |
 |---|---|
-| **Drive-Ordner** | `<YOUR_SALES_FOLDER_ID>` (gleicher Sales-Ordner wie Workflow 1, oder ein eigener `Battle Cards`-Unterordner) |
-| **Doc-Name** | `📋 Battle Card — Woche {{webhook.body.week}}` |
-| **Body** | `{{node_3.output}}` (Markdown direkt — Drive rendert) |
+| **Drive-Ordner** | `<YOUR_DRIVE_FOLDER_ID>` (gleicher Demo-Ordner wie Workflow 1, oder ein eigener `Battle Cards`-Unterordner) |
+| **Doc-Titel** | `{{node_3.output.doc_title}}` |
+| **Output** | `documentId` für Node 5 |
+
+---
+
+## Node 5 — Update Document
+
+**Integration:** Google Drive (Update Document)
+
+Schreibt den Markdown-Body in das gerade angelegte Doc.
+
+| Feld | Wert |
+|---|---|
+| **Document ID** | `{{node_4.output.documentId}}` |
+| **Body** | `{{node_3.output.doc_body}}` |
+| **Format** | Markdown (Drive rendert Headings, Bullets, Quotes) |
 
 > **Tipp:** Battle Cards funktionieren super als fortlaufende Sammlung. Lege einen Ordner `Battle Cards` an, sortiere nach "Zuletzt geändert" — neue Cards sind oben, alte historisierst du.
 

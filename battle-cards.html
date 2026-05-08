@@ -118,7 +118,7 @@
     <div class="container container--narrow">
       <div class="section__title-block">
         <span class="section__eyebrow">Was passiert</span>
-        <h2>4 Nodes. 90 Sekunden.</h2>
+        <h2>5 Nodes. 90 Sekunden.</h2>
       </div>
 
       <div style="display:grid; gap:16px;">
@@ -129,10 +129,13 @@
           <strong>2. Extract Agent</strong> liest jedes Transkript einzeln und extrahiert strukturierte Daten: Top-Einwände, ICP-Signale, Tipping Points (was hat gewonnen / gekippt).
         </div>
         <div class="callout">
-          <strong>3. Synthesize Agent</strong> erkennt Muster über alle 8 Calls hinweg und schreibt die fertige Battle Card als Markdown — Top-3-Einwände, ICP-Signale, Anti-Signale, Eröffner für nächste Woche.
+          <strong>3. Synthesize Agent</strong> erkennt Muster über alle 8 Calls hinweg und gibt JSON mit <code>doc_title</code> und <code>doc_body</code> (Markdown) zurück — Top-3-Einwände, ICP-Signale, Anti-Signale, Eröffner für nächste Woche.
         </div>
         <div class="callout">
-          <strong>4. Create Document</strong> legt die Battle Card als Google Doc im Drive-Ordner an. Titel: <code>📋 Battle Card — Woche YYYY-WXX</code>.
+          <strong>4. Create Document</strong> legt ein leeres Google Doc im Drive-Ordner an. Titel kommt aus dem Synthesize-Output: <code>📋 Battle Card — Woche YYYY-WXX</code>. Output: <code>documentId</code>.
+        </div>
+        <div class="callout">
+          <strong>5. Update Document</strong> schreibt den Markdown-Body in das gerade angelegte Doc. Drive rendert Headings, Bullets, Quotes — fertige Battle Card.
         </div>
       </div>
 

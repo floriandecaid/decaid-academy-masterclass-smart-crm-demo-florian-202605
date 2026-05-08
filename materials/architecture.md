@@ -54,10 +54,10 @@ Das ist der "intelligente" Teil. Zwei separate Workflows:
 #### Workflow 2 — Battle Cards (Bonus-Demo)
 
 ```
-[Webhook] → [Extract Objections] → [Synthesize] → [Doc → Sales-Ordner]
+[Webhook] → [Extract] → [Synthesize] → [Create Doc] → [Update Doc]
 ```
 
-Wertet 8–10 Sales-Call-Transkripte aus und legt eine wöchentliche Battle Card als Doc ab.
+Wertet 8–10 Sales-Call-Transkripte aus und legt eine wöchentliche Battle Card als Doc ab. Selbes Drive-Pattern wie Workflow 1: Synthesize gibt `doc_title` und `doc_body` zurück, Create legt das Doc an, Update schreibt den Body rein.
 
 → Details: [`workflow2-battle-cards.html`](workflow2-battle-cards.html)
 

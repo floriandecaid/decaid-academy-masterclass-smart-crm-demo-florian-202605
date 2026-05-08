@@ -63,9 +63,12 @@
     </div>
 
     <h2>Architektur</h2>
-<pre><code>[Webhook]  →  [Extract Agent]  →  [Synthesize Agent]  →  [Doc → Sales-Ordner]
-   ↑
-8–10 Transkripte als Array</code></pre>
+<pre><code>[Webhook]  →  [Extract Agent]  →  [Synthesize Agent]  →  [Create Document]  →  [Update Document]
+   ↑                                                          legt leeres Doc       schreibt Markdown
+8–10 Transkripte                                              im Drive-Ordner an    ins Doc rein
+als Array</code></pre>
+
+    <p><strong>5 Nodes</strong> — gleiche Drive-Pattern wie Workflow 1 (Create gibt <code>documentId</code> zurück, Update schreibt Body rein). Synthesize gibt zwei Felder zurück: <code>doc_title</code> und <code>doc_body</code>.</p>
 
     <h2>Node 1 — Webhook Trigger</h2>
     <p><strong>Erwartete Payload:</strong></p>
@@ -129,53 +132,91 @@ Antworte AUSSCHLIESSLICH mit gültigem JSON:
 <pre><code>{{webhook.body.transcripts}}</code></pre>
 
     <h2>Node 3 — Synthesize Agent (Battle Card)</h2>
-    <p><strong>Modell:</strong> GPT-4 oder Claude Sonnet · <strong>Output-Format:</strong> Markdown (wird direkt ins Doc geschrieben)</p>
+    <p><strong>Modell:</strong> GPT-4 oder Claude Sonnet · <strong>Output-Format:</strong> JSON mit <code>doc_title</code> + <code>doc_body</code> (Markdown im Body)</p>
+    <p>Wie bei Larry: zwei Felder zurück, getrennt verwendbar von Create und Update Document.</p>
 
     <h3>System Prompt</h3>
 <pre><code>Du bist ein Senior-Sales-Coach. Du bekommst eine strukturierte Auswertung von
 ~10 Sales Calls der letzten Woche und schreibst daraus eine Battle Card, die
 Reps am Montagmorgen in 3 Minuten lesen können.
 
-Format (strikt, Markdown):
+# Output-Contract
 
-# Battle Card — Woche {{webhook.body.week}}
+Du gibst ein einziges JSON-Objekt zurück mit genau zwei Feldern:
+
+{
+  "doc_title": "&lt;String, siehe Title-Template unten&gt;",
+  "doc_body":  "&lt;String, vollständiger Markdown-Body, siehe Body-Template unten&gt;"
+}
+
+- Keine Markdown-Code-Fences um das JSON.
+- Keine extra Felder, kein Fließtext davor/danach.
+- doc_body ist Markdown — Drive rendert die Formatierung.
+
+# Title-Template
+
+`📋 Battle Card — Woche {week}` (z.B. `📋 Battle Card — Woche 2026-W22`)
+
+# Body-Template (Markdown im doc_body)
+
+# 📋 Battle Card — Woche {week}
+
+Basierend auf {N} Sales-Calls der Vorwoche.
 
 ## 🎯 Top 3 wiederkehrende Einwände
 
 Für jeden Einwand:
-- Der Einwand: wortwörtlich oder paraphrasiert
-- Wie oft kam er? (X von Y Calls)
-- Was hat funktioniert? (Beispiel aus won-Deal)
-- Was floppt? (Beispiel aus lost-Deal)
+- **Der Einwand:** wortwörtlich oder paraphrasiert
+- **Wie oft kam er?** ({X} von {N} Calls)
+- **Was hat funktioniert?** Beispiel aus einem won-Deal
+- **Was floppt?** Beispiel aus einem lost-Deal
 
 ## 🟢 ICP-Signale, die heiße Deals zeigen
 
-Liste der 3–5 stärksten Signale aus won-Deals.
+Liste der 3–5 stärksten Signale, die in won-Deals immer wieder vorkamen.
 
 ## 🔴 Anti-Signale — wenn du das hörst, qualifiziere ab
 
-Liste der 2–3 Signale aus lost-Deals.
+Liste der 2–3 Signale, die zuverlässig in lost-Deals vorkamen.
 
 ## 📞 Empfohlener Diskussions-Eröffner für nächste Woche
 
 Ein konkreter Eröffnungssatz, basierend auf dem Muster der besten Calls.
 
-WICHTIG:
+---
+
+# Wichtige Hinweise
+
 - Schreibe auf Deutsch.
 - Sei konkret, keine Floskeln.
-- Wenn die Datenbasis dünn ist, sag es ehrlich.
-- Maximal 600 Wörter.</code></pre>
+- Wenn die Datenbasis dünn ist, sag es ehrlich im Body.
+- Body maximal 600 Wörter.
+- Niemals geschweifte Klammern im Output stehen lassen — alle {Platzhalter}
+  durch echte Werte ersetzen ({week}, {N}, {X}).</code></pre>
 
     <h3>Input-Mapping</h3>
 <pre><code>{{node_2.output.extractions}}</code></pre>
 
-    <h2>Node 4 — Battle-Card-Doc anlegen</h2>
+    <h2>Node 4 — Create Document</h2>
     <p><strong>Integration:</strong> Google Drive (Create Document)</p>
+    <p>Legt ein leeres Doc im Drive-Ordner an. Titel kommt vom Synthesize Agent.</p>
+
     <table class="spec">
       <tr><th>Feld</th><th>Wert</th></tr>
-      <tr><td>Drive-Ordner</td><td><code>&lt;YOUR_SALES_FOLDER_ID&gt;</code> (gleicher Sales-Ordner wie Workflow 1, oder ein eigener <code>Battle Cards</code>-Unterordner)</td></tr>
-      <tr><td>Doc-Name</td><td><code>📋 Battle Card — Woche {{webhook.body.week}}</code></td></tr>
-      <tr><td>Body</td><td><code>{{node_3.output}}</code> (Markdown — Drive rendert)</td></tr>
+      <tr><td>Drive-Ordner</td><td><code>&lt;YOUR_DRIVE_FOLDER_ID&gt;</code> (gleicher Demo-Ordner wie Workflow 1, oder ein eigener <code>Battle Cards</code>-Unterordner)</td></tr>
+      <tr><td>Doc-Titel</td><td><code>{{node_3.output.doc_title}}</code></td></tr>
+      <tr><td>Output</td><td><code>documentId</code> für Node 5</td></tr>
+    </table>
+
+    <h2>Node 5 — Update Document</h2>
+    <p><strong>Integration:</strong> Google Drive (Update Document)</p>
+    <p>Schreibt den Markdown-Body in das gerade angelegte Doc.</p>
+
+    <table class="spec">
+      <tr><th>Feld</th><th>Wert</th></tr>
+      <tr><td>Document ID</td><td><code>{{node_4.output.documentId}}</code></td></tr>
+      <tr><td>Body</td><td><code>{{node_3.output.doc_body}}</code></td></tr>
+      <tr><td>Format</td><td>Markdown (Drive rendert Headings, Bullets, Quotes)</td></tr>
     </table>
 
     <div class="callout">
